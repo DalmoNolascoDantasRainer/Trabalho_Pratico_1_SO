@@ -145,7 +145,6 @@ void imprimeFilas(Fila** filas, int numFilas){
 
         printf("\nFila numero: %d:", i);
 
-
         imprimeFila(filas[i]); // Chama a funcao de imprimir fila para cada fila do conjunto
     }
 }

@@ -1,3 +1,6 @@
+#ifndef FILA_H
+#define FILA_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -30,3 +33,5 @@ int desenfileirarFilas(Fila** filas, int numFilas); // Esvazia todas as filas da
 Processo criaCelulaProcesso(int PID, int tempoExecutado);
 void imprimeFila(Fila *fila);
 void imprimeFilas(Fila** filas, int numFilas);
+
+#endif 
