@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-/*#include "../ProcessoSimulado/processoSimulado.h"*/
+#include "../ProcessoSimulado/ProcessoSimulado.h"
 
 typedef struct celulaProcessoSimulado Celula;
 struct celulaProcessoSimulado {

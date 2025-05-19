@@ -1,3 +1,6 @@
+#ifndef PIPE_H
+#define PIPE_H
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <string.h>
@@ -8,3 +11,5 @@
 
 void escreverCaracterePipe(int fd, char caractere);
 char lerCaracterePipe(int fd);
+
+#endif 

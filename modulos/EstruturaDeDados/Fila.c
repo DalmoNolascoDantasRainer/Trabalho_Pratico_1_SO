@@ -5,7 +5,7 @@ Fila* criaFila(){
 
     // Aloca memoria para a estrutura da fila
     Fila* fila = (Fila*) malloc(sizeof(Fila));
-    fila->Frente = (Apontador) malloc(sizeof(CelulaProcesso)); // Celula cabeca
+    fila->Frente = (Apontador) malloc(sizeof(CelulaPidTempo)); // Celula cabeca
 
     
     fila->Tras = fila->Frente; // Inicializa o ponteiro Tras apontando para a mesma celula que Frente, as duas apontam para a celula cabeca
@@ -34,30 +34,30 @@ int filasVazias(Fila** filas, int numFilas){
 
 // Funcao para adicionar um elemento na fila
 void enfileirar(int pid, int tempoExecutado, Fila *Fila){
-    Fila->Tras->Prox = (Apontador) malloc(sizeof(CelulaProcesso)); // Liga a nova celula na fila
+    Fila->Tras->Prox = (Apontador) malloc(sizeof(CelulaPidTempo)); // Liga a nova celula na fila
     Fila->Tras = Fila->Tras->Prox; // Atualiza o ponteiro Tras para a nova celula, ela passa a ser a ultima 
     Fila->Tras->Prox = NULL; // A ultima celula n possui proximo elemento
-    Fila->Tras->Processo = criaCelulaProcesso(pid, tempoExecutado);
+    Fila->Tras->pidTempo = criaCelulaPidTempo(pid, tempoExecutado);
     
     Fila->Tamanho++;
 }
 
 // Funcao para remover o primeiro elemento da fila e retornar seus dados
-Processo* desenfileirar(Fila* fila){ //OLHAR MELHOR DEPOIS
+PidTempo* desenfileirar(Fila* fila){ //OLHAR MELHOR DEPOIS
     if (filaEhVazia(fila)) {
         return NULL;
     }
 
-    Processo* ProcessoRemovido = (Processo*) malloc(sizeof(Processo));
+    PidTempo* pidTempoRemovido = (PidTempo*) malloc(sizeof(PidTempo));
 
-    CelulaProcesso* celulaRemovida = fila->Frente;
+    CelulaPidTempo* celulaRemovida = fila->Frente;
 
     fila->Frente = fila->Frente->Prox;  // Atualiza o ponteiro Frente para o proximo elemento
 
     // Copia os dados do elemento da frente da fila
 
-    ProcessoRemovido->pid = fila->Frente->Processo.pid;
-    ProcessoRemovido->tempoExecutado = fila->Frente->Processo.tempoExecutado;
+    pidTempoRemovido->pid = fila->Frente->pidTempo.pid;
+    pidTempoRemovido->tempoExecutado = fila->Frente->pidTempo.tempoExecutado;
     
     free(celulaRemovida);
 
@@ -67,7 +67,7 @@ Processo* desenfileirar(Fila* fila){ //OLHAR MELHOR DEPOIS
     }
 
     fila->Tamanho--;
-    return ProcessoRemovido;
+    return pidTempoRemovido;
 }
 
 
@@ -76,9 +76,9 @@ int desenfileirarPID(Fila* fila){
     if (filaEhVazia(fila)){
         return -1;
     }
-    int processoRemovido = fila->Frente->Processo.pid; // Armazena o PID do elemento da frente da fila
+    int processoRemovido = fila->Frente->pidTempo.pid; // Armazena o PID do elemento da frente da fila
 
-    CelulaProcesso* celulaRemovida = fila->Frente; 
+    CelulaPidTempo* celulaRemovida = fila->Frente; 
     fila->Frente = fila->Frente->Prox; // Atualiza o ponteiro Frente para o proximo elemento
     free(celulaRemovida);
 
@@ -110,8 +110,8 @@ int desenfileirarFilas(Fila** filas, int numFilas){
 }
 
 // Funcao para criar uma celula com os dados de PID e tempo executado
-Processo criaCelulaProcesso(int PID, int tempoExecutado){
-    Processo celula;
+PidTempo criaCelulaPidTempo(int PID, int tempoExecutado){
+    PidTempo celula;
     celula.pid = PID;
     celula.tempoExecutado = tempoExecutado;
 
@@ -124,13 +124,13 @@ void imprimeFila(Fila *fila){
         printf("\n  Fila esta Vazia :( \n");
 
     } else {
-        CelulaProcesso *celula = fila->Frente; // Ponteiro para iterar pelos elementos da fila
+        CelulaPidTempo *celula = fila->Frente; // Ponteiro para iterar pelos elementos da fila
 
         while (celula != NULL) {
-            if (celula->Processo.tempoExecutado == -1){ // Se o tempo executado for -1, imprime apenas o PID
-                printf("\n   Pid: %d", celula->Processo.pid);
+            if (celula->pidTempo.tempoExecutado == -1){ // Se o tempo executado for -1, imprime apenas o PID
+                printf("\n   Pid: %d", celula->pidTempo.pid);
             } else{
-                printf("\n   Pid: %d, Tempo bloqueado: %d", celula->Processo.pid, celula->Processo.tempoExecutado);
+                printf("\n   Pid: %d, Tempo bloqueado: %d", celula->pidTempo.pid, celula->pidTempo.tempoExecutado);
             }
             celula = celula->Prox;
         }
