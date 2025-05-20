@@ -1,7 +1,7 @@
 #ifndef	PROCESSOCONTROLE_H
 #define	PROCESSOCONTROLE_H
 
-#include "../Pipe/pipe.h"
+#include "../Pipe/Pipe.h"
 
 char controle(FILE* arquivoDeEntrada, int opcao);
 

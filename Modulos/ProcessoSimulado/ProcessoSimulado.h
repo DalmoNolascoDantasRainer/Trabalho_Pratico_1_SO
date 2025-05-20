@@ -2,7 +2,7 @@
 #define PROCESSO_SIMULADO_H
 
 #include <stdlib.h>
-#include "./instrucao.h"
+#include "Instrucao.h"
 
 // Enum para os estados do processo
 typedef enum {

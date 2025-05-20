@@ -1,5 +1,6 @@
-#include "processoSimulado.h"
-#define MAXBUFFER 100
+#include "ProcessoSimulado.h"
+#define BUFFER 100
+
 
 // Cria o processo inicial (init)
 ProcessoSimulado* criaProcessoInit(int tempoSistema) {
@@ -75,12 +76,12 @@ void copiaconjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
 
 // Funcao que retorna o numero de variaveis no conjunto de instrucoes
 int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
-    return conjuntoInstrucoes[0].paramNum1; // O número de variáveis está no primeiro parâmetro
+    return conjuntoInstrucoes[0].paramNum1; // O numero de variaveis esta no primeiro parametro
 }
 
-// Função que imprime as informações de um processo
+// Funcao que imprime as informacoes de um processo
 void imprimeProcesso(ProcessoSimulado processo, int opcao) {
-    // Imprime os atributos básicos do processo
+    // Imprime os atributos basicos do processo
     printf("-> Processo - PID %2d | ", processo.pid);
     printf("pid_pai %2d | ", processo.pid_pai);
     printf("PC %2d | ", *(processo.pc));
@@ -89,24 +90,24 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
     printf("Tempo de inicio %2d | ", processo.tempoInicio);
     printf("Tempo de CPU %2d\n", processo.tempoCPU);
     
-    // Imprime informações adicionais com base na opção
+    // Imprime informacoes adicionais com base na opcao
     switch (opcao) {
         case 1:
-            break; // Não imprime nada adicional
+            break; // Nao imprime nada adicional
         case 2:
             imprimeVariaveis(processo.vetorVariaveis, numeroVariaveis(*processo.conjuntoInstrucoes));
-            break; // Imprime as variáveis
+            break; // Imprime as variaveis
         case 3:
             imprimeconjuntoInstrucoes(*(processo.conjuntoInstrucoes), *processo.pc);
-            break; // Imprime o conjunto de instruções
+            break; // Imprime o conjunto de instrucoes
         case 4:
             imprimeVariaveis(processo.vetorVariaveis, numeroVariaveis(*processo.conjuntoInstrucoes));
             imprimeconjuntoInstrucoes(*(processo.conjuntoInstrucoes), *processo.pc);
-            break; // Imprime variáveis e conjunto de instruções
+            break; // Imprime variaveis e conjunto de instrues
         default:
             break;
     }
-    putchar('\n'); // Adiciona uma nova linha
+    putchar('\n'); 
 }
 
 // Funcao que imprime as variaveis de um processo
@@ -115,7 +116,7 @@ void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
     for (int i = 0; i < tamanho; i++) {
         printf("%d ", vetorVariaveis[i]); // Imprime cada variável
     }
-    putchar('\n'); // Adiciona uma nova linha
+    putchar('\n'); 
 }
 
 // Funcao que imprime o estado de um processo

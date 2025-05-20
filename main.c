@@ -1,12 +1,12 @@
-#include "./modulos/ProcessoControle/ProcessoControle.h"
-#include "./modulos/ProcessoImpressao/ProcessoImpressao.h"
+#include "./Modulos/ProcessoControle/ProcessoControle.h"
+#include "./Modulos/ProcessoImpressao/ProcessoImpressao.h"
 #include <sys/wait.h>
 #include <signal.h>
 
 int impressaoExecutando = 0;
 void semaforoImpressao(int signum)
 {
-    impressaoExecutando = 0; // INDICA QUE O PROCESSO IMPRESSÃO NÃO VAI EXECUTAR MAIS
+    impressaoExecutando = 0; // INDICA QUE O PROCESSO IMPRESSAO NAO VAI EXECUTAR MAIS
 }
 
 int main(int argc, char **argv)
@@ -39,8 +39,8 @@ int main(int argc, char **argv)
 
     if (pid > 0)
     {
-        // A função signal quando recebe o sinal SIGUSR1 executa o que está dentro de semaforoImpressao
-        signal(SIGUSR1, semaforoImpressao); // Ela apenas registra o sinal do processo impressão
+        // A funcao signal quando recebe o sinal SIGUSR1 executa o que esta dentro de semaforoImpressao
+        signal(SIGUSR1, semaforoImpressao); // Ela apenas registra o sinal do processo impressao
 
         while (1) // Loop processo pai
         {
@@ -102,13 +102,13 @@ int main(int argc, char **argv)
                     
                     if (pidImpressao > 0) // indica que e um processo filho
                     {
-                        wait(NULL);               // ESPERANDO O TERMINO DO PROCESSO DE IMPRESSÃO
-                        kill(getppid(), SIGUSR1); // ENVIA O SINAL PRO PROCESSO QUE LÊ DO PIPE
+                        wait(NULL);               // Aguarda o termino do processo de impressao
+                        kill(getppid(), SIGUSR1); // ENVIA O SINAL PRO PROCESSO QUE LE DO PIPE
                         sleep(1);
                     }
                     else
                     {
-                        // PROCESSO IMPRESSÃO
+                        // PROCESSO IMPRESSAO
                         imprimirGerenciadorProcessos(gerenciador);
 
                         exit(0); // VOLTA PARA O WAIT(NULL)
