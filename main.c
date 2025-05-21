@@ -40,19 +40,19 @@ int main(int argc, char **argv)
     if (pid > 0)
     {
         // A funcao signal quando recebe o sinal SIGUSR1 executa o que esta dentro de semaforoImpressao
-        signal(SIGUSR1, semaforoImpressao); // Ela apenas registra o sinal do processo impressao
+        signal(SIGUSR1, semaforoImpressao); // Ela registra o sinal do processo impressao
 
         while (1) // Loop processo pai
         {
             if (opcao == 2) // Entrada por arquivo
             {
                 comando = controle(arquivoDeEntrada, opcao);
-                escreverCaractereNoPipe(fd[1], comando); // Envia para o filho
+                escreverCaracterePipe(fd[1], comando); // Envia para o filho
             }
             else // Entrada por teclado (usuario)
             {
                 scanf(" %c", &comando);
-                escreverCaractereNoPipe(fd[1], comando);
+                escreverCaracterePipe(fd[1], comando);
 
                 if (comando == 'I')
                 {
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
         while (1) // Loop processo filho
         {
 
-            comando = lerCaractereDoPipe(fd[0]); // le comando vindo do processo pai
+            comando = lerCaracterePipe(fd[0]); // le comando vindo do processo pai
 
             if (comando == 'U') // Comando para fim de uma unidade de tempo
             {
@@ -109,7 +109,7 @@ int main(int argc, char **argv)
                     else
                     {
                         // PROCESSO IMPRESSAO
-                        imprimirGerenciadorProcessos(gerenciador);
+                        ImprimeGerenciadorProcessos(gerenciador);
 
                         exit(0); // VOLTA PARA O WAIT(NULL)
                     }

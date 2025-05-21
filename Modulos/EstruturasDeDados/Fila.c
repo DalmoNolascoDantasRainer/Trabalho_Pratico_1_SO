@@ -18,7 +18,7 @@ Fila* criaFila(){
 
 // Funcao para verificar se uma fila esta vazia
 int filaEhVazia(Fila* Fila){   
-    return (Fila->Tamanho == 0); // Retorna 1 se o tamanho da fila for 0 (fila esta vazia), caso contrario retorna 0
+    return (Fila->Frente == Fila->Tras); // Retorna 1 se o tamanho da fila for 0 (fila esta vazia), caso contrario retorna 0
 }
 
 // Funcao para verificar se todas as filas de um conjunto estao vazias
@@ -43,29 +43,32 @@ void enfileirar(int pid, int tempoExecutado, Fila *Fila){
 }
 
 // Funcao para remover o primeiro elemento da fila e retornar seus dados
-PidTempo* desenfileirar(Fila* fila){ //OLHAR MELHOR DEPOIS
+PidTempo* desenfileirar(Fila* fila) {
     if (filaEhVazia(fila)) {
         return NULL;
     }
-
-    PidTempo* pidTempoRemovido = (PidTempo*) malloc(sizeof(PidTempo));
-
+    
+    // Guarda o ponteiro para a celula cabeca que sera removida
     CelulaPidTempo* celulaRemovida = fila->Frente;
-
-    fila->Frente = fila->Frente->Prox;  // Atualiza o ponteiro Frente para o proximo elemento
-
-    // Copia os dados do elemento da frente da fila
-
+    
+    // Avanca o ponteiro Frente para a proxima celula, ou seja, a celula real 
+    fila->Frente = fila->Frente->Prox;
+    
+    PidTempo* pidTempoRemovido = (PidTempo*) malloc(sizeof(PidTempo));
+    
+    // Copia os dados do item que agora esta na frente (oq sera removido, pq sera a nova celula cabeca)
     pidTempoRemovido->pid = fila->Frente->pidTempo.pid;
     pidTempoRemovido->tempoExecutado = fila->Frente->pidTempo.tempoExecutado;
     
-    free(celulaRemovida);
 
-    // Se a fila ficou vazia, atualiza o ponteiro Tras para NULL
-    if (filaEhVazia){
-        fila->Tras = NULL; 
+    // Se a celula removida era a ultima, atualiza o ponteiro Tras /////TENTAR TIRAR ISSO DEPOIS
+    if (fila->Frente->Prox == NULL) {
+        fila->Tras = fila->Frente;
     }
 
+    // Libera a antiga celula cabeca
+    free(celulaRemovida);
+    
     fila->Tamanho--;
     return pidTempoRemovido;
 }
@@ -79,13 +82,13 @@ int desenfileirarPID(Fila* fila){
     int processoRemovido = fila->Frente->pidTempo.pid; // Armazena o PID do elemento da frente da fila
 
     CelulaPidTempo* celulaRemovida = fila->Frente; 
-    fila->Frente = fila->Frente->Prox; // Atualiza o ponteiro Frente para o proximo elemento
+    fila->Frente = fila->Frente->Prox; // Avanca o ponteiro Frente para a proxima celula, ou seja, a celula real 
     free(celulaRemovida);
 
 
-    // Se a fila ficou vazia, atualiza o ponteiro Tras para NULL
-    if (filaEhVazia){
-        fila->Tras = NULL;
+    // Se a celula removida era a ultima, atualiza o ponteiro Tras
+    if (fila->Frente->Prox == NULL) {
+        fila->Tras = fila->Frente; /// ANTES ERA NULL
     }
 
     fila->Tamanho--;
@@ -96,7 +99,7 @@ int desenfileirarPID(Fila* fila){
 int desenfileirarFilas(Fila** filas, int numFilas){
     int pidProcessoRemovido = -1, i = 0;
 
-    while (pidProcessoRemovido == -1 && i < numFilas){ // Itera pelas filas ate encontrar uma n vazia
+    while (pidProcessoRemovido == -1 && i < numFilas){ // Itera pelas filas ate encontrar uma vazia
         pidProcessoRemovido = desenfileirarPID(filas[i]); // Tenta remover o elemento da fila atual
 
         if (pidProcessoRemovido >= 0){ // Se encontrou um elemento, retorna o PID
@@ -138,8 +141,8 @@ void imprimeFila(Fila *fila){
     }
 }
 
-void imprimeFilas(Fila** filas, int numFilas){
 // Funcao para imprimir os elementos de um conjunto de filas
+void imprimeFilas(Fila** filas, int numFilas){
     for (int i = 0; i < numFilas; i++){
         Fila* fila = filas[i];
 

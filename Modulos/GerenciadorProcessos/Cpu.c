@@ -20,6 +20,7 @@ CPU* inicializaCPU(){
 // Carrega um processo na CPU, apontando para os dados do processo atual.
 // Esta função faz com que a CPU passe a operar sobre o processo fornecido,
 // atualizando seus ponteiros para os campos do processo.
+
 void carregaProcesso(CPU* cpu, ProcessoSimulado* processoAtual)
 {
     // Atualiza o ponteiro do PID para o PID do processo atual
@@ -52,39 +53,39 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     switch (tipo)
     {
     case 'N':
-        *cpu->variaveisProcessoAtual = instrucaoN(paramNum1);
+        *cpu->variaveisProcessoAtual = instrucaoTipoN(paramNum1);
         break;
 
     case 'D':
-        instrucaoD(paramNum1, *cpu->variaveisProcessoAtual);
+        instrucaoTipoD(paramNum1, *cpu->variaveisProcessoAtual);
         break;
 
     case 'V':
-        instrucaoV(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+        instrucaoTipoV(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
         break;
 
     case 'A':
-        instrucaoA(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+        instrucaoTipoA(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
         break;
 
     case 'S':
-        instrucaoS(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+        instrucaoTipoS(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
         break;
     
     case 'B':
-        instrucaoB(paramNum1, cpu->pidProcessoAtual, tabelaProcessos, estadoBloqueado);
+        instrucaoTipoB(paramNum1, cpu->pidProcessoAtual, tabelaProcessos, estadoBloqueado);
         break;
 
     case 'T':
-        instrucaoT(cpu->pidProcessoAtual, tabelaProcessos);
+        instrucaoTipoT(cpu->pidProcessoAtual, tabelaProcessos);
         break;
     
     case 'F':
-        instrucaoF(paramNum1, cpu->pidProcessoAtual, cpu->pcProcessoAtual, quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
+        instrucaoTipoF(paramNum1, cpu->pidProcessoAtual, cpu->pcProcessoAtual, quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
         break;
 
     case 'R':
-        instrucaoR(paramTxt, cpu->programaProcessoAtual, cpu->pcProcessoAtual);
+        instrucaoTipoR(paramTxt, cpu->programaProcessoAtual, cpu->pcProcessoAtual);
         break;
 
     default:
@@ -120,7 +121,7 @@ void zeraCPU(CPU* cpu)
 /* -------------- Instruçẽos de programa que são processadas na CPU -------------- */
 
 // Aloca um vetor de variáveis inteiras para o processo.
-int *instrucaoN(int n)
+int *instrucaoTipoN(int n)
 {
     int *vetorVariaveis;
     vetorVariaveis = (int *)malloc(n * sizeof(int));
@@ -134,13 +135,13 @@ int *instrucaoN(int n)
 }
 
 // Define o valor da variável x como 0.
-void instrucaoD(int x, int *vetorVariaveis)
+void instrucaoTipoD(int x, int *vetorVariaveis)
 {
     vetorVariaveis[x] = 0;
 }
 
 // Define o valor da variável x como n.
-void instrucaoV(int x, int n, int *vetorVariaveis)
+void instrucaoTipoV(int x, int n, int *vetorVariaveis)
 {
     vetorVariaveis[x] = n;
 }
@@ -159,7 +160,7 @@ void instrucaoTipoS(int x, int n, int *vetorVariaveis){
 // Bloqueia o processo atual, colocando-o na fila de bloqueados.
 void instrucaoTipoB(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* estadoBloqueado)
 {
-    enfileira(*pidProcessoAtual, n, estadoBloqueado);
+    enfileirar(*pidProcessoAtual, n, estadoBloqueado);
     ProcessoSimulado* processo = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     processo->estadoProcesso = BLOQUEADO;
 }
@@ -183,7 +184,7 @@ void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* qua
     ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
 
     insereTabela(tabelaProcessos, processoFilho);
-    enfileira(processoFilho->pid, NUMEROVAZIO, estadoPronto[processoFilho->prioridade]);
+    enfileirar(processoFilho->pid, NUMEROVAZIO, estadoPronto[processoFilho->prioridade]);
     quantidadeProcessosIniciados += 1;
 
     *pcProcessoAtual += n;

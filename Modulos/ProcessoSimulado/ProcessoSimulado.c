@@ -48,7 +48,7 @@ ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
 
     // Copia o conjunto de instrucoes do processo pai
     processo->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
-    copiaconjuntoInstrucoes(processo->conjuntoInstrucoes, *(processoPai.conjuntoInstrucoes));
+    copiaConjuntoInstrucoes(processo->conjuntoInstrucoes, *(processoPai.conjuntoInstrucoes));
 
     return processo;
 }
@@ -61,7 +61,7 @@ void copiaVariaveis(int* vetorVariaveisBase, int* vetorVariaveisNovo, int tamanh
 }
 
 // Funcao que copia o conjunto de instrucoes de um processo para outro
-void copiaconjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
+void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
     Instrucao* conjuntoInstrucoes = (Instrucao*) malloc(MAXINSTRUCOES * sizeof(Instrucao));
     int i = 0;
 
@@ -86,7 +86,7 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
     printf("pid_pai %2d | ", processo.pid_pai);
     printf("PC %2d | ", *(processo.pc));
     printf("Prioridade %d | ", processo.prioridade);
-    imprimeEstado(processo.estadoProcesso);
+    imprimeEstadoProcessoSimulado(processo.estadoProcesso);
     printf("Tempo de inicio %2d | ", processo.tempoInicio);
     printf("Tempo de CPU %2d\n", processo.tempoCPU);
     
@@ -98,11 +98,11 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
             imprimeVariaveis(processo.vetorVariaveis, numeroVariaveis(*processo.conjuntoInstrucoes));
             break; // Imprime as variaveis
         case 3:
-            imprimeconjuntoInstrucoes(*(processo.conjuntoInstrucoes), *processo.pc);
+            imprimeVetorPrograma(*(processo.conjuntoInstrucoes), *processo.pc);
             break; // Imprime o conjunto de instrucoes
         case 4:
             imprimeVariaveis(processo.vetorVariaveis, numeroVariaveis(*processo.conjuntoInstrucoes));
-            imprimeconjuntoInstrucoes(*(processo.conjuntoInstrucoes), *processo.pc);
+            imprimeVetorPrograma(*(processo.conjuntoInstrucoes), *processo.pc);
             break; // Imprime variaveis e conjunto de instrues
         default:
             break;
@@ -120,7 +120,7 @@ void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
 }
 
 // Funcao que imprime o estado de um processo
-void imprimeEstado(Estado estadoProcesso) {
+void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
     switch (estadoProcesso) {
         case BLOQUEADO:
             printf("Estado: BLOQUEADO | ");

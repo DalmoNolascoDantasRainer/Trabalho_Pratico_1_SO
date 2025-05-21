@@ -12,8 +12,7 @@
 #define NUMEROVAZIO -1 // Define um valor vazio para parâmetros numéricos
 
 // Intrucao do processo simulado
-typedef struct Instrucao
-{
+typedef struct Instrucao {
     char tipoInstrucao; // Letra que representa a instrução
     int paramNum1; // Parametros numericos 
     int paramNum2;

@@ -5,10 +5,9 @@
 #include "../Pipe/Pipe.h"
 #include "Cpu.h"
 #include <math.h>
-#define NUMCLASPRIORI 4
+#define CLASSESPRIORIDADES 4
 
-typedef struct GerenciadorProcessos
-{
+typedef struct GerenciadorProcessos {
     int tempo;
     int* estadoExecucao;
     int quantidadeProcessosIniciados;

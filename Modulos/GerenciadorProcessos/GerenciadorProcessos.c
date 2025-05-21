@@ -27,10 +27,10 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs)
     gerenciador->tabelaProcessos = criaLista();
 
     // Aloca memória para as filas de processos prontos, uma para cada classe de prioridade
-    gerenciador->estadoPronto = (Fila **)malloc(sizeof(Fila *) * NUMCLASPRIORI);
+    gerenciador->estadoPronto = (Fila **)malloc(sizeof(Fila *) * CLASSESPRIORIDADES);
 
     // Inicializa as filas de processos prontos
-    for (int i = 0; i < NUMCLASPRIORI; i++)
+    for (int i = 0; i < CLASSESPRIORIDADES; i++)
     {
         gerenciador->estadoPronto[i] = criaFila();
     }
@@ -48,7 +48,7 @@ void iniciaProcessoInit(GerenciadorProcessos *gerenciador)
     ProcessoSimulado *processoInit = criaProcessoInit(gerenciador->tempo);
 
     // Enfileira o processo inicial na fila de prioridade mais alta
-    enfileira(processoInit->pid, NUMEROVAZIO, gerenciador->estadoPronto[0]);
+    enfileirar(processoInit->pid, NUMEROVAZIO, gerenciador->estadoPronto[0]);
 
     // Insere o processo inicial na tabela de processos
     insereTabela(gerenciador->tabelaProcessos, processoInit);
@@ -95,7 +95,7 @@ void escalonaProcessosCPUs(GerenciadorProcessos *gerenciador)
     {
         if (cpuLivre(gerenciador->cpus[i]) == 1) // Verifica se a CPU está livre
         {
-            if (filasVazias(gerenciador->estadoPronto, NUMCLASPRIORI) == 0) // Verifica se há processos prontos
+            if (filasVazias(gerenciador->estadoPronto, CLASSESPRIORIDADES) == 0) // Verifica se há processos prontos
             {
                 escalonaProcesso(gerenciador->tabelaProcessos, gerenciador->cpus[i], gerenciador->estadoExecucao + i, gerenciador->estadoPronto);
             }
@@ -106,7 +106,7 @@ void escalonaProcessosCPUs(GerenciadorProcessos *gerenciador)
 // Escalona um processo específico para uma CPU
 void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fila **estadoPronto)
 {
-    int pidProcesso = desenfileirarFilas(estadoPronto, NUMCLASPRIORI); // Obtém o próximo processo da fila
+    int pidProcesso = desenfileirarFilas(estadoPronto, CLASSESPRIORIDADES); // Obtém o próximo processo da fila
 
     if (pidProcesso >= 0)
     {
@@ -155,13 +155,13 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto)
         {
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
 
-            if (processoNaCPU->prioridade < NUMCLASPRIORI - 1) // Ajusta a prioridade, se necessário
+            if (processoNaCPU->prioridade < CLASSESPRIORIDADES - 1) // Ajusta a prioridade, se necessário
             {
                 processoNaCPU->prioridade++;
             }
             processoNaCPU->tempoCPU += cpu->fatiaQuantum; // Atualiza o tempo de CPU do processo
 
-            enfileira(processoNaCPU->pid, NUMEROVAZIO, estadoPronto[processoNaCPU->prioridade]); // Reenfileira o processo
+            enfileirar(processoNaCPU->pid, NUMEROVAZIO, estadoPronto[processoNaCPU->prioridade]); // Reenfileira o processo
             zeraCPU(cpu); // Libera a CPU
         }
         else if (processoNaCPU->estadoProcesso == BLOQUEADO) // Caso o processo esteja bloqueado
@@ -189,11 +189,11 @@ void verificaBloqueados(GerenciadorProcessos *gerenciador)
         if (pidTempo->tempoExecutado <= 0) // Se o tempo de bloqueio acabou
         {
             ProcessoSimulado *processo = buscaProcesso(gerenciador->tabelaProcessos, pidTempo->pid);
-            enfileira(pidTempo->pid, NUMEROVAZIO, gerenciador->estadoPronto[processo->prioridade]); // Reenfileira o processo como pronto
+            enfileirar(pidTempo->pid, NUMEROVAZIO, gerenciador->estadoPronto[processo->prioridade]); // Reenfileira o processo como pronto
         }
         else
         {
-            enfileira(pidTempo->pid, pidTempo->tempoExecutado, gerenciador->estadoBloqueado); // Reenfileira o processo bloqueado
+            enfileirar(pidTempo->pid, pidTempo->tempoExecutado, gerenciador->estadoBloqueado); // Reenfileira o processo bloqueado
         }
     }
 }

@@ -27,11 +27,10 @@ typedef struct ProcessoSimulado
 ProcessoSimulado* criaProcessoInit(int tempoSistema); // Cria o processo inicial (init)
 ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSistema, int novoPid); // Cria uma copia de um processo pai (como se fosse um fork)
 void copiaVariaveis(int* vetorVariaveisBase, int* vetorVariaveisNovo, int tamanho);
-void copiaconjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase);
+void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase);
 int numeroVariaveis(Instrucao* conjuntoInstrucoes); // Conta quantas variaveis sao necessarias com base nas instrucoes
 void imprimeProcesso(ProcessoSimulado processo, int opcao);
-
-void imprimeEstado(Estado estadoProcesso);
+void imprimeEstadoProcessoSimulado(Estado estadoProcesso);
 void imprimeVariaveis(int* vetorVariaveis, int tamanho);
 
 #endif 
