@@ -1,7 +1,6 @@
 #include "ProcessoSimulado.h"
 #define BUFFER 100
 
-
 // Cria o processo inicial (init)
 ProcessoSimulado* criaProcessoInit(int tempoSistema) {
 

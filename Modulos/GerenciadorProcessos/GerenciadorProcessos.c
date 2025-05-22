@@ -1,9 +1,9 @@
 #include "GerenciadorProcessos.h"
 
-// Função que inicializa o gerenciador de processos
+// Funcao que inicializa o gerenciador de processos
 GerenciadorProcessos *inicializaGerenciador(int numCPUs)
 {
-    // Aloca memória para o gerenciador de processos
+    // Aloca memoria para o gerenciador de processos
     GerenciadorProcessos *gerenciador = (GerenciadorProcessos *)malloc(sizeof(GerenciadorProcessos));
 
     // Inicializa os atributos do gerenciador
@@ -12,13 +12,12 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs)
     gerenciador->tempoTotalExecucao = 0;
     gerenciador->numCPUs = numCPUs;
 
-    // Aloca memória para as CPUs e seus estados de execução
+    // Aloca memoria para as CPUs e seus estados de execucao
     gerenciador->cpus = (CPU **)malloc(numCPUs * sizeof(CPU *));
     gerenciador->estadoExecucao = (int *)malloc(numCPUs * sizeof(int));
 
     // Inicializa cada CPU e define o estado como vazio
-    for (int i = 0; i < numCPUs; i++)
-    {
+    for (int i = 0; i < numCPUs; i++){
         gerenciador->cpus[i] = inicializaCPU();
         gerenciador->estadoExecucao[i] = NUMEROVAZIO;
     }
@@ -26,7 +25,7 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs)
     // Cria a tabela de processos
     gerenciador->tabelaProcessos = criaLista();
 
-    // Aloca memória para as filas de processos prontos, uma para cada classe de prioridade
+    // Aloca memoria para as filas de processos prontos, uma para cada classe de prioridade
     gerenciador->estadoPronto = (Fila **)malloc(sizeof(Fila *) * CLASSESPRIORIDADES);
 
     // Inicializa as filas de processos prontos
@@ -41,7 +40,7 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs)
     return gerenciador;
 }
 
-// Função que inicia o processo inicial (init)
+// Funcao que inicia o processo inicial (init)
 void iniciaProcessoInit(GerenciadorProcessos *gerenciador)
 {
     // Cria o processo inicial
@@ -57,22 +56,18 @@ void iniciaProcessoInit(GerenciadorProcessos *gerenciador)
     gerenciador->quantidadeProcessosIniciados += 1;
 }
 
-// Função principal que gerencia os processos com base no comando recebido
-void gerenciadorProcessos(GerenciadorProcessos *gerenciador, char comando)
-{
-    if (comando == 'U') // Comando para avançar uma unidade de tempo
-    {
+// Funcao principal que gerencia os processos com base no comando recebido
+void gerenciadorProcessos(GerenciadorProcessos *gerenciador, char comando){
+    if (comando == 'U'){ // Comando para avancar uma unidade de tempo
         encerraUnidadeTempo(gerenciador); // Incrementa o tempo do sistema
 
-        if (gerenciador->tempo == 1) // Na primeira unidade de tempo
-        {
+        if (gerenciador->tempo == 1){ // Na primeira unidade de tempo
             iniciaProcessoInit(gerenciador); // Inicia o processo inicial
             escalonaProcessosCPUs(gerenciador); // Escalona os processos para as CPUs
             executaCPUs(gerenciador); // Executa os processos nas CPUs
-            trocaDeContexto(gerenciador); // Realiza troca de contexto, se necessário
+            trocaDeContexto(gerenciador); // Realiza troca de contexto, se necessario
         }
-        else
-        {
+        else{
             escalonaProcessosCPUs(gerenciador);
             executaCPUs(gerenciador);
             trocaDeContexto(gerenciador);
@@ -81,21 +76,20 @@ void gerenciadorProcessos(GerenciadorProcessos *gerenciador, char comando)
 }
 
 // Incrementa o tempo do sistema
-void encerraUnidadeTempo(GerenciadorProcessos *gerenciador)
-{
+void encerraUnidadeTempo(GerenciadorProcessos *gerenciador){
     gerenciador->tempo += 1;
 }
 
-// Escalona processos para as CPUs disponíveis
+// Escalona processos para as CPUs disponiveis
 void escalonaProcessosCPUs(GerenciadorProcessos *gerenciador)
 {
-    verificaBloqueados(gerenciador); // Verifica e desbloqueia processos, se necessário
+    verificaBloqueados(gerenciador); // Verifica e desbloqueia processos, se necessario
 
     for (int i = 0; i < gerenciador->numCPUs; i++)
     {
-        if (cpuLivre(gerenciador->cpus[i]) == 1) // Verifica se a CPU está livre
+        if (cpuLivre(gerenciador->cpus[i]) == 1) // Verifica se a CPU esta livre
         {
-            if (filasVazias(gerenciador->estadoPronto, CLASSESPRIORIDADES) == 0) // Verifica se há processos prontos
+            if (filasVazias(gerenciador->estadoPronto, CLASSESPRIORIDADES) == 0) // Verifica se ha processos prontos
             {
                 escalonaProcesso(gerenciador->tabelaProcessos, gerenciador->cpus[i], gerenciador->estadoExecucao + i, gerenciador->estadoPronto);
             }
@@ -103,18 +97,18 @@ void escalonaProcessosCPUs(GerenciadorProcessos *gerenciador)
     }
 }
 
-// Escalona um processo específico para uma CPU
+// Escalona um processo especifico para uma CPU
 void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fila **estadoPronto)
 {
-    int pidProcesso = desenfileirarFilas(estadoPronto, CLASSESPRIORIDADES); // Obtém o próximo processo da fila
+    int pidProcesso = desenfileirarFilas(estadoPronto, CLASSESPRIORIDADES); // Obtem o proximo processo da fila
 
     if (pidProcesso >= 0)
     {
-        *estadoExecucao = pidProcesso; // Atualiza o estado de execução da CPU
+        *estadoExecucao = pidProcesso; // Atualiza o estado de execucao da CPU
 
         ProcessoSimulado *proximoProceso = buscaProcesso(tabelaProcessos, pidProcesso); // Busca o processo na tabela
 
-        proximoProceso->estadoProcesso = EXECUCAO; // Define o estado do processo como em execução
+        proximoProceso->estadoProcesso = EXECUCAO; // Define o estado do processo como em execucao
 
         carregaProcesso(cpu, proximoProceso); // Carrega o processo na CPU
     }
@@ -125,7 +119,7 @@ void executaCPUs(GerenciadorProcessos *gerenciador)
 {
     for (int i = 0; i < gerenciador->numCPUs; i++)
     {
-        if (!(cpuLivre(gerenciador->cpus[i]))) // Verifica se a CPU está ocupada
+        if (!(cpuLivre(gerenciador->cpus[i]))) // Verifica se a CPU esta ocupada
         {
             executaProxInstrucao(gerenciador->cpus[i], gerenciador->tempo, gerenciador->tabelaProcessos, &gerenciador->quantidadeProcessosIniciados, gerenciador->estadoPronto, gerenciador->estadoBloqueado);
         }
@@ -133,12 +127,9 @@ void executaCPUs(GerenciadorProcessos *gerenciador)
 }
 
 // Realiza a troca de contexto nas CPUs
-void trocaDeContexto(GerenciadorProcessos *gerenciador)
-{
-    for (int i = 0; i < gerenciador->numCPUs; i++)
-    {
-        if (!(cpuLivre(gerenciador->cpus[i]))) // Verifica se a CPU está ocupada
-        {
+void trocaDeContexto(GerenciadorProcessos *gerenciador){
+    for (int i = 0; i < gerenciador->numCPUs; i++){
+        if (!(cpuLivre(gerenciador->cpus[i]))){ // Verifica se a CPU esta ocupado
             removeProcessoCPU(gerenciador->cpus[i], gerenciador->tabelaProcessos, gerenciador->estadoPronto);
         }
     }
@@ -155,7 +146,7 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto)
         {
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
 
-            if (processoNaCPU->prioridade < CLASSESPRIORIDADES - 1) // Ajusta a prioridade, se necessário
+            if (processoNaCPU->prioridade < CLASSESPRIORIDADES - 1) // Ajusta a prioridade, se necessario
             {
                 processoNaCPU->prioridade++;
             }
@@ -177,12 +168,12 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto)
     }
 }
 
-// Verifica e desbloqueia processos bloqueados, se necessário
+// Verifica e desbloqueia processos bloqueados, se necessario
 void verificaBloqueados(GerenciadorProcessos *gerenciador)
 {
     for (int i = 0; i < gerenciador->estadoBloqueado->Tamanho; i++)
     {
-        PidTempo *pidTempo = desenfileirar(gerenciador->estadoBloqueado); // Obtém o próximo processo bloqueado
+        PidTempo *pidTempo = desenfileirar(gerenciador->estadoBloqueado); // Obtem o proximo processo bloqueado
 
         pidTempo->tempoExecutado--; // Decrementa o tempo de bloqueio
 
@@ -201,11 +192,11 @@ void verificaBloqueados(GerenciadorProcessos *gerenciador)
 // Remove um processo da tabela de processos
 void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProcessos *gerenciador)
 {
-    gerenciador->tempoTotalExecucao += processoEscolhido->tempoCPU; // Atualiza o tempo total de execução
+    gerenciador->tempoTotalExecucao += processoEscolhido->tempoCPU; // Atualiza o tempo total de execucao
     removeTabela(gerenciador->tabelaProcessos, processoEscolhido->pid); // Remove o processo da tabela
 }
 
-// Calcula a potência de um número
+// Calcula a potencia de um numero
 double calcPot(double base, int expoente)
 {
     double resultado = 1.0;

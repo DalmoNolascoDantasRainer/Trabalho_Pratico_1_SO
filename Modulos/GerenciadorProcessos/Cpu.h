@@ -13,7 +13,7 @@ typedef struct CPU{
     Instrucao **programaProcessoAtual;
     int *pcProcessoAtual;
     int **variaveisProcessoAtual;
-    int fatiaQuantum;       //Quanto do "quantum" de tempo já foi usada pelo processo em execução
+    int fatiaQuantum;       //Quanto do "quantum" de tempo ja foi usada pelo processo em execucao
 } CPU;
 
 CPU* inicializaCPU();
@@ -24,7 +24,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 int cpuLivre(CPU* cpu);
 void zeraCPU(CPU* cpu);
 
-/* -------------- Instruçẽos de programa que são processadas na CPU -------------- */
+/* -------------- Instruceos de programa que sao processadas na CPU -------------- */
 
 int* instrucaoTipoN(int n);
 void instrucaoTipoD(int x, int *vetorVariaveis);

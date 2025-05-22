@@ -8,13 +8,13 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
     // Divide a string em tokens separados por espaco
     token = strtok(instrucaoLida, " ");
     
-    // Define o tipo da instrcao e inicializa os parametros com valores padrao
+    // Define o tipo da instrucao e inicializa os parametros com valores padrao
     instrucao->tipoInstrucao = token[0];
     instrucao->paramNum1 = NUMEROVAZIO;
     instrucao->paramNum2 = NUMEROVAZIO;
     strcpy(instrucao->paramTexto, TEXTOVAZIO);
 
-    // Le os parametros restantes da instrcao
+    // Le os parametros restantes da instrucao
     token = strtok(NULL, " ");
     while (token != NULL)
     {
@@ -43,7 +43,7 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
             strcpy(instrucao->paramTexto, token); // Copia o texto
             break;
         }
-        // Instrcao de termino (sem parametros)
+        // Instrucao de termino (sem parametros)
         else if (instrucao->tipoInstrucao == 'T')
         {
             break;
@@ -80,7 +80,7 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma)
     *vetorPrograma = vetorInstrucoes; // Define o vetor de instrucoes
 }
 
-// Fucao que copia uma instrcao para outra
+// Fucao que copia uma instrucao para outra
 void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase)
 {
     novaInstrucao->tipoInstrucao = instrucaoBase->tipoInstrucao; // Copia o tipo
@@ -89,20 +89,20 @@ void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase)
     strcpy(novaInstrucao->paramTexto, instrucaoBase->paramTexto); // Copia o texto
 }
 
-// Fucao que imprime uma instrcao
+// Fucao que imprime uma instrucao
 void imprimeInstucao(Instrucao instrucao, int apontadorInst)
 {
-    // Verifica se a instrcao e a atual (indicada pelo apontador)
+    // Verifica se a instrucao e a atual (indicada pelo apontador)
     if (apontadorInst == 1)
     {
-        printf("->|Instrcao: Tipo %c", instrucao.tipoInstrucao);
+        printf("->|Instrucao: Tipo %c", instrucao.tipoInstrucao);
     } 
     else
     {
-        printf("  |Instrcao: Tipo %c", instrucao.tipoInstrucao);
+        printf("  |Instrucao: Tipo %c", instrucao.tipoInstrucao);
     }
     
-    // Imprime os parametros da instrcao
+    // Imprime os parametros da instrucao
     printf(" | Param 1 %3d", instrucao.paramNum1);
     printf(" | Param 2 %5d", instrucao.paramNum2);
     printf(" | Param txt %10s|\n", instrucao.paramTexto);
@@ -114,10 +114,10 @@ void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc)
     int i = 0;
     printf("  +------------------------ Programa do processo ------------------------+\n");
 
-    // Percorre o vetor de instrucoes ate encontrar a instrcao de termino ('T')
+    // Percorre o vetor de instrucoes ate encontrar a instrucao de termino ('T')
     while (vetorPrograma[i-1].tipoInstrucao != 'T')
     {   
-        // Verifica se a instrcao atual e a apontada pelo PC
+        // Verifica se a instrucao atual e a apontada pelo PC
         if (i == pc)
         {
             imprimeInstucao(vetorPrograma[i], 1); // Imprime com destaque

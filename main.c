@@ -20,7 +20,6 @@ int main(int argc, char **argv)
     int opcao = MenuInicial(&arquivoDeEntrada); // Arquivo ou teclado
     int opcaoImpressao = 0;
     int PID;
-    int status;
 
     if (pipe(fd) == -1) // Verificar se pipe foi inicializado com sucesso
     {
