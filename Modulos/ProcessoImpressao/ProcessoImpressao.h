@@ -11,7 +11,7 @@ void impressaoArquivo(GerenciadorProcessos *gerenciador);
 void ImprimeEstadoAtualSistema(GerenciadorProcessos *gerenciador);
 void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador);
 void imprimeInfosGeraisProcesso(ProcessoSimulado *processo);
-void imprimeVariaveisProcesso(int *arrVariaveis, int tamanho);
+void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho);
 void imprimeEstadoProcesso(Estado estado);
 void imprimeCPUs(GerenciadorProcessos *gerenciador);
 void imprimeCPU(CPU *cpu);

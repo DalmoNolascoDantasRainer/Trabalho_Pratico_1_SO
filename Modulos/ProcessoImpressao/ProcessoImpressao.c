@@ -1,8 +1,39 @@
 #include "ProcessoImpressao.h" // Inclui o cabeçalho com as definições necessárias
 
-// Função que imprime o estado atual do sistema
-void ImprimeEstadoAtualSistema(GerenciadorProcessos *gerenciador)
-{
+// Função que imprime o estado do processo em formato textual
+void imprimeEstadoProcesso(Estado estado){
+    switch (estado){
+    case BLOQUEADO:
+        printf("Estado: BLOQUEADO | ");
+        break;
+
+    case EXECUCAO:
+        printf("Estado: EXECUCAO  | ");
+        break;
+
+    case PRONTO:
+        printf("Estado: PRONTO    | ");
+        break;
+
+    default:
+        break;
+    }
+}
+
+// Funcao que imprime os valores atuais das variaveis do processo
+void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho) {
+    printf("| Valores atuais das variáveis: ");
+
+    // Percorre o array de variaveis e imprime cada valor
+    for (int i = 0; i < tamanho; i++){
+        printf(" %d ", vetorVariaveis[i]); /// ALTEREI NOME 
+    }
+    printf("\n");
+}
+
+
+// Funcao que imprime o estado atual do sistema
+void ImprimeEstadoAtualSistema(GerenciadorProcessos *gerenciador) {
     // Imprime o cabeçalho do estado do sistema
     printf("\n\n╒══════════════════════════════════════════════════════╡ ESTADO DO SISTEMA ╞════════════════════════════════════════════════════════╕\n\n"); 
     // Imprime o tempo de uso do sistema
@@ -12,8 +43,7 @@ void ImprimeEstadoAtualSistema(GerenciadorProcessos *gerenciador)
 }
 
 // Função que exibe o menu de impressão e executa as opções escolhidas
-void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) 
-{
+void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
     int opcao = 0; // Variável para armazenar a opção do menu
     int PID; // Variável para armazenar o PID do processo
     int opcaoProcesso = 0; // Variável para opção de detalhes do processo
@@ -141,8 +171,7 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador)
 }
 
 // Função que imprime informações gerais de um processo
-void imprimeInfosGeraisProcesso(ProcessoSimulado *processo)
-{
+void imprimeInfosGeraisProcesso(ProcessoSimulado *processo) {
     printf("-> Processo - PID %d | ", processo->pid); // Imprime o PID
     printf("PPID %d | ", processo->pid); // Imprime o PPID
     printf("PC %d | ", *(processo->pc)); // Imprime o PC
@@ -152,45 +181,14 @@ void imprimeInfosGeraisProcesso(ProcessoSimulado *processo)
     printf("Tempo de CPU %d\n", processo->tempoCPU); // Imprime o tempo de CPU
 }
 
-// Função que imprime os valores atuais das variáveis do processo
-void imprimeVariaveisProcesso(int *arrVariaveis, int tamanho)
-{
-    printf("| Valores atuais das variáveis: ");
 
-    // Percorre o array de variáveis e imprime cada valor
-    for (int i = 0; i < tamanho; i++)
-    {
-        printf(" %d ", arrVariaveis[i]);
-    }
-    printf("\n");
-}
 
 // Função que retorna o número de variáveis do processo
-int numeroVariaveisProcesso(Instrucao *arrPrograma)
-{
+int numeroVariaveisProcesso(Instrucao *arrPrograma){
     return arrPrograma[0].paramNum1; // Retorna o valor do primeiro parâmetro numérico
 }
 
-// Função que imprime o estado do processo em formato textual
-void imprimeEstadoProcesso(Estado estado){
-    switch (estado)
-    {
-    case BLOQUEADO:
-        printf("Estado: BLOQUEADO | ");
-        break;
 
-    case EXECUCAO:
-        printf("Estado: EXECUCAO  | ");
-        break;
-
-    case PRONTO:
-        printf("Estado: PRONTO    | ");
-        break;
-
-    default:
-        break;
-    }
-}
 
 // Função que imprime o estado do sistema em formato de arquivo
 void impressaoArquivo(GerenciadorProcessos *gerenciador)
@@ -217,8 +215,7 @@ void impressaoArquivo(GerenciadorProcessos *gerenciador)
 }
 
 // Função que imprime informações de todas as CPUs
-void imprimeCPUs(GerenciadorProcessos *gerenciador)
-{
+void imprimeCPUs(GerenciadorProcessos *gerenciador) {
     // Percorre todas as CPUs
     for (int i = 0; i < gerenciador->numCPUs; i++)
     {

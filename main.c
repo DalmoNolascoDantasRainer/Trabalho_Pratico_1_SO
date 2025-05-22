@@ -64,7 +64,7 @@ int main(int argc, char **argv)
                 }
             }
 
-            if (comando == 'M') // Comoando de termino
+            if (comando == 'M') // Comando de termino
             {
                 break;
             }

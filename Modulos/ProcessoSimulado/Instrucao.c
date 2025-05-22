@@ -1,6 +1,6 @@
 #include "Instrucao.h"
 
-// Fucao que inicializa uma instrcao a partir de uma string lida
+// funcao que inicializa uma instrcao a partir de uma string lida
 void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
 {
     char* token;
@@ -57,7 +57,7 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
     }
 }
 
-// Fucao que le as instrucoes de um arquivo e as armazena em um vetor
+// Funcao que le as instrucoes de um arquivo e as armazena em um vetor
 void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma)
 {
     int i = 0;
@@ -80,7 +80,7 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma)
     *vetorPrograma = vetorInstrucoes; // Define o vetor de instrucoes
 }
 
-// Fucao que copia uma instrucao para outra
+// funcao que copia uma instrucao para outra
 void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase)
 {
     novaInstrucao->tipoInstrucao = instrucaoBase->tipoInstrucao; // Copia o tipo
@@ -89,8 +89,8 @@ void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase)
     strcpy(novaInstrucao->paramTexto, instrucaoBase->paramTexto); // Copia o texto
 }
 
-// Fucao que imprime uma instrucao
-void imprimeInstucao(Instrucao instrucao, int apontadorInst)
+// funcao que imprime uma instrucao
+void imprimeInstrucao(Instrucao instrucao, int apontadorInst)
 {
     // Verifica se a instrucao e a atual (indicada pelo apontador)
     if (apontadorInst == 1)
@@ -108,7 +108,7 @@ void imprimeInstucao(Instrucao instrucao, int apontadorInst)
     printf(" | Param txt %10s|\n", instrucao.paramTexto);
 }
 
-// Fucao que imprime o vetor de instrucoes de um programa
+// funcao que imprime o vetor de instrucoes de um programa
 void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc)
 {
     int i = 0;
@@ -120,11 +120,11 @@ void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc)
         // Verifica se a instrucao atual e a apontada pelo PC
         if (i == pc)
         {
-            imprimeInstucao(vetorPrograma[i], 1); // Imprime com destaque
+            imprimeInstrucao(vetorPrograma[i], 1); // Imprime com destaque
         } 
         else 
         {
-            imprimeInstucao(vetorPrograma[i], 0); // Imprime normalmente
+            imprimeInstrucao(vetorPrograma[i], 0); // Imprime normalmente
         }
         
         i++;

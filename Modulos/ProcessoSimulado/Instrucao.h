@@ -23,7 +23,7 @@ typedef struct Instrucao {
 void inicializaInstrucao(char* instrucaoLida, Instrucao* instrucao);
 void leInstrucoesArquivo(char* caminhoArq, Instrucao** programa);
 void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase);
-void imprimeInstucao(Instrucao Instrucao, int apontadorInst);
+void imprimeInstrucao(Instrucao Instrucao, int apontadorInst);
 void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc); // Imprime todas as instrucoes do programa a partir do pc (contador)
 
 #endif

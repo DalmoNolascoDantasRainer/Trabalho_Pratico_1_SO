@@ -33,4 +33,16 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao);
 void imprimeEstadoProcessoSimulado(Estado estadoProcesso);
 void imprimeVariaveis(int* vetorVariaveis, int tamanho);
 
+
+/// // Funcoes para acessar os atributos do processo atual  VE SE VAI DEIXAR /////
+int pidProcessoAtual(); // Retorna o PID do processo atual
+int pidProcessoPai(); // Retorna o PID do processo pai
+int* pcProcessoAtual(); // Retorna o ponteiro para o PC do processo atual
+int* vetorVariaveisProcessoAtual(); // Retorna o vetor de variaveis do processo atual
+int prioridadeProcessoAtual(); // Retorna a prioridade do processo atual
+Estado estadoProcessoAtual(); // Retorna o estado do processo atual
+int tempoInicioProcessoAtual(); // Retorna o tempo de inicio do processo atual
+int tempoCPUProcessoAtual(); // Retorna o tempo de CPU do processo atual
+Instrucao** conjuntoInstrucoesProcessoAtual(); // Retorna o vetor de instrucoes do processo atual
+
 #endif 

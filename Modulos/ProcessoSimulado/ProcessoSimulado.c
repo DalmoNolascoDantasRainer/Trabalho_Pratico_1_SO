@@ -78,6 +78,8 @@ int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
     return conjuntoInstrucoes[0].paramNum1; // O numero de variaveis esta no primeiro parametro
 }
 
+
+//// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime as informacoes de um processo
 void imprimeProcesso(ProcessoSimulado processo, int opcao) {
     // Imprime os atributos basicos do processo
@@ -109,6 +111,8 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
     putchar('\n'); 
 }
 
+
+//// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime as variaveis de um processo
 void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
     printf("  |Variáveis: ");
@@ -118,6 +122,8 @@ void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
     putchar('\n'); 
 }
 
+
+///// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime o estado de um processo
 void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
     switch (estadoProcesso) {
