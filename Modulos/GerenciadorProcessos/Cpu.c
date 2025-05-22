@@ -17,9 +17,9 @@ CPU* inicializaCPU(){
     return cpu; // Retorna o ponteiro para a CPU inicializada
 }
 
-// Carrega um processo na CPU, apontando para os dados do processo atual.
+// Carrega um processo na CPU, apontando para os dados do processo atual
 // Esta funcao faz com que a CPU passe a operar sobre o processo fornecido,
-// atualizando seus ponteiros para os campos do processo.
+// atualizando seus ponteiros para os campos do processo
 
 void carregaProcesso(CPU* cpu, ProcessoSimulado* processoAtual){
     // Atualiza o ponteiro do PID para o PID do processo atual
@@ -39,7 +39,9 @@ void carregaProcesso(CPU* cpu, ProcessoSimulado* processoAtual){
 
 // Executa a proxima instrncao do processo carregado na CPU.
 void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
-                             int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado){   
+                          int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado){   
+    
+    
     // Recupera os parametros da instrncao atual.
     char tipo = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).tipoInstrucao;
     int paramNum1 = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).paramNum1;
@@ -48,46 +50,45 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     strcpy(paramTxt, ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).paramTexto);
 
     // Executa a instrncao de acordo com o tipo.
-    switch (tipo)
-    {
-    case 'N':
-        *cpu->variaveisProcessoAtual = instrucaoTipoN(paramNum1);
-        break;
+    switch (tipo){
+        case 'N':
+            *cpu->variaveisProcessoAtual = instrucaoTipoN(paramNum1);
+            break;
 
-    case 'D':
-        instrucaoTipoD(paramNum1, *cpu->variaveisProcessoAtual);
-        break;
+        case 'D':
+            instrucaoTipoD(paramNum1, *cpu->variaveisProcessoAtual);
+            break;
 
-    case 'V':
-        instrucaoTipoV(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
-        break;
+        case 'V':
+            instrucaoTipoV(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+            break;
 
-    case 'A':
-        instrucaoTipoA(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
-        break;
+        case 'A':
+            instrucaoTipoA(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+            break;
 
-    case 'S':
-        instrucaoTipoS(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
-        break;
-    
-    case 'B':
-        instrucaoTipoB(paramNum1, cpu->pidProcessoAtual, tabelaProcessos, estadoBloqueado);
-        break;
+        case 'S':
+            instrucaoTipoS(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+            break;
+        
+        case 'B':
+            instrucaoTipoB(paramNum1, cpu->pidProcessoAtual, tabelaProcessos, estadoBloqueado);
+            break;
 
-    case 'T':
-        instrucaoTipoT(cpu->pidProcessoAtual, tabelaProcessos);
-        break;
-    
-    case 'F':
-        instrucaoTipoF(paramNum1, cpu->pidProcessoAtual, cpu->pcProcessoAtual, quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
-        break;
+        case 'T':
+            instrucaoTipoT(cpu->pidProcessoAtual, tabelaProcessos);
+            break;
+        
+        case 'F':
+            instrucaoTipoF(paramNum1, cpu->pidProcessoAtual, cpu->pcProcessoAtual, quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
+            break;
 
-    case 'R':
-        instrucaoTipoR(paramTxt, cpu->programaProcessoAtual, cpu->pcProcessoAtual);
-        break;
+        case 'R':
+            instrucaoTipoR(paramTxt, cpu->programaProcessoAtual, cpu->pcProcessoAtual);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     // Avanca o PC e incrementa o quantum.

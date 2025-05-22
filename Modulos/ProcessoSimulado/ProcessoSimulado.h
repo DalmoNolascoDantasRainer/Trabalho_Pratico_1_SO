@@ -11,8 +11,7 @@ typedef enum {
     PRONTO
 } Estado;
 
-typedef struct ProcessoSimulado
-{
+typedef struct ProcessoSimulado{
     int pid;                           // ID do proceso
     int pid_pai;                       // ID do proceso pai
     int* pc;                           // Posicao da proxima istrucao que sera lida no vetor de instrucoes)

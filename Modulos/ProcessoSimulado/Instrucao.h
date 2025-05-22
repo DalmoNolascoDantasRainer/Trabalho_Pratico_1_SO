@@ -7,16 +7,17 @@
 #include "../Menu/Menu.h"
 
 #define TEXTOVAZIO "#######" // Define um texto vazio para inicialização
-#define BUFFER 100 // Tam máximo do buffer
+#define BUFFER 100 // Tam maximo do buffer
 #define MAXINSTRUCOES 100 // Número máximo de instrucoes
 #define NUMEROVAZIO -1 // Define um valor vazio para parâmetros numéricos
 
 // Intrucao do processo simulado
 typedef struct Instrucao {
     char tipoInstrucao; // Letra que representa a instrução
+    char paramTexto[BUFFER]; // guarda nomes de arquivos ou outros parametros
     int paramNum1; // Parametros numericos 
     int paramNum2;
-    char paramTexto[BUFFER]; // guarda nomes de arquivos ou outros parametros
+    
 } Instrucao;
 
 

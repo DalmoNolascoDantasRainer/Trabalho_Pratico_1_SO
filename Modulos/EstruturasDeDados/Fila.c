@@ -6,8 +6,7 @@ Fila* criaFila(){
     // Aloca memoria para a estrutura da fila
     Fila* fila = (Fila*) malloc(sizeof(Fila));
     fila->Frente = (Apontador) malloc(sizeof(CelulaPidTempo)); // Celula cabeca
-
-    
+ 
     fila->Tras = fila->Frente; // Inicializa o ponteiro Tras apontando para a mesma celula que Frente, as duas apontam para a celula cabeca
     
     fila->Frente->Prox = NULL;  // Define que a celula inicial n possui proximo elemento, pq a fila ta vazia
@@ -29,6 +28,15 @@ int filasVazias(Fila** filas, int numFilas){
         }
     }
     return 1;  // Se todas as filas estiverem vazias, retorna 1
+}
+
+// Funcao para criar uma celula com os dados de PID e tempo executado
+PidTempo criaCelulaPidTempo(int PID, int tempoExecutado){
+    PidTempo celula;
+    celula.pid = PID;
+    celula.tempoExecutado = tempoExecutado;
+
+    return celula;
 }
 
 
@@ -112,14 +120,6 @@ int desenfileirarFilas(Fila** filas, int numFilas){
     return pidProcessoRemovido;
 }
 
-// Funcao para criar uma celula com os dados de PID e tempo executado
-PidTempo criaCelulaPidTempo(int PID, int tempoExecutado){
-    PidTempo celula;
-    celula.pid = PID;
-    celula.tempoExecutado = tempoExecutado;
-
-    return celula;
-}
 
 // Funcao para imprimir os elementos de uma fila
 void imprimeFila(Fila *fila){
@@ -147,7 +147,6 @@ void imprimeFilas(Fila** filas, int numFilas){
         Fila* fila = filas[i];
 
         printf("\nFila numero: %d:", i);
-
         imprimeFila(filas[i]); // Chama a funcao de imprimir fila para cada fila do conjunto
     }
 }

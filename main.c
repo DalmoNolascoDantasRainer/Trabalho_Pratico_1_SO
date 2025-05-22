@@ -36,8 +36,8 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    if (pid > 0)
-    {
+    if (pid > 0){
+        printf("Processo pai");
         // A funcao signal quando recebe o sinal SIGUSR1 executa o que esta dentro de semaforoImpressao
         signal(SIGUSR1, semaforoImpressao); // Ela registra o sinal do processo impressao
 
@@ -71,8 +71,8 @@ int main(int argc, char **argv)
         }
         wait(NULL); // Aguarda o fim o processo filho
     }
-    else
-    {
+    else{
+        printf("Processo filho");
         while (1) // Loop processo filho
         {
 

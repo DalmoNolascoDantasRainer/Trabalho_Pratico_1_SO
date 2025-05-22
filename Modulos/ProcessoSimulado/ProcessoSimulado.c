@@ -23,6 +23,28 @@ ProcessoSimulado* criaProcessoInit(int tempoSistema) {
     return processo; 
 }
 
+// Funcao que copia variaveis de um vetor para outro
+void copiaVariaveis(int* vetorVariaveisBase, int* vetorVariaveisNovo, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        vetorVariaveisNovo[i] = vetorVariaveisBase[i]; 
+    }
+}
+
+// Funcao que copia o conjunto de instrucoes de um processo para outro
+void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
+    Instrucao* conjuntoInstrucoes = (Instrucao*) malloc(MAXINSTRUCOES * sizeof(Instrucao));
+    int i = 0;
+
+    // Copia instrucoes ate encontrar a instrucao de termino (T)
+    while (vetorBase[i-1].tipoInstrucao != 'T') {
+        copiaInstrucao(&conjuntoInstrucoes[i], &vetorBase[i]);
+        i++;
+    }
+
+    *vetorNovo = conjuntoInstrucoes; // Define o novo conjunto de instrucoes
+}
+
+
 // Funcao que cria uma copia de um processo (fork)
 ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSistema, int novoPid) {
     ProcessoSimulado* processo = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
@@ -52,26 +74,6 @@ ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
     return processo;
 }
 
-// Funcao que copia variaveis de um vetor para outro
-void copiaVariaveis(int* vetorVariaveisBase, int* vetorVariaveisNovo, int tamanho) {
-    for (int i = 0; i < tamanho; i++) {
-        vetorVariaveisNovo[i] = vetorVariaveisBase[i]; 
-    }
-}
-
-// Funcao que copia o conjunto de instrucoes de um processo para outro
-void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
-    Instrucao* conjuntoInstrucoes = (Instrucao*) malloc(MAXINSTRUCOES * sizeof(Instrucao));
-    int i = 0;
-
-    // Copia instrucoes ate encontrar a instrucao de termino (T)
-    while (vetorBase[i-1].tipoInstrucao != 'T') {
-        copiaInstrucao(&conjuntoInstrucoes[i], &vetorBase[i]);
-        i++;
-    }
-
-    *vetorNovo = conjuntoInstrucoes; // Define o novo conjunto de instrucoes
-}
 
 // Funcao que retorna o numero de variaveis no conjunto de instrucoes
 int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
@@ -79,6 +81,8 @@ int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
 }
 
 
+
+/////////////////////////////////////////////////////////////
 //// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime as informacoes de um processo
 void imprimeProcesso(ProcessoSimulado processo, int opcao) {

@@ -1,8 +1,7 @@
 #include "Instrucao.h"
 
 // funcao que inicializa uma instrcao a partir de uma string lida
-void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
-{
+void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao) {
     char* token;
 
     // Divide a string em tokens separados por espaco
@@ -16,41 +15,35 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
 
     // Le os parametros restantes da instrucao
     token = strtok(NULL, " ");
-    while (token != NULL)
-    {
+    while (token != NULL) {
         // Instrucoes que possuem apenas um parametro numerico
         if (instrucao->tipoInstrucao == 'N' ||
             instrucao->tipoInstrucao == 'D' ||
             instrucao->tipoInstrucao == 'F' ||
-            instrucao->tipoInstrucao == 'B')
-        {
+            instrucao->tipoInstrucao == 'B'){
             instrucao->paramNum1 = atoi(token); // Converte o parametro para inteiro
             break;
         }
         // Instrucoes que possuem dois parametros numericos
         else if (instrucao->tipoInstrucao == 'V' ||
                  instrucao->tipoInstrucao == 'S' ||
-                 instrucao->tipoInstrucao == 'A')
-        {
+                 instrucao->tipoInstrucao == 'A'){
             instrucao->paramNum1 = atoi(token); // Primeiro parametro
             token = strtok(NULL, " ");
             instrucao->paramNum2 = atoi(token); // Segundo parametro
             break;
         }
         // Instrucoes que possuem um parametro de texto
-        else if (instrucao->tipoInstrucao == 'R')
-        {
+        else if (instrucao->tipoInstrucao == 'R'){
             strcpy(instrucao->paramTexto, token); // Copia o texto
             break;
         }
         // Instrucao de termino (sem parametros)
-        else if (instrucao->tipoInstrucao == 'T')
-        {
+        else if (instrucao->tipoInstrucao == 'T') {
             break;
         }
         // Caso de erro (tipo de instrcao invalido)
-        else
-        {
+        else{
             printf("\nErro");
             break;
         }
@@ -58,8 +51,7 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao)
 }
 
 // Funcao que le as instrucoes de um arquivo e as armazena em um vetor
-void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma)
-{
+void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma){
     int i = 0;
 
     // Aloca memoria para o vetor de instrucoes
@@ -70,8 +62,7 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma)
     FILE* arquivoDeEntrada = abreArquivoRead(caminhoArq);
 
     // Le cada linha do arquivo e inicializa as instrucoes
-    while (fgets(linha, BUFFER, arquivoDeEntrada) != NULL)
-    {   
+    while (fgets(linha, BUFFER, arquivoDeEntrada) != NULL){   
         linha[strcspn(linha, "\n")] = '\0'; // Remove o caractere de nova linha
         inicializaInstrucao(linha, vetorInstrucoes + i); // Inicializa a instrcao
         i++;
@@ -81,24 +72,21 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma)
 }
 
 // funcao que copia uma instrucao para outra
-void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase)
-{
+void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase){
+    
     novaInstrucao->tipoInstrucao = instrucaoBase->tipoInstrucao; // Copia o tipo
-    novaInstrucao->paramNum1 = instrucaoBase->paramNum1; // Copia o primeiro parametro
-    novaInstrucao->paramNum2 = instrucaoBase->paramNum2; // Copia o segundo parametro
+    novaInstrucao->paramNum1 = instrucaoBase->paramNum1; // Copia primeiro parametro
+    novaInstrucao->paramNum2 = instrucaoBase->paramNum2; // Copiasegundo parametro
     strcpy(novaInstrucao->paramTexto, instrucaoBase->paramTexto); // Copia o texto
 }
 
+//  OLHAR DE PASSAR ISSO PARA PROCESSO IMPRESSAO
 // funcao que imprime uma instrucao
-void imprimeInstrucao(Instrucao instrucao, int apontadorInst)
-{
-    // Verifica se a instrucao e a atual (indicada pelo apontador)
-    if (apontadorInst == 1)
-    {
+void imprimeInstrucao(Instrucao instrucao, int apontadorInst){
+    if (apontadorInst == 1){ // Verifica se a instrucao é a atual (indicada pelo apontador)
         printf("->|Instrucao: Tipo %c", instrucao.tipoInstrucao);
     } 
-    else
-    {
+    else{
         printf("  |Instrucao: Tipo %c", instrucao.tipoInstrucao);
     }
     
@@ -108,25 +96,19 @@ void imprimeInstrucao(Instrucao instrucao, int apontadorInst)
     printf(" | Param txt %10s|\n", instrucao.paramTexto);
 }
 
+
+//  OLHAR DE PASSAR ISSO PARA PROCESSO IMPRESSAO
 // funcao que imprime o vetor de instrucoes de um programa
-void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc)
-{
+void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc){
     int i = 0;
     printf("  +------------------------ Programa do processo ------------------------+\n");
-
-    // Percorre o vetor de instrucoes ate encontrar a instrucao de termino ('T')
-    while (vetorPrograma[i-1].tipoInstrucao != 'T')
-    {   
-        // Verifica se a instrucao atual e a apontada pelo PC
-        if (i == pc)
-        {
+    while (vetorPrograma[i-1].tipoInstrucao != 'T'){ // Percorre o vetor de instrucoes ate encontrar a instrucao de termino ('T')   
+        if (i == pc){ // Verifica se a instrucao atual e a apontada pelo PC
             imprimeInstrucao(vetorPrograma[i], 1); // Imprime com destaque
         } 
-        else 
-        {
+        else {
             imprimeInstrucao(vetorPrograma[i], 0); // Imprime normalmente
         }
-        
         i++;
     }
 }

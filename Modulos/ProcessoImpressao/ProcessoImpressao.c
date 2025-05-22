@@ -1,27 +1,27 @@
-#include "ProcessoImpressao.h" // Inclui o cabeçalho com as definições necessárias
+#include "ProcessoImpressao.h" 
 
 // Função que imprime o estado do processo em formato textual
 void imprimeEstadoProcesso(Estado estado){
     switch (estado){
-    case BLOQUEADO:
-        printf("Estado: BLOQUEADO | ");
-        break;
+        case BLOQUEADO:
+            printf("Estado: BLOQUEADO | ");
+            break;
 
-    case EXECUCAO:
-        printf("Estado: EXECUCAO  | ");
-        break;
+        case EXECUCAO:
+            printf("Estado: EXECUCAO  | ");
+            break;
 
-    case PRONTO:
-        printf("Estado: PRONTO    | ");
-        break;
+        case PRONTO:
+            printf("Estado: PRONTO    | ");
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
 // Funcao que imprime os valores atuais das variaveis do processo
-void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho) {
+void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho){
     printf("| Valores atuais das variáveis: ");
 
     // Percorre o array de variaveis e imprime cada valor

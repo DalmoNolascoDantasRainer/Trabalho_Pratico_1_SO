@@ -78,8 +78,7 @@ void removeTabela(Lista* lista, int PID) {
 }
 
 // Funcao para encontrar o maior PID na lista
-int maiorPIDTabela(Lista* lista)
-{
+int maiorPIDTabela(Lista* lista) {
   Celula* percorre;
   int maiorPID = 0;
 
@@ -98,8 +97,7 @@ int maiorPIDTabela(Lista* lista)
 
 //// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO ////
 // Funcao para imprimir todos os processos da lista
-void imprimeTabela(Lista* lista)
-{
+void imprimeTabela(Lista* lista) {
   Celula* aux;
 
   aux = lista->inicio->proximo;

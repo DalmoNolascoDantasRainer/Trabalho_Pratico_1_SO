@@ -1,7 +1,6 @@
 #ifndef CPU_H
 #define CPU_H
 
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,7 +18,7 @@ typedef struct CPU{
 CPU* inicializaCPU();
 void carregaProcesso(CPU* cpu, ProcessoSimulado* processoAtual);
 void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
-                             int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado);
+                          int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado);
                              
 int cpuLivre(CPU* cpu);
 void zeraCPU(CPU* cpu);
