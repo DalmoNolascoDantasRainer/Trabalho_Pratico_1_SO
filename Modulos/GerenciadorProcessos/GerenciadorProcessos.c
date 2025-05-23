@@ -69,7 +69,7 @@ void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fil
 
         proximoProceso->estadoProcesso = EXECUCAO; // Define o estado do processo como em execucao
 
-        insereProcessoCPU(cpu, proximoProceso); // Carrega o processo na CPU
+        carregazyProcesso(cpu, proximoProceso); // Carrega o processo na CPU
     }
 }
 
@@ -130,11 +130,12 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto) {
     ProcessoSimulado *processoNaCPU = buscaProcesso(tabelaProcessos, *(cpu->pidProcessoAtual)); // Busca o processo na CPU
 
     if (processoNaCPU != NULL){
-        if (cpu->fatiaQuantum >= (1 << processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido VERIFICAR ISSO
-
+        if (cpu->fatiaQuantum >= calcularPotencia(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido
+        
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
 
-            if (processoNaCPU->prioridade < CLASSESPRIORIDADES - 1) { // Ajusta a prioridade, se necessario
+            if (processoNaCPU->prioridade < CLASSESPRIORIDADES - 1) // Ajusta a prioridade, se necessario
+            {
                 processoNaCPU->prioridade++;
             }
             processoNaCPU->tempoCPU += cpu->fatiaQuantum; // Atualiza o tempo de CPU do processo
@@ -147,7 +148,8 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto) {
             processoNaCPU->tempoCPU += cpu->fatiaQuantum;
             zeraCPU(cpu);
 
-            if (*processoNaCPU->pc == NUMEROVAZIO){ // Remove o processo se ele terminou
+            if (*processoNaCPU->pc == NUMEROVAZIO) // Remove o processo se ele terminou
+            {
                 removeDaTabela(tabelaProcessos, processoNaCPU->pid);
             }
         }
@@ -175,6 +177,11 @@ void verificaBloqueados(GerenciadorProcessos *gerenciador)
     }
 }
 
+// Remove um processo da tabela de processos
+void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProcessos *gerenciador){
+    gerenciador->tempoTotalExecucao += processoEscolhido->tempoCPU; // Atualiza o tempo total de execucao
+    removeDaTabela(gerenciador->tabelaProcessos, processoEscolhido->pid); // Remove o processo da tabela
+}
 
 // Calcula a potencia de um numero
 double calcularPotencia(double base, int expoente){

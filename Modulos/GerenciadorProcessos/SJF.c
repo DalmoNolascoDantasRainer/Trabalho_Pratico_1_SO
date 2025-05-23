@@ -1,7 +1,7 @@
 /*
 void sjf(Lista* tabelaProcessos) {
-    while (temProcessosPendentes(tabelaProcessos)) {
-        // Busca o processo com menor tempo de execução
+    while (processosPendentes(tabelaProcessos)) {
+        // Busca o processo com menor tempo de execuçao
         ProcessoSimulado* menorProcesso = encontraMenorTempo(tabelaProcessos);
         
         // Executa completamente
@@ -22,7 +22,7 @@ void sjf(Lista* tabelaProcessos) {
 /* Funcao para encontrar o processo com menor tempo de execucao 
     Percorre a lista.
 
-    Mantém uma variável menorTempo inicializada com INT_MAX.
+    Mantem uma variavel menorTempo inicializada com INT_MAX.
 
     Sempre que encontra um processo com tempoExecucao menor, atualiza.
 */
@@ -35,7 +35,7 @@ ProcessoSimulado* encontraMenorTempo(Lista* tabelaProcessos) {
     int menorTempo = INT_MAX;
     
     // Percorre todos os processos para encontrar o menor tempo
-    Celula* percorre = tabelaProcessos->inicio->proximo;
+    CelulaPtr percorre = tabelaProcessos->Primeiro->Prox;
     while (percorre != NULL) {
         ProcessoSimulado* processo = percorre->processo;
         
@@ -49,9 +49,9 @@ ProcessoSimulado* encontraMenorTempo(Lista* tabelaProcessos) {
     return menorProcesso; // o processo com menor tempo, ou NULL se a lista estiver vazia.
 }
 
-// Funcao para verificar se ainda há processos para executar
-int temProcessosPendentes(Lista* tabelaProcessos) {
-    return !listaVazia(tabelaProcessos); // retorna 1 (verdadeiro) se a lista não está vazia.
+// Funcao para verificar se ainda ha processos para executar
+int processosPendentes(Lista* tabelaProcessos) {
+    return !listaVazia(tabelaProcessos); // retorna 1 (verdadeiro) se a lista nao esta vazia.
 }
 
 // Funcao principal do algoritmo SJF
@@ -76,7 +76,7 @@ void sjf(Lista* tabelaProcessos) {
     printf("Total de processos: %d\n\n", totalProcessos);
     
     // Loop principal do SJF
-    while (temProcessosPendentes(tabelaProcessos)) {
+    while (processosPendentes(tabelaProcessos)) {
         // Encontra o processo com menor tempo de execucao
         ProcessoSimulado* processoEscolhido = encontraMenorTempo(tabelaProcessos);
         
@@ -97,7 +97,7 @@ void sjf(Lista* tabelaProcessos) {
         
         printf(" - FINALIZADO\n");
         
-        // Remove o processo da tabela (já foi executado)
+        // Remove o processo da tabela (ja foi executado)
         removeTabela(tabelaProcessos, processoEscolhido->pid);
     }
     
@@ -119,7 +119,7 @@ void executarSJF(Lista* tabelaProcessos) {
     
     printf("Iniciando escalonamento SJF...\n");
     
-    // Mostra processos antes da execução
+    // Mostra processos antes da execuçao
     printf("\n--- Processos antes da execucao ---\n");
     printf("PID\tChegada\tExecucao\n");
     Celula* percorre = copia->inicio->proximo;
@@ -133,7 +133,7 @@ void executarSJF(Lista* tabelaProcessos) {
     sjf(copia);
     
     // Calcula estatísticas finais
-    calcularEstatisticasSJF(tabelaProcessos);
+    estatisticasSJF(tabelaProcessos);
 }
 
 // Funcao auxiliar para copiar processos entre listas
@@ -158,10 +158,10 @@ void copiarProcessos(Lista* origem, Lista* destino) {
 }
 
 // Funcao para calcular estatísticas do SJF
-void calcularEstatisticasSJF(Lista* tabelaProcessos) {
+void estatisticasSJF(Lista* tabelaProcessos) {
     if (listaVazia(tabelaProcessos)) return;
     
-    // Simula a execução SJF para calcular tempos
+    // Simula a execuçao SJF para calcular tempos
     Lista* processosCopia = criaLista();
     copiarProcessos(tabelaProcessos, processosCopia);
     

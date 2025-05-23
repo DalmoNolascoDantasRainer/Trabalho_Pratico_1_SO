@@ -26,7 +26,7 @@ void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho){
 
     // Percorre o array de variaveis e imprime cada valor
     for (int i = 0; i < tamanho; i++){
-        printf(" %d ", vetorVariaveis[i]); /// ALTEREI NOME 
+        printf(" %d ", vetorVariaveis[i]);
     }
     printf("\n");
 }
@@ -238,10 +238,10 @@ void imprimeCPUs(GerenciadorProcessos *gerenciador) {
 
 // Função que imprime informações de uma CPU específica
 void imprimeCPU(CPU *cpu){
-    printf("\n->> Processo em execução - PID %d | ", (*cpu->pidProcessoAtual)); // Imprime o PID do processo atual
-    printf("PC %d |", (*cpu->pcProcessoAtual)); // Imprime o PC do processo atual
+    printf("\n->> Processo em execução - PID %d | ", cpu->pidProcessoAtual); // Imprime o PID do processo atual
+    printf("PC %d |", cpu->pcProcessoAtual); // Imprime o PC do processo atual
     printf(" Fatia do quantum já executado: %d ", cpu->fatiaQuantum); // Imprime a fatia do quantum executada
-    imprimeVariaveisProcesso((*cpu->variaveisProcessoAtual), numeroVariaveis((*cpu->programaProcessoAtual))); // Imprime as variáveis do processo
+    imprimeVariaveisProcesso(cpu->variaveisProcessoAtual, numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
     printf("\n");
 }
 
