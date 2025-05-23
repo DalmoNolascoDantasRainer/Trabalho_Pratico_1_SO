@@ -21,7 +21,7 @@ CPU* inicializaCPU(){
 // Esta funcao faz com que a CPU passe a operar sobre o processo fornecido,
 // atualizando seus ponteiros para os campos do processo
 
-void carregaProcesso(CPU* cpu, ProcessoSimulado* processoAtual){
+void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
     // Atualiza o ponteiro do PID para o PID do processo atual
     cpu->pidProcessoAtual = &(processoAtual->pid);
 

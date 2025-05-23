@@ -174,13 +174,13 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
 }
 // Função que imprime informações gerais de um processo
 void imprimeInfosGeraisProcesso(ProcessoSimulado *processo) {
-    printf("-> Processo - PID %d | ", processo->pid); // Imprime o PID
-    printf("PPID %d | ", processo->pid); // Imprime o PPID
-    printf("PC %d | ", *(processo->pc)); // Imprime o PC
-    printf("Prioridade %d | ", processo->prioridade); // Imprime a prioridade
+    printf("-> Processo - PID %2d | ", processo->pid); // Imprime o PID
+    printf("PPID %2d | ", processo->pid); // Imprime o PPID
+    printf("PC %2d | ", *(processo->pc)); // Imprime o PC
+    printf("Prioridade %2d | ", processo->prioridade); // Imprime a prioridade
     imprimeEstadoProcesso(processo->estadoProcesso); // Imprime o estado do processo
-    printf("Tempo de inicio %d | ", processo->tempoInicio); // Imprime o tempo de início
-    printf("Tempo de CPU %d\n", processo->tempoCPU); // Imprime o tempo de CPU
+    printf("Tempo de inicio %2d | ", processo->tempoInicio); // Imprime o tempo de início
+    printf("Tempo de CPU %2d\n", processo->tempoCPU); // Imprime o tempo de CPU
 }
 
 
@@ -255,7 +255,8 @@ void imprimeTabelaProcessos(GerenciadorProcessos *gerenciador) {
     aux = gerenciador->tabelaProcessos->Primeiro->Prox;
     while (aux != NULL) {
         // Chama a funcao para imprimir o processo
-        imprimeProcesso(*(aux->processo), 1);
+        imprimeInfosGeraisProcesso((aux->processo));
         aux = aux->Prox; // Avanca para a proxima celula
     }
 } 
+

@@ -4,23 +4,23 @@
 // Cria o processo inicial (init)
 ProcessoSimulado* criaProcessoInit(int tempoSistema) {
 
-    ProcessoSimulado* processo = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
+    ProcessoSimulado* processoInit = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
 
-    processo->pid = 0; // PID do processo inicial e 0
-    processo->pid_pai = 0; // Processo inicial nao tem pai
+    processoInit->pid = 0; // PID do processo inicial e 0
+    processoInit->pid_pai = 0; // Processo inicial nao tem pai
 
-    processo->pc = (int*) malloc(sizeof(int)); 
-    *(processo->pc) = 0; 
+    processoInit->pc = (int*) malloc(sizeof(int)); 
+    *(processoInit->pc) = 0; 
 
-    processo->prioridade = 0; // Prioridade inicial e 0
-    processo->estadoProcesso = PRONTO; // Estado inicial é PRONTO (pronto para executar)
-    processo->tempoInicio = tempoSistema; // Tempo de inicio e o tempo atual do sistema
-    processo->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
+    processoInit->prioridade = 0; // Prioridade inicial e 0
+    processoInit->estadoProcesso = PRONTO; // Estado inicial é PRONTO (pronto para executar)
+    processoInit->tempoInicio = tempoSistema; // Tempo de inicio e o tempo atual do sistema
+    processoInit->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
 
-    processo->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
-    leInstrucoesArquivo("./data/init", processo->conjuntoInstrucoes); 
+    processoInit->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
+    leInstrucoesArquivo("./data/init", processoInit->conjuntoInstrucoes); 
 
-    return processo; 
+    return processoInit; 
 }
 
 // Funcao que copia variaveis de um vetor para outro
@@ -36,7 +36,7 @@ void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
     int i = 0;
 
     // Copia instrucoes ate encontrar a instrucao de termino (T)
-    while (vetorBase[i-1].tipoInstrucao != 'T') { 
+    while (vetorBase[i-1].tipoInstrucao != 'T'  && i < MAXINSTRUCOES) {  //ALTEREI AQ caiouuuuu
         copiaInstrucao(&conjuntoInstrucoes[i], &vetorBase[i]);
         i++;
     }

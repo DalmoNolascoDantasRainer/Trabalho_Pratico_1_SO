@@ -8,6 +8,7 @@
 // #include "../EstruturasDeDados/Lista.h"
 #include "TabelaProcessos.h"
 
+
 typedef struct CPU{
     int *pidProcessoAtual;
     Instrucao **programaProcessoAtual;
@@ -17,7 +18,7 @@ typedef struct CPU{
 } CPU;
 
 CPU* inicializaCPU();
-void carregaProcesso(CPU* cpu, ProcessoSimulado* processoAtual);
+void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual);
 void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
                           int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado);
                              

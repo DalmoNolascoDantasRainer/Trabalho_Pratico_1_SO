@@ -84,16 +84,16 @@ void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase){
 // funcao que imprime uma instrucao
 void imprimeInstrucao(Instrucao instrucao, int apontadorInst){
     if (apontadorInst == 1){ // Verifica se a instrucao é a atual (indicada pelo apontador)
-        printf("->|Instrucao: Tipo %c", instrucao.tipoInstrucao);
+        printf("->|Instrucao do Tipo %c", instrucao.tipoInstrucao);
     } 
     else{
-        printf("  |Instrucao: Tipo %c", instrucao.tipoInstrucao);
+        printf("  |Instrucao do Tipo %c", instrucao.tipoInstrucao);
     }
     
     // Imprime os parametros da instrucao
-    printf(" | Param 1 %3d", instrucao.parametroNum1);
-    printf(" | Param 2 %5d", instrucao.parametroNum2);
-    printf(" | Param txt %10s|\n", instrucao.paramTexto);
+    printf(" | Parametro 1 %3d", instrucao.parametroNum1);
+    printf(" | Parametro 2 %5d", instrucao.parametroNum2);
+    printf(" | Parametro txt %10s|\n", instrucao.paramTexto);
 }
 
 
