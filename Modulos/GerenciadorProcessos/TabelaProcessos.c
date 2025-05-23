@@ -76,16 +76,3 @@ int maiorPIDTabela(Lista* lista) {
   return maiorPID; // Retorna o maior PID encontrado
 }
 
-
-//// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO ////
-// Funcao para imprimir todos os processos da lista
-void imprimeTabela(Lista* lista) {
-  CelulaPtr aux;
-
-  aux = lista->Primeiro->Prox;
-  while (aux != NULL) {
-    // Chama a funcao para imprimir o processo
-    imprimeProcesso(*(aux->processo), 1);
-    aux = aux->Prox; // Avanca para a proxima celula
-  }
-}

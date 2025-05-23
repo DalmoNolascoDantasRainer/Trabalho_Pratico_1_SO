@@ -246,27 +246,16 @@ void imprimeCPU(CPU *cpu){
 }
 
 
-// Função que imprime a tabela de processos
-void imprimeTabelaProcessos(GerenciadorProcessos *gerenciador) {
-    // Imprime o cabeçalho da tabela de processos
-    printf("\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TABELA DE PROCESSOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
-    // Imprime a tabela de processos propriamente dita
-    imprimeTabela(gerenciador->tabelaProcessos);
-} 
-
-/* TESTAR DEPOIS E REMOVER A DE CIMA
 void imprimeTabelaProcessos(GerenciadorProcessos *gerenciador) {
     // Imprime o cabeçalho da tabela de processos
     printf("\n\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TABELA DE PROCESSOS <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n");
     
     // Ponteiro auxiliar para percorrer a lista de processos
-    Celula* aux = gerenciador->tabelaProcessos->inicio->proximo; 
-    
+    CelulaPtr aux;
+    aux = gerenciador->tabelaProcessos->Primeiro->Prox;
     while (aux != NULL) {
-        // Imprime o processo da celula atual
-        imprimeInfosGeraisProcesso(*(aux->processo));
-        // Avança para a próxima celula
-        aux = aux->proximo;
+        // Chama a funcao para imprimir o processo
+        imprimeProcesso(*(aux->processo), 1);
+        aux = aux->Prox; // Avanca para a proxima celula
     }
 } 
-*/
