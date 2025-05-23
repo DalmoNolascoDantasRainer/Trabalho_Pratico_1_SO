@@ -2,22 +2,23 @@
 
 // Funcao que inicializa o gerenciador de processos
 GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
+    printf("entrou");
     // Aloca memoria para o gerenciador de processos
+    
     GerenciadorProcessos *gerenciador = (GerenciadorProcessos *)malloc(sizeof(GerenciadorProcessos));
-
     // Inicializa os atributos do gerenciador
     gerenciador->tempo = 0;
     gerenciador->quantidadeProcessosIniciados = 0;
     gerenciador->tempoTotalExecucao = 0;
     gerenciador->numCPUs = numCPUs;
-
+    printf("entrou");
     // Aloca memoria para as CPUs e seus estados de execucao
     gerenciador->cpus = (CPU **)malloc(numCPUs * sizeof(CPU *));
     gerenciador->estadoExecucao = (int *)malloc(numCPUs * sizeof(int));
 
     // Inicializa cada CPU e define o estado como vazio
     for (int i = 0; i < numCPUs; i++){
-        gerenciador->cpus[i] = inicializaCPU();
+        inicializaCPU(gerenciador->cpus[i]);
         gerenciador->estadoExecucao[i] = NUMEROVAZIO;
     }
 
@@ -69,7 +70,7 @@ void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fil
 
         proximoProceso->estadoProcesso = EXECUCAO; // Define o estado do processo como em execucao
 
-        carregazyProcesso(cpu, proximoProceso); // Carrega o processo na CPU
+        insereProcessoCPU(cpu, proximoProceso); // Carrega o processo na CPU
     }
 }
 
@@ -127,7 +128,7 @@ void gerenciadorProcessos(GerenciadorProcessos *gerenciador, char comando){
 
 // Remove um processo da CPU e o coloca na fila apropriada
 void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto) {
-    ProcessoSimulado *processoNaCPU = buscaProcesso(tabelaProcessos, *(cpu->pidProcessoAtual)); // Busca o processo na CPU
+    ProcessoSimulado *processoNaCPU = buscaProcesso(tabelaProcessos, (cpu->pidProcessoAtual)); // Busca o processo na CPU
 
     if (processoNaCPU != NULL){
         if (cpu->fatiaQuantum >= calcularPotencia(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido

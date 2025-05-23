@@ -15,8 +15,11 @@ int main(int argc, char **argv)
     char comando = '!'; // Valo nao utilizado
     FILE *arquivoDeEntrada;
     int numCPUs = atoi(argv[1]);
-    GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
 
+    printf("Numero de CPUs: %d\n", numCPUs);
+    
+    GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
+    printf("Gerenciador de processos inicializado\n");
     int opcao = MenuInicial(&arquivoDeEntrada); // Arquivo ou teclado
     int opcaoImpressao = 0;
     int PID;
