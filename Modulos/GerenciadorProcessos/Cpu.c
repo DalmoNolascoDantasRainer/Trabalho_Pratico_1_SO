@@ -3,8 +3,11 @@
 
 // Inicializa a estrutura da CPU, alocando memoria para seus campos.
 void inicializaCPU(CPU* cpu){   
-    cpu->pidProcessoAtual = NUMEROVAZIO; // Inicializa o PID como vazio
-    cpu->fatiaQuantum = 0; // Inicializa o quantum como zero
+    printf("inicializando CPU\n");
+    cpu = (CPU *)malloc(sizeof(CPU *));
+    
+    (*cpu).pidProcessoAtual = NUMEROVAZIO; // Inicializa o PID como vazio
+     (*cpu).fatiaQuantum = 0; // Inicializa o quantum como zero
 
     return;
 }
@@ -39,6 +42,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 
     // Recupera os parametros da instrncao atual.
     char tipo = (((*cpu).programaProcessoAtual)[(*cpu).pcProcessoAtual]).tipoInstrucao;
+    printf("Executando instrucao: %c\n", tipo);
     int parametroNum1 = (((*cpu).programaProcessoAtual)[(*cpu).pcProcessoAtual]).parametroNum1;
     int parametroNum2 = (((*cpu).programaProcessoAtual)[(*cpu).pcProcessoAtual]).parametroNum2;
     char paramTxt[BUFFER];

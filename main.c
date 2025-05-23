@@ -73,6 +73,7 @@ int main(int argc, char **argv)
             }
         }
         wait(NULL); // Aguarda o fim o processo filho
+        
     }
     else{
         printf("Processo filho");

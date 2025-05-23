@@ -2,7 +2,6 @@
 
 // Funcao que inicializa o gerenciador de processos
 GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
-    printf("entrou");
     // Aloca memoria para o gerenciador de processos
     
     GerenciadorProcessos *gerenciador = (GerenciadorProcessos *)malloc(sizeof(GerenciadorProcessos));
@@ -11,7 +10,6 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
     gerenciador->quantidadeProcessosIniciados = 0;
     gerenciador->tempoTotalExecucao = 0;
     gerenciador->numCPUs = numCPUs;
-    printf("entrou");
     // Aloca memoria para as CPUs e seus estados de execucao
     gerenciador->cpus = (CPU **)malloc(numCPUs * sizeof(CPU *));
     gerenciador->estadoExecucao = (int *)malloc(numCPUs * sizeof(int));

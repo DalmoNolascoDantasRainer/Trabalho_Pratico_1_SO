@@ -59,6 +59,7 @@
   "files.associations": {
     "tabelaprocessos.h": "c",
     "fila.h": "c",
-    "cstdlib": "cpp"
+    "cstdlib": "cpp",
+    "gerenciadorprocessos.h": "c"
   }
 }
