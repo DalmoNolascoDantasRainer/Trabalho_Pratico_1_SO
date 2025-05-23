@@ -188,7 +188,7 @@ void imprimeInfosGeraisProcesso(ProcessoSimulado *processo){
     printf("Prioridade %2d | ", processo->prioridade);       // Imprime a prioridade
     imprimeEstadoProcesso(processo->estadoProcesso);         // Imprime o estado do processo
     printf("Tempo de inicio %2d | ", processo->tempoInicio); // Imprime o tempo de início
-    printf("Tempo de CPU %2d\n", processo->tempoExecucao);   // Imprime o tempo de CPU
+    printf("Tempo de CPU %2d\n", processo->tempoCPU);   // Imprime o tempo de CPU
 }
 
 // Função que retorna o número de variáveis do processo

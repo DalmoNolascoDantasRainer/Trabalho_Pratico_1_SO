@@ -20,7 +20,7 @@ ProcessoSimulado *criaProcessoInit(int tempoSistema){
     processoInit->prioridade = 0;             // Prioridade inicial e 0
     processoInit->estadoProcesso = PRONTO;    // Estado inicial é PRONTO (pronto para executar)
     processoInit->tempoInicio = tempoSistema; // Tempo de inicio e o tempo atual do sistema
-    processoInit->tempoExecucao = 0;          // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
+    processoInit->tempoCPU = 0;          // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
 
     processoInit->conjuntoInstrucoes = (Instrucao **)malloc(sizeof(Instrucao));
     leInstrucoesArquivo("./data/init", processoInit->conjuntoInstrucoes);
@@ -73,7 +73,7 @@ ProcessoSimulado *copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
     filho->prioridade = processoPai.prioridade;
     filho->estadoProcesso = PRONTO;         // Estado inicial é PRONTO
     filho->tempoInicio = tempoAtualSistema; // Tempo de inicio e o tempo atual do sistema
-    filho->tempoExecucao = 0;               // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
+    filho->tempoCPU = 0;               // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
 
     // Copia o conjunto de instrucoes do processo pai
     filho->conjuntoInstrucoes = (Instrucao **)malloc(sizeof(Instrucao));
@@ -93,7 +93,7 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao){
     printf("Prioridade %d | ", processo.prioridade);
     imprimeEstadoProcessoSimulado(processo.estadoProcesso);
     printf("Tempo de inicio %2d | ", processo.tempoInicio);
-    printf("Tempo de CPU %2d\n", processo.tempoExecucao);
+    printf("Tempo de CPU %2d\n", processo.tempoCPU);
 
     // Imprime informacoes adicionais com base na opcao
     switch (opcao)

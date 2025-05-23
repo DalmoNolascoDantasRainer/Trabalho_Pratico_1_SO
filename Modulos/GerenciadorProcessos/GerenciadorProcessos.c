@@ -151,8 +151,8 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto)
 
     if (processoNaCPU != NULL)
     {
-        if (cpu->fatiaQuantum >= (1 << processoNaCPU->prioridade)) // Verifica se o quantum foi excedido por deslocamento 
-        { // Verifica se o quantum foi excedido
+        if (cpu->fatiaQuantum >= (1 << processoNaCPU->prioridade)) // Verifica se o quantum foi excedido por deslocamento
+        {                                                          // Verifica se o quantum foi excedido
 
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
 
@@ -160,14 +160,14 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto)
             {
                 processoNaCPU->prioridade++;
             }
-            processoNaCPU->tempoExecucao += cpu->fatiaQuantum; // Atualiza o tempo de CPU do processo
+            processoNaCPU->tempoCPU += cpu->fatiaQuantum; // Atualiza o tempo de CPU do processo
 
             enfileirar(processoNaCPU->pid, NUMEROVAZIO, estadoPronto[processoNaCPU->prioridade]); // Reenfileira o processo
             zeraCPU(cpu);                                                                         // Libera a CPU
         }
         else if (processoNaCPU->estadoProcesso == BLOQUEADO) // Caso o processo esteja bloqueado
         {
-            processoNaCPU->tempoExecucao += cpu->fatiaQuantum;
+            processoNaCPU->tempoCPU += cpu->fatiaQuantum;
             zeraCPU(cpu);
 
             if (*processoNaCPU->pc == NUMEROVAZIO) // Remove o processo se ele terminou
@@ -200,7 +200,6 @@ void verificaBloqueados(GerenciadorProcessos *gerenciador)
 }
 
 // Remove um processo da tabela de processos
-
 
 // Calcula a potencia de um numero
 double calcularPotencia(double base, int expoente)

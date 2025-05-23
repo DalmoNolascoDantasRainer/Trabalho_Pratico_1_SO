@@ -25,7 +25,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 int cpuLivre(CPU* cpu);
 void zeraCPU(CPU* cpu);
 
-/* -------------- Instruceos de programa que sao processadas na CPU -------------- */
+/* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
 
 int* instrucaoTipoN(int n);
 void instrucaoTipoD(int x, int *vetorVariaveis);

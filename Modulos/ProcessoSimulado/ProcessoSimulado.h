@@ -19,7 +19,7 @@ typedef struct ProcessoSimulado{
     int prioridade;                    // Prioridade do processo  (0 a 3, 0 e a menor prioridade, 3 e a maior)
     Estado estadoProcesso;             // Estado do processo podendo ser um dos 3 valores do enum
     int tempoInicio;                   // Tempo em que o processo começou
-    int tempoExecucao;                      // Tempo que o processo ja passou executando
+    int tempoCPU;                      // Tempo que o processo ja passou executando
     Instrucao** conjuntoInstrucoes;    // Vetor com as instrucoes do processo
 } ProcessoSimulado;
 
@@ -41,7 +41,7 @@ int* vetorVariaveisProcessoAtual(); // Retorna o vetor de variaveis do processo 
 int prioridadeProcessoAtual(); // Retorna a prioridade do processo atual
 Estado estadoProcessoAtual(); // Retorna o estado do processo atual
 int tempoInicioProcessoAtual(); // Retorna o tempo de inicio do processo atual
-int tempoExecucaoProcessoAtual(); // Retorna o tempo de CPU do processo atual
+int tempoCPUProcessoAtual(); // Retorna o tempo de CPU do processo atual
 Instrucao** conjuntoInstrucoesProcessoAtual(); // Retorna o vetor de instrucoes do processo atual
 
 #endif 
