@@ -1,28 +1,11 @@
-/*
-void sjf(Lista* tabelaProcessos) {
-    while (temProcessosPendentes(tabelaProcessos)) {
-        // Busca o processo com menor tempo de execução
-        ProcessoSimulado* menorProcesso = encontraMenorTempo(tabelaProcessos);
-        
-        // Executa completamente
-        printf("Executando PID %d por %d unidades\n", 
-               menorProcesso->pid, menorProcesso->tempoExecucao);
-        
-        tempoTotal += menorProcesso->tempoExecucao;
-        removeTabela(tabelaProcessos, menorProcesso->pid);
-    }
-}
-    
-*/
-
-#include "Lista.h"
+#include "SJF.h"
 #include <stdio.h>
 #include <limits.h>
 
 /* Funcao para encontrar o processo com menor tempo de execucao 
     Percorre a lista.
 
-    Mantém uma variável menorTempo inicializada com INT_MAX.
+    Mantem uma variavel menorTempo inicializada com INT_MAX.
 
     Sempre que encontra um processo com tempoExecucao menor, atualiza.
 */
@@ -35,23 +18,23 @@ ProcessoSimulado* encontraMenorTempo(Lista* tabelaProcessos) {
     int menorTempo = INT_MAX;
     
     // Percorre todos os processos para encontrar o menor tempo
-    Celula* percorre = tabelaProcessos->inicio->proximo;
-    while (percorre != NULL) {
-        ProcessoSimulado* processo = percorre->processo;
+    CelulaPtr atual = tabelaProcessos->Primeiro->Prox;
+    while (atual != NULL) {
+        ProcessoSimulado* processo = atual->processo;
         
         if (processo->tempoExecucao < menorTempo) {
             menorTempo = processo->tempoExecucao;
             menorProcesso = processo;
         }
-        percorre = percorre->proximo;
+        atual = atual->Prox;
     }
     
     return menorProcesso; // o processo com menor tempo, ou NULL se a lista estiver vazia.
 }
 
-// Funcao para verificar se ainda há processos para executar
+// Funcao para verificar se ainda ha processos para executar
 int temProcessosPendentes(Lista* tabelaProcessos) {
-    return !listaVazia(tabelaProcessos); // retorna 1 (verdadeiro) se a lista não está vazia.
+    return !listaVazia(tabelaProcessos); // retorna 1 (verdadeiro) se a lista nao esta vazia.
 }
 
 // Funcao principal do algoritmo SJF
@@ -66,10 +49,10 @@ void sjf(Lista* tabelaProcessos) {
     int totalProcessos = 0;
     
     // Conta o total de processos
-    Celula* contador = tabelaProcessos->inicio->proximo;
+    CelulaPtr contador = tabelaProcessos-> Primeiro->Prox;
     while (contador != NULL) {
         totalProcessos++;
-        contador = contador->proximo;
+        contador = contador->Prox;
     }
     
     printf("\n=== EXECUCAO SJF (Shortest Job First) ===\n");
@@ -89,7 +72,7 @@ void sjf(Lista* tabelaProcessos) {
                tempoTotal, processoEscolhido->pid, processoEscolhido->tempoExecucao);
         
         // Calcula estatísticas do processo
-        processoEscolhido->tempoTurnaround = tempoTotal + processoEscolhido->tempoExecucao - processoEscolhido->tempoChegada;
+        processoEscolhido->tempoTurnaround = tempoTotal + processoEscolhido->tempoExecucao - processoEscolhido->tempoInicio;
         
         // Atualiza o tempo total
         tempoTotal += processoEscolhido->tempoExecucao;
@@ -113,26 +96,26 @@ void executarSJF(Lista* tabelaProcessos) {
         return;
     }
     
-    // Cria uma cópia da lista para preservar os dados originais
+    // Cria uma copia da lista para preservar os dados originais
     Lista* copia = criaLista();
     copiarProcessos(tabelaProcessos, copia);
     
     printf("Iniciando escalonamento SJF...\n");
     
-    // Mostra processos antes da execução
+    // Mostra processos antes da execucao
     printf("\n--- Processos antes da execucao ---\n");
     printf("PID\tChegada\tExecucao\n");
-    Celula* percorre = copia->inicio->proximo;
-    while (percorre != NULL) {
-        ProcessoSimulado* processo = percorre->processo;
-        printf("%d\t%d\t%d\n", processo->pid, processo->tempoChegada, processo->tempoExecucao);
-        percorre = percorre->proximo;
+    CelulaPtr atual = copia->Primeiro->Prox;
+    while (atual != NULL) {
+        ProcessoSimulado* processo = atual->processo;
+        printf("%d\t%d\t%d\n", processo->pid, processo->tempoInicio, processo->tempoExecucao);
+        atual = atual->Prox;
     }
     
     // Executa o algoritmo
     sjf(copia);
     
-    // Calcula estatísticas finais
+    // Calcula estatisticas finais
     calcularEstatisticasSJF(tabelaProcessos);
 }
 
@@ -140,24 +123,24 @@ void executarSJF(Lista* tabelaProcessos) {
 void copiarProcessos(Lista* origem, Lista* destino) {
     if (listaVazia(origem)) return;
     
-    Celula* percorre = origem->inicio->proximo;
-    while (percorre != NULL) {
-        ProcessoSimulado* processoOriginal = percorre->processo;
+    CelulaPtr atual = origem->Primeiro->Prox;
+    while (atual != NULL) {
+        ProcessoSimulado* processoOriginal = atual->processo;
         
-        // Cria uma cópia do processo
+        // Cria uma copia do processo
         ProcessoSimulado* copia = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
         copia->pid = processoOriginal->pid;
-        copia->tempoChegada = processoOriginal->tempoChegada;
+        copia->tempoInicio = processoOriginal->tempoInicio;
         copia->tempoExecucao = processoOriginal->tempoExecucao;
         copia->tempoRestante = processoOriginal->tempoExecucao;
         copia->tempoTurnaround = 0;
         
         insereTabela(destino, copia);
-        percorre = percorre->proximo;
+        atual = atual->Prox;
     }
 }
 
-// Funcao para calcular estatísticas do SJF
+// Funcao para calcular estatisticas do SJF
 void calcularEstatisticasSJF(Lista* tabelaProcessos) {
     if (listaVazia(tabelaProcessos)) return;
     
@@ -177,7 +160,7 @@ void calcularEstatisticasSJF(Lista* tabelaProcessos) {
     while (!listaVazia(processosCopia)) {
         ProcessoSimulado* menor = encontraMenorTempo(processosCopia);
         
-        int tempoTurnaround = tempoAtual + menor->tempoExecucao - menor->tempoChegada;
+        int tempoTurnaround = tempoAtual + menor->tempoExecucao - menor->tempoInicio;
         int tempoEspera = tempoTurnaround - menor->tempoExecucao;
         
         printf("%d\t%d\t%d\t\t%d\t\t%d\n", 

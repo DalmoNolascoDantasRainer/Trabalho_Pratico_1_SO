@@ -17,6 +17,23 @@ CPU* inicializaCPU(){
     return cpu; // Retorna o ponteiro para a CPU inicializada
 }
 
+int cpuLivre(CPU* cpu){
+    return *(cpu->pidProcessoAtual) == NUMEROVAZIO; 
+}
+
+// Reseta a CPU, desalocando e reinicializando seus campos.
+void zeraCPU(CPU* cpu){
+    cpu->pidProcessoAtual = (int*) malloc(sizeof(int));
+    *cpu->pidProcessoAtual = NUMEROVAZIO;
+    cpu->pcProcessoAtual = (int*) malloc(sizeof(int));
+    *(cpu->pcProcessoAtual) = NUMEROVAZIO;
+
+    cpu->programaProcessoAtual = NULL;
+    cpu->variaveisProcessoAtual = NULL;
+
+    cpu->fatiaQuantum = 0;
+}
+
 // Carrega um processo na CPU, apontando para os dados do processo atual
 // Esta funcao faz com que a CPU passe a operar sobre o processo fornecido,
 // atualizando seus ponteiros para os campos do processo
@@ -97,22 +114,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 }
 
 // Verifica se a CPU esta livre (sem processo carregado).
-int cpuLivre(CPU* cpu){
-    return *(cpu->pidProcessoAtual) == NUMEROVAZIO; 
-}
 
-// Reseta a CPU, desalocando e reinicializando seus campos.
-void zeraCPU(CPU* cpu){
-    cpu->pidProcessoAtual = (int*) malloc(sizeof(int));
-    *cpu->pidProcessoAtual = NUMEROVAZIO;
-    cpu->pcProcessoAtual = (int*) malloc(sizeof(int));
-    *(cpu->pcProcessoAtual) = NUMEROVAZIO;
-
-    cpu->programaProcessoAtual = NULL;
-    cpu->variaveisProcessoAtual = NULL;
-
-    cpu->fatiaQuantum = 0;
-}
 
 
 /* -------------- Instruceos de programa que sao processadas na CPU -------------- */

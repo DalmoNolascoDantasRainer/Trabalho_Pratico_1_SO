@@ -44,7 +44,7 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao) {
         }
         // Caso de erro (tipo de instrcao invalido)
         else{
-            printf("\nErro");
+            printf("\nAlgo deu errado :( ");
             break;
         }
     }
