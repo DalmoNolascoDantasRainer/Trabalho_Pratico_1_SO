@@ -56,8 +56,7 @@ int main(int argc, char **argv)
                 scanf(" %c", &comando);
                 escreverCaracterePipe(fd[1], comando);
 
-                if (comando == 'I')
-                {
+                if (comando == 'I') {
                     impressaoExecutando = 1; // Ativa o semaforo de impressao
 
                     while (impressaoExecutando) // Envia o sinal e aguarda o termino da impressao
