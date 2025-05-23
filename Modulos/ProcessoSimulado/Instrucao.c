@@ -9,8 +9,8 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao) {
     
     // Define o tipo da instrucao e inicializa os parametros com valores padrao
     instrucao->tipoInstrucao = token[0];
-    instrucao->paramNum1 = NUMEROVAZIO;
-    instrucao->paramNum2 = NUMEROVAZIO;
+    instrucao->parametroNum1 = NUMEROVAZIO;
+    instrucao->parametroNum2 = NUMEROVAZIO;
     strcpy(instrucao->paramTexto, TEXTOVAZIO);
 
     // Le os parametros restantes da instrucao
@@ -21,16 +21,16 @@ void inicializaInstrucao(char *instrucaoLida, Instrucao* instrucao) {
             instrucao->tipoInstrucao == 'D' ||
             instrucao->tipoInstrucao == 'F' ||
             instrucao->tipoInstrucao == 'B'){
-            instrucao->paramNum1 = atoi(token); // Converte o parametro para inteiro
+            instrucao->parametroNum1 = atoi(token); // Converte o parametro para inteiro
             break;
         }
         // Instrucoes que possuem dois parametros numericos
         else if (instrucao->tipoInstrucao == 'V' ||
                  instrucao->tipoInstrucao == 'S' ||
                  instrucao->tipoInstrucao == 'A'){
-            instrucao->paramNum1 = atoi(token); // Primeiro parametro
+            instrucao->parametroNum1 = atoi(token); // Primeiro parametro
             token = strtok(NULL, " ");
-            instrucao->paramNum2 = atoi(token); // Segundo parametro
+            instrucao->parametroNum2 = atoi(token); // Segundo parametro
             break;
         }
         // Instrucoes que possuem um parametro de texto
@@ -75,8 +75,8 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma){
 void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase){
     
     novaInstrucao->tipoInstrucao = instrucaoBase->tipoInstrucao; // Copia o tipo
-    novaInstrucao->paramNum1 = instrucaoBase->paramNum1; // Copia primeiro parametro
-    novaInstrucao->paramNum2 = instrucaoBase->paramNum2; // Copiasegundo parametro
+    novaInstrucao->parametroNum1 = instrucaoBase->parametroNum1; // Copia primeiro parametro
+    novaInstrucao->parametroNum2 = instrucaoBase->parametroNum2; // Copiasegundo parametro
     strcpy(novaInstrucao->paramTexto, instrucaoBase->paramTexto); // Copia o texto
 }
 
@@ -91,8 +91,8 @@ void imprimeInstrucao(Instrucao instrucao, int apontadorInst){
     }
     
     // Imprime os parametros da instrucao
-    printf(" | Param 1 %3d", instrucao.paramNum1);
-    printf(" | Param 2 %5d", instrucao.paramNum2);
+    printf(" | Param 1 %3d", instrucao.parametroNum1);
+    printf(" | Param 2 %5d", instrucao.parametroNum2);
     printf(" | Param txt %10s|\n", instrucao.paramTexto);
 }
 

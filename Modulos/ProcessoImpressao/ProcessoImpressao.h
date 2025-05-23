@@ -6,7 +6,7 @@
 #include <string.h>
 #include "../GerenciadorProcessos/GerenciadorProcessos.h"
 
-int numeroVariaveisProcesso(Instrucao *arrPrograma);
+int numeroVariaveisProcesso(Instrucao *vetorPrograma);
 void impressaoArquivo(GerenciadorProcessos *gerenciador);
 void ImprimeEstadoAtualSistema(GerenciadorProcessos *gerenciador);
 void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador);

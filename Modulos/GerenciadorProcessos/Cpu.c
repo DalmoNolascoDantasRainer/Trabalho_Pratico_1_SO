@@ -44,35 +44,35 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     
     // Recupera os parametros da instrncao atual.
     char tipo = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).tipoInstrucao;
-    int paramNum1 = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).paramNum1;
-    int paramNum2 = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).paramNum2;
+    int parametroNum1 = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).parametroNum1;
+    int parametroNum2 = ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).parametroNum2;
     char paramTxt[BUFFER];
     strcpy(paramTxt, ((*cpu->programaProcessoAtual)[*cpu->pcProcessoAtual]).paramTexto);
 
     // Executa a instrncao de acordo com o tipo.
     switch (tipo){
         case 'N':
-            *cpu->variaveisProcessoAtual = instrucaoTipoN(paramNum1);
+            *cpu->variaveisProcessoAtual = instrucaoTipoN(parametroNum1);
             break;
 
         case 'D':
-            instrucaoTipoD(paramNum1, *cpu->variaveisProcessoAtual);
+            instrucaoTipoD(parametroNum1, *cpu->variaveisProcessoAtual);
             break;
 
         case 'V':
-            instrucaoTipoV(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+            instrucaoTipoV(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
 
         case 'A':
-            instrucaoTipoA(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+            instrucaoTipoA(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
 
         case 'S':
-            instrucaoTipoS(paramNum1, paramNum2, *cpu->variaveisProcessoAtual);
+            instrucaoTipoS(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
         
         case 'B':
-            instrucaoTipoB(paramNum1, cpu->pidProcessoAtual, tabelaProcessos, estadoBloqueado);
+            instrucaoTipoB(parametroNum1, cpu->pidProcessoAtual, tabelaProcessos, estadoBloqueado);
             break;
 
         case 'T':
@@ -80,7 +80,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
             break;
         
         case 'F':
-            instrucaoTipoF(paramNum1, cpu->pidProcessoAtual, cpu->pcProcessoAtual, quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
+            instrucaoTipoF(parametroNum1, cpu->pidProcessoAtual, cpu->pcProcessoAtual, quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
             break;
 
         case 'R':
@@ -173,7 +173,7 @@ void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* qua
     ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
 
-    insereTabela(tabelaProcessos, processoFilho);
+    insereNaTabela(processoFilho, tabelaProcessos);
     enfileirar(processoFilho->pid, NUMEROVAZIO, estadoPronto[processoFilho->prioridade]);
     quantidadeProcessosIniciados += 1;
 

@@ -47,7 +47,7 @@ void iniciaProcessoInit(GerenciadorProcessos *gerenciador) {
     enfileirar(processoInit->pid, NUMEROVAZIO, gerenciador->estadoPronto[0]);
 
     // Insere o processo inicial na tabela de processos
-    insereTabela(gerenciador->tabelaProcessos, processoInit);
+    insereNaTabela(processoInit, gerenciador->tabelaProcessos);
 
     // Incrementa o contador de processos iniciados
     gerenciador->quantidadeProcessosIniciados += 1;
@@ -130,7 +130,7 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto) {
     ProcessoSimulado *processoNaCPU = buscaProcesso(tabelaProcessos, *(cpu->pidProcessoAtual)); // Busca o processo na CPU
 
     if (processoNaCPU != NULL){
-        if (cpu->fatiaQuantum >= calcPot(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido
+        if (cpu->fatiaQuantum >= calcularPotencia(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido
         
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
 
@@ -150,7 +150,7 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto) {
 
             if (*processoNaCPU->pc == NUMEROVAZIO) // Remove o processo se ele terminou
             {
-                removeTabela(tabelaProcessos, processoNaCPU->pid);
+                removeDaTabela(tabelaProcessos, processoNaCPU->pid);
             }
         }
     }
@@ -178,20 +178,17 @@ void verificaBloqueados(GerenciadorProcessos *gerenciador)
 }
 
 // Remove um processo da tabela de processos
-void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProcessos *gerenciador)
-{
+void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProcessos *gerenciador){
     gerenciador->tempoTotalExecucao += processoEscolhido->tempoCPU; // Atualiza o tempo total de execucao
-    removeTabela(gerenciador->tabelaProcessos, processoEscolhido->pid); // Remove o processo da tabela
+    removeDaTabela(gerenciador->tabelaProcessos, processoEscolhido->pid); // Remove o processo da tabela
 }
 
 // Calcula a potencia de um numero
-double calcPot(double base, int expoente)
-{
+double calcularPotencia(double base, int expoente){
     double resultado = 1.0;
 
-    for (int i = 0; i < expoente; i++)
-    {
-        resultado *= base;
+    for (int i = 0; i < expoente; i++){
+        resultado = resultado * base;
     }
 
     return resultado;

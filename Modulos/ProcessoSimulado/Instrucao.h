@@ -15,8 +15,8 @@
 typedef struct Instrucao {
     char tipoInstrucao; // Letra que representa a instrução
     char paramTexto[BUFFER]; // guarda nomes de arquivos ou outros parametros
-    int paramNum1; // Parametros numericos 
-    int paramNum2;
+    int parametroNum1; // Parametros numericos 
+    int parametroNum2;
     
 } Instrucao;
 

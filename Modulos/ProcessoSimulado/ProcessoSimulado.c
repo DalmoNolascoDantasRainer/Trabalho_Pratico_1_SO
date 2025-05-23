@@ -36,7 +36,7 @@ void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
     int i = 0;
 
     // Copia instrucoes ate encontrar a instrucao de termino (T)
-    while (vetorBase[i-1].tipoInstrucao != 'T') {
+    while (vetorBase[i-1].tipoInstrucao != 'T') { 
         copiaInstrucao(&conjuntoInstrucoes[i], &vetorBase[i]);
         i++;
     }
@@ -47,37 +47,40 @@ void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
 
 // Funcao que cria uma copia de um processo (fork)
 ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSistema, int novoPid) {
-    ProcessoSimulado* processo = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
+
+    ProcessoSimulado* filho = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
+
+    if (!filho) return NULL;
 
     // Inicializa os atributos do novo processo
-    processo->pid = novoPid; 
-    processo->pid_pai = processoPai.pid; 
+    filho->pid = novoPid; 
+    filho->pid_pai = processoPai.pid; 
 
     // Inicializa o pc com a proxima instrucao
-    processo->pc = (int*) malloc(sizeof(int));
-    *(processo->pc) = *(processoPai.pc) + 1;
+    filho->pc = (int*) malloc(sizeof(int));
+    *(filho->pc) = *(processoPai.pc) + 1;
 
     // Copia os dados do processo pai para o novo processo pq cada processo precisa ter suas proprias variaveis, 
     // nao podemos apenas copiar o ponteiro, isso causaria conflitos
-    processo->vetorVariaveis = (int*) malloc(numeroVariaveis(*processoPai.conjuntoInstrucoes) * sizeof(int));
-    copiaVariaveis(processoPai.vetorVariaveis, processo->vetorVariaveis, numeroVariaveis(*processoPai.conjuntoInstrucoes));
+    filho->vetorVariaveis = (int*) malloc(numeroVariaveis(*processoPai.conjuntoInstrucoes) * sizeof(int));
+    copiaVariaveis(processoPai.vetorVariaveis, filho->vetorVariaveis, numeroVariaveis(*processoPai.conjuntoInstrucoes));
 
-    processo->prioridade = processoPai.prioridade;
-    processo->estadoProcesso = PRONTO; // Estado inicial é PRONTO
-    processo->tempoInicio = tempoAtualSistema; // Tempo de inicio e o tempo atual do sistema
-    processo->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
+    filho->prioridade = processoPai.prioridade;
+    filho->estadoProcesso = PRONTO; // Estado inicial é PRONTO
+    filho->tempoInicio = tempoAtualSistema; // Tempo de inicio e o tempo atual do sistema
+    filho->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
 
     // Copia o conjunto de instrucoes do processo pai
-    processo->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
-    copiaConjuntoInstrucoes(processo->conjuntoInstrucoes, *(processoPai.conjuntoInstrucoes));
+    filho->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
+    copiaConjuntoInstrucoes(filho->conjuntoInstrucoes, *(processoPai.conjuntoInstrucoes));
 
-    return processo;
+    return filho;
 }
 
 
 // Funcao que retorna o numero de variaveis no conjunto de instrucoes
 int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
-    return conjuntoInstrucoes[0].paramNum1; // O numero de variaveis esta no primeiro parametro
+    return conjuntoInstrucoes[0].parametroNum1; // O numero de variaveis esta no primeiro parametro
 }
 
 

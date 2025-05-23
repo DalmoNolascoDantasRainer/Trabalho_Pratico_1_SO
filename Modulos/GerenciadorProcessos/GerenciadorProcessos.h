@@ -25,7 +25,7 @@ void gerenciadorProcessos(GerenciadorProcessos* gerenciador, char comando);
 void encerraUnidadeTempo(GerenciadorProcessos *gerenciador);
 
 
-/*------------------------------- Funçẽos que operam processos -------------------------------*/
+/*------------------------------- Funçoes que operam processos -------------------------------*/
 
 void escalonaProcessosCPUs(GerenciadorProcessos* gerenciador);
 void escalonaProcesso(Lista* tabelaProcessos, CPU* cpu, int* estadoExecucao, Fila** estadoPronto);
@@ -35,6 +35,6 @@ void removeProcessoCPU(CPU* cpu, Lista* tabelaProcessos, Fila** estadoPronto);
 void verificaBloqueados(GerenciadorProcessos* gerenciador);
 void iniciaProcessoInit(GerenciadorProcessos *gerenciador);
 void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProcessos *gerenciador);
-double calcPot(double base, int expoente);
+double calcularPotencia(double base, int expoente);
 
 #endif 

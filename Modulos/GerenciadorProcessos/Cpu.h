@@ -5,7 +5,8 @@
 #include <stdlib.h>
 
 #include "../EstruturasDeDados/Fila.h"
-#include "../EstruturasDeDados/Lista.h"
+// #include "../EstruturasDeDados/Lista.h"
+#include "TabelaProcessos.h"
 
 typedef struct CPU{
     int *pidProcessoAtual;
