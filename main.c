@@ -4,13 +4,11 @@
 #include <signal.h>
 
 int impressaoExecutando = 0;
-void semaforoImpressao(int signum)
-{
+void semaforoImpressao(int signum) {
     impressaoExecutando = 0; // INDICA QUE O PROCESSO IMPRESSAO NAO VAI EXECUTAR MAIS
 }
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv){
     int fd[2]; // Tamanho do pipe, escrever no pipe: fd[1], ler do pipe: fd[0]
     char comando = '!'; // Valo nao utilizado
     FILE *arquivoDeEntrada;

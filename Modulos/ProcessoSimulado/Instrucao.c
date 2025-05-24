@@ -55,6 +55,7 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma){
     int i = 0;
 
     // Aloca memoria para o vetor de instrucoes
+    free(*(vetorPrograma));
     Instrucao* vetorInstrucoes = (Instrucao*) malloc(MAXINSTRUCOES * sizeof(Instrucao));
     char* linha = malloc(BUFFER * sizeof(char));
 

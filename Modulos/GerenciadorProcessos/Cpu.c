@@ -170,7 +170,7 @@ void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* qua
     enfileirar(processoFilho->pid, NUMEROVAZIO, estadoPronto[processoFilho->prioridade]);
     *quantidadeProcessosIniciados += 1;
 
-    *pcProcessoAtual += n;
+    *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE
 }
 
 // Le instrucoes de um arquivo e carrega no processo.
