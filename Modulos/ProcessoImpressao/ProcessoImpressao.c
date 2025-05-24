@@ -252,7 +252,7 @@ void imprimeCPU(CPU *cpu){
     printf("\n->> Processo em execução - PID %d | ", cpu->pidProcessoAtual); // Imprime o PID do processo atual
     printf("PC %d |", cpu->pcProcessoAtual); // Imprime o PC do processo atual
     printf(" Fatia do quantum já executado: %d ", cpu->fatiaQuantum); // Imprime a fatia do quantum executada
-    imprimeVariaveisProcesso(cpu->variaveisProcessoAtual, numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
+    imprimeVariaveisProcesso(*(cpu->variaveisProcessoAtual), numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
     printf("\n");
 }
 

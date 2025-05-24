@@ -63,7 +63,7 @@ ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
 
     // Copia os dados do processo pai para o novo processo pq cada processo precisa ter suas proprias variaveis, 
     // nao podemos apenas copiar o ponteiro, isso causaria conflitos
-    filho->vetorVariaveis = (int*) malloc(numeroVariaveis(*processoPai.conjuntoInstrucoes) * sizeof(int));
+    filho->vetorVariaveis = (int*)malloc(numeroVariaveis(*processoPai.conjuntoInstrucoes) * sizeof(int));
     copiaVariaveis(processoPai.vetorVariaveis, filho->vetorVariaveis, numeroVariaveis(*processoPai.conjuntoInstrucoes));
 
     filho->prioridade = processoPai.prioridade;
