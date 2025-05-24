@@ -76,3 +76,13 @@ int maiorPIDTabela(Lista* lista) {
   return maiorPID; // Retorna o maior PID encontrado
 }
 
+void imprimeTabela(Lista* lista)
+{
+    CelulaPtr aux;
+    aux = lista->Primeiro->Prox;
+    while (aux != NULL)
+    {
+        imprimeProcesso(*(aux->processo), 1);
+        aux = aux->Prox;
+    }
+}

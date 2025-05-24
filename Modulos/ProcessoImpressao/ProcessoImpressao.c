@@ -2,8 +2,7 @@
 
 // Função que imprime o estado do processo em formato textual
 void imprimeEstadoProcesso(Estado estado){
-    switch (estado)
-    {
+    switch (estado){
     case BLOQUEADO:
         printf("Estado: BLOQUEADO | ");
         break;
@@ -26,8 +25,7 @@ void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho){
     printf("| Valores atuais das variáveis: ");
 
     // Percorre o array de variaveis e imprime cada valor
-    for (int i = 0; i < tamanho; i++)
-    {
+    for (int i = 0; i < tamanho; i++){
         printf(" %d ", vetorVariaveis[i]); /// ALTEREI NOME
     }
     printf("\n");
@@ -227,12 +225,10 @@ void imprimeCPUs(GerenciadorProcessos *gerenciador){
         // Imprime o cabeçalho da CPU
         printf("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CPU %d <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n", i);
         // Verifica se a CPU está livre
-        if (cpuLivre(gerenciador->cpus[i]))
-        {
+        if (cpuLivre(gerenciador->cpus[i])){
             printf("\n->> CPU LIVRE\n");
         }
-        else
-        {
+        else{
             // Imprime informações da CPU ocupada
             imprimeCPU(gerenciador->cpus[i]);
         }
@@ -255,10 +251,10 @@ void imprimeTabelaProcessos(GerenciadorProcessos *gerenciador){
     // Ponteiro auxiliar para percorrer a lista de processos
     CelulaPtr aux;
     aux = gerenciador->tabelaProcessos->Primeiro->Prox;
-    while (aux != NULL)
-    {
+    while (aux != NULL){
         // Chama a funcao para imprimir o processo
         imprimeInfosGeraisProcesso((aux->processo));
         aux = aux->Prox; // Avanca para a proxima celula
     }
 }
+

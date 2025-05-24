@@ -20,7 +20,6 @@ typedef struct Instrucao {
     
 } Instrucao;
 
-
 void inicializaInstrucao(char* instrucaoLida, Instrucao* instrucao);
 void leInstrucoesArquivo(char* caminhoArq, Instrucao** programa);
 void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase);
