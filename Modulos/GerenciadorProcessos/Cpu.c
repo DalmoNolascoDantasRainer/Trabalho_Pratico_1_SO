@@ -36,15 +36,13 @@ void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
 
     // Aponta para o conjunto de instrucoes do processo atual
     cpu->programaProcessoAtual = *(processoAtual->conjuntoInstrucoes);
-    imprimeVetorPrograma(cpu->programaProcessoAtual, cpu->pcProcessoAtual);
+    ///copiaConjuntoInstrucoes(&(cpu->programaProcessoAtual), *(processoAtual->conjuntoInstrucoes));
     // Aponta para o vetor de variaveis do processo atual
-    cpu->variaveisProcessoAtual = (processoAtual->vetorVariaveis);
-    printf("%ls\n", cpu->variaveisProcessoAtual);
-    printf("%ls\n", processoAtual->vetorVariaveis);
-    printf("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n");
+    cpu->variaveisProcessoAtual = &(processoAtual->vetorVariaveis);
     //imprimeVariaveis(*processoAtual->conjuntoInstrucoes, numeroVariaveis(*(processoAtual->conjuntoInstrucoes)));
     cpu->fatiaQuantum = 0;// Reinicia o quantum da CPU
 }
+
 
 // Executa a proxima instrucao do processo carregado na CPU.
 void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
@@ -61,23 +59,23 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     // Executa a instrucao de acordo com o tipo.
     switch (tipo){
         case 'N':
-            cpu->variaveisProcessoAtual = instrucaoTipoN(parametroNum1);
+            *cpu->variaveisProcessoAtual = instrucaoTipoN(parametroNum1);
             break;
 
         case 'D':
-            instrucaoTipoD(parametroNum1, cpu->variaveisProcessoAtual);
+            instrucaoTipoD(parametroNum1, *cpu->variaveisProcessoAtual);
             break;
 
         case 'V':
-            instrucaoTipoV(parametroNum1, parametroNum2, cpu->variaveisProcessoAtual);
+            instrucaoTipoV(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
 
         case 'A':
-            instrucaoTipoA(parametroNum1, parametroNum2, cpu->variaveisProcessoAtual);
+            instrucaoTipoA(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
 
         case 'S':
-            instrucaoTipoS(parametroNum1, parametroNum2, cpu->variaveisProcessoAtual);
+            instrucaoTipoS(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
         
         case 'B':

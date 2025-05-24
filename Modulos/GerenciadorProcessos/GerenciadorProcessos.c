@@ -225,7 +225,9 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto) {
 
     if (processoNaCPU != NULL){
         if (cpu->fatiaQuantum >= calcularPotencia(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido
-        
+            
+            *(processoNaCPU->pc) = cpu->pcProcessoAtual; // Atualiza o PC do processo
+
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
 
             if (processoNaCPU->prioridade < CLASSESPRIORIDADES - 1) // Ajusta a prioridade, se necessario
