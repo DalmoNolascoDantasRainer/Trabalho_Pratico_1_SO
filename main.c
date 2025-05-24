@@ -1,5 +1,6 @@
 #include "./Modulos/ProcessoControle/ProcessoControle.h"
 #include "./Modulos/ProcessoImpressao/ProcessoImpressao.h"
+#include "./Modulos/Menu/Menu.h"  // ADICIONADO: Inclui o header do menu
 #include <sys/wait.h>
 
 /*
@@ -9,6 +10,7 @@
  * - fork() para criar processo pai e filho
  * - pipes para comunicação bidirecional
  * - Sincronização entre processos
+ * - Seleção de algoritmos de escalonamento
  */
 
 int main(int argc, char **argv) {
@@ -27,6 +29,20 @@ int main(int argc, char **argv) {
     
     // Menu inicial retorna opção escolhida pelo usuário
     int opcao = MenuInicial(&arquivoDeEntrada);
+    
+    // ADICIONADO: Menu para seleção do algoritmo de escalonamento
+    int opcaoEscalonamento = MenuEscalonamento();
+    
+    // ADICIONADO: Configura o algoritmo de escalonamento baseado na escolha do usuário
+    if (opcaoEscalonamento == 1) {
+        // Filas Múltiplas (comportamento padrão - não precisa alterar nada)
+        defineEscalonamento(gerenciador, ESC_FILAS_MULTIPLAS);
+        printf("\n🔄 Sistema configurado com Filas Múltiplas de Prioridade\n");
+    } else {
+        // Round Robin
+        defineEscalonamento(gerenciador, ESC_ROBIN);
+        printf("\n🔄 Sistema configurado com Round Robin (Quantum = 3)\n");
+    }
 
     // Criação dos pipes de comunicação
     if (pipe(fd) == -1 || pipe(syncPipe) == -1){
@@ -87,6 +103,13 @@ int main(int argc, char **argv) {
         printf("Processo filho\n");
         close(syncPipe[0]); // Fecha leitura do pipe de sincronização
         
+        // ADICIONADO: Exibe informações sobre o algoritmo em uso
+        if (opcaoEscalonamento == 2) {
+            printf("🔄 Executando com Round Robin - Quantum: 3 unidades\n");
+        } else {
+            printf("🔄 Executando com Filas Múltiplas de Prioridade\n");
+        }
+        
         while (1) {
             // Recebe comando do processo pai
             comando = lerCaracterePipe(fd[0]);
@@ -94,11 +117,19 @@ int main(int argc, char **argv) {
             if (comando == 'U') {
                 // Comando de atualização/gerenciamento
                 gerenciadorProcessos(gerenciador, comando);
+                
+                // ADICIONADO: Feedback visual do algoritmo em execução (opcional)
+                if (opcaoEscalonamento == 2) {
+                    printf("⏰ [RR] Tempo: %d\n", gerenciador->tempo);
+                } else {
+                    printf("⏰ [FM] Tempo: %d\n", gerenciador->tempo);
+                }
             }
             else if (comando == 'I') {
                 // Comando de impressão
                 if (opcao == 2) {
                     // Modo arquivo: impressão simples
+                    printf("\n📋 Gerando relatório do sistema...\n");
                     impressaoArquivo(gerenciador);
                 }
                 else {
@@ -110,6 +141,7 @@ int main(int argc, char **argv) {
                     }
                     else if (pidImpressao == 0) {
                         // Processo neto: executa impressão
+                        printf("\n📋 Gerando relatório do sistema...\n");
                         ImprimeGerenciadorProcessos(gerenciador);
                         exit(0);
                     }
@@ -131,11 +163,13 @@ int main(int argc, char **argv) {
             
             // Comando de saída
             if (comando == 'M') {
+                printf("🏁 Encerrando processo de escalonamento\n");
                 break;
             }
         }
     }
     
+    printf("\n✅ Sistema finalizado com sucesso!\n");
     return 0;
 }
 
@@ -158,4 +192,8 @@ int main(int argc, char **argv) {
  * MODOS DE OPERAÇÃO:
  * - opcao == 2: Leitura automática de arquivo
  * - opcao != 2: Modo interativo com entrada manual
+ * 
+ * ALGORITMOS DE ESCALONAMENTO:
+ * - opcaoEscalonamento == 1: Filas Múltiplas de Prioridade
+ * - opcaoEscalonamento == 2: Round Robin (Quantum = 3)
  */

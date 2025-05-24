@@ -28,6 +28,38 @@ int MenuInicial(FILE **arquivoDeEntrada){
     return opcao;
 }
 
+// Nova função para seleção do algoritmo de escalonamento
+int MenuEscalonamento() {
+    int opcaoEscalonamento;
+    
+    do {
+        printf("\n\n========== ALGORITMO DE ESCALONAMENTO ==========");
+        printf("\n1) Filas Múltiplas com Prioridade (Padrão)");
+        printf("\n2) Round Robin");
+        printf("\n>> Escolha o algoritmo de escalonamento: ");
+        scanf("%d", &opcaoEscalonamento);
+        
+        if (opcaoEscalonamento == 1) {
+            printf("\n✓ Algoritmo selecionado: Filas Múltiplas com Prioridade");
+            printf("\n  - Utiliza múltiplas filas com diferentes prioridades");
+            printf("\n  - Quantum varia por prioridade (2^prioridade)");
+            printf("\n  - Processos podem ter prioridade rebaixada\n");
+        }
+        else if (opcaoEscalonamento == 2) {
+            printf("\n✓ Algoritmo selecionado: Round Robin");
+            printf("\n  - Utiliza uma única fila circular");
+            printf("\n  - Quantum fixo de 3 unidades de tempo");
+            printf("\n  - Todos os processos têm a mesma prioridade\n");
+        }
+        else {
+            printf("Opção inválida! Tente novamente.\n");
+        }
+        
+    } while (opcaoEscalonamento != 1 && opcaoEscalonamento != 2);
+
+    return opcaoEscalonamento;
+}
+
 FILE *abreArquivoRead(char *nomeArquivo){
     FILE *fptr;
 

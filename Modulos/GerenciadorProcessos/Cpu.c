@@ -28,6 +28,8 @@ void zeraCPU(CPU* cpu){
 // Esta funcao faz com que a CPU passe a operar sobre o processo fornecido,
 // copiando os valores dos campos do processo
 void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
+
+    
     // Copia o PID do processo atual
     cpu->pidProcessoAtual = processoAtual->pid;
 
@@ -41,6 +43,7 @@ void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
     cpu->variaveisProcessoAtual = &(processoAtual->vetorVariaveis);
     //imprimeVariaveis(*processoAtual->conjuntoInstrucoes, numeroVariaveis(*(processoAtual->conjuntoInstrucoes)));
     cpu->fatiaQuantum = 0;// Reinicia o quantum da CPU
+   
 }
 
 
@@ -97,7 +100,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
         default:
             break;
     }
-
+    
     // Avanca o PC e incrementa o quantum.
     cpu->pcProcessoAtual += 1;
     cpu->fatiaQuantum++;
@@ -107,6 +110,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     if(processo != NULL) {
         *(processo->pc) = cpu->pcProcessoAtual;
     }
+   
 }
 
 /* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
