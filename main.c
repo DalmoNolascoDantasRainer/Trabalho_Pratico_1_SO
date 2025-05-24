@@ -1,126 +1,161 @@
 #include "./Modulos/ProcessoControle/ProcessoControle.h"
 #include "./Modulos/ProcessoImpressao/ProcessoImpressao.h"
 #include <sys/wait.h>
-#include <signal.h>
 
-int impressaoExecutando = 0;
-void semaforoImpressao(int signum) {
-    impressaoExecutando = 0; // INDICA QUE O PROCESSO IMPRESSAO NAO VAI EXECUTAR MAIS
-}
+/*
+ * ANÁLISE DO SISTEMA DE GERENCIAMENTO DE PROCESSOS
+ * 
+ * Este programa implementa um sistema de comunicação entre processos usando:
+ * - fork() para criar processo pai e filho
+ * - pipes para comunicação bidirecional
+ * - Sincronização entre processos
+ */
 
-int main(int argc, char **argv){
-    int fd[2]; // Tamanho do pipe, escrever no pipe: fd[1], ler do pipe: fd[0]
-    char comando = '!'; // Valo nao utilizado
+int main(int argc, char **argv) {
+    // ========== INICIALIZAÇÃO ==========
+    int fd[2];       // Pipe principal: pai -> filho (comandos)
+    int syncPipe[2]; // Pipe sincronização: filho -> pai (confirmações)
+    char comando = '!';
     FILE *arquivoDeEntrada;
     int numCPUs = atoi(argv[1]);
 
     printf("Numero de CPUs: %d\n", numCPUs);
     
+    // Inicializa estrutura de gerenciamento
     GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
     printf("Gerenciador de processos inicializado\n");
-    int opcao = MenuInicial(&arquivoDeEntrada); // Arquivo ou teclado
-    int opcaoImpressao = 0;
-    int PID;
+    
+    // Menu inicial retorna opção escolhida pelo usuário
+    int opcao = MenuInicial(&arquivoDeEntrada);
 
-    if (pipe(fd) == -1) // Verificar se pipe foi inicializado com sucesso
-    {
-        perror("Erro ao criar o pipe");
+    // Criação dos pipes de comunicação
+    if (pipe(fd) == -1 || pipe(syncPipe) == -1){
+        perror("Erro ao criar os pipes");
         return 1;
     }
 
-    pid_t pidImpressao; // Cria processo de impressao
-    pid_t pid = fork(); // gera processo filho
+    // ========== FORK - CRIAÇÃO DO PROCESSO FILHO ==========
+    pid_t pid = fork();
 
-    if (pid == -1)
-    {
+    if (pid == -1){
         perror("Erro ao criar o processo");
         return 1;
     }
 
+    // ========== PROCESSO PAI ==========
     if (pid > 0){
-        printf("Processo pai");
-        // A funcao signal quando recebe o sinal SIGUSR1 executa o que esta dentro de semaforoImpressao
-        signal(SIGUSR1, semaforoImpressao); // Ela registra o sinal do processo impressao
-
-        while (1) // Loop processo pai
-        {
-            if (opcao == 2) // Entrada por arquivo
-            {
+        printf("Processo pai\n");
+        close(syncPipe[1]); // Fecha escrita do pipe de sincronização
+        
+        while (1) {
+            if (opcao == 2) {
+                // Modo arquivo: lê comandos automaticamente
                 comando = controle(arquivoDeEntrada, opcao);
-                escreverCaracterePipe(fd[1], comando); // Envia para o filho
+                escreverCaracterePipe(fd[1], comando);
             }
-            else // Entrada por teclado (usuario)
-            {
+            else {
+                // Modo interativo: usuário digita comandos
                 scanf(" %c", &comando);
                 escreverCaracterePipe(fd[1], comando);
-
+                
+                // Sincronização especial para comando de impressão
                 if (comando == 'I') {
-                    impressaoExecutando = 1; // Ativa o semaforo de impressao
-
-                    while (impressaoExecutando) // Envia o sinal e aguarda o termino da impressao
-                    {
-                        sleep(1);
-                    }
+                    char confirmacao;
+                    // ← PAI FICA BLOQUEADO AQUI esperando o 'D'
+                    read(syncPipe[0], &confirmacao, sizeof(char));
+                    
+                    /* 
+                     * Quando recebe o 'D', o PAI sabe que:
+                     * "A impressão terminou, posso continuar!"
+                     */
+                    printf("Impressão concluída!\n");
                 }
             }
-
-            if (comando == 'M') // Comando de termino
-            {
+            
+            // Comando de saída
+            if (comando == 'M') {
                 break;
             }
         }
-        wait(NULL); // Aguarda o fim o processo filho
         
+        // Aguarda término do processo filho
+        wait(NULL);
     }
-    else{
-        printf("Processo filho");
-        while (1) // Loop processo filho
-        {
-
-            comando = lerCaracterePipe(fd[0]); // le comando vindo do processo pai
-
-            if (comando == 'U') // Comando para fim de uma unidade de tempo
-            {
-                gerenciadorProcessos(gerenciador, comando); // Chama o gerenciador de processos
+    
+    // ========== PROCESSO FILHO ==========
+    else {
+        printf("Processo filho\n");
+        close(syncPipe[0]); // Fecha leitura do pipe de sincronização
+        
+        while (1) {
+            // Recebe comando do processo pai
+            comando = lerCaracterePipe(fd[0]);
+            
+            if (comando == 'U') {
+                // Comando de atualização/gerenciamento
+                gerenciadorProcessos(gerenciador, comando);
             }
-
-            else if (comando == 'I') // Comando de impressao
-            {
-                if (opcao == 2) // Imprime diretamente se for vindo de arquivo
-                {
+            else if (comando == 'I') {
+                // Comando de impressão
+                if (opcao == 2) {
+                    // Modo arquivo: impressão simples
                     impressaoArquivo(gerenciador);
                 }
-                else
-                {
-
-                    pidImpressao = fork(); // Cria processo filho pra impressao
-                    if (pidImpressao < 0)
-                    {
+                else {
+                    // Modo interativo: cria processo específico para impressão
+                    pid_t pidImpressao = fork();
+                    
+                    if (pidImpressao < 0) {
                         printf("ERRO NO FORK() IMPRESSAO\n");
                     }
-
-                    
-                    if (pidImpressao > 0) // indica que e um processo filho
-                    {
-                        wait(NULL);               // Aguarda o termino do processo de impressao
-                        kill(getppid(), SIGUSR1); // ENVIA O SINAL PRO PROCESSO QUE LE DO PIPE
-                        sleep(1);
-                    }
-                    else
-                    {
-                        // PROCESSO IMPRESSAO
+                    else if (pidImpressao == 0) {
+                        // Processo neto: executa impressão
                         ImprimeGerenciadorProcessos(gerenciador);
-
-                        exit(0); // VOLTA PARA O WAIT(NULL)
+                        exit(0);
+                    }
+                    else {
+                        // Processo filho: aguarda impressão e confirma
+                        wait(NULL); // ← ESPERA o processo de impressão terminar
+                        
+                        // ENVIA SINAL 'D' = "DONE" (TERMINEI)
+                        char confirmacao = 'D'; // 'D' de Done
+                        write(syncPipe[1], &confirmacao, sizeof(char));
+                        
+                        /* 
+                         * O 'D' é enviado pelo FILHO para o PAI dizendo:
+                         * "Oi pai, a impressão que você pediu JÁ TERMINOU!"
+                         */
                     }
                 }
             }
-
-            if (comando == 'M') // Comando de termino   
-            {
+            
+            // Comando de saída
+            if (comando == 'M') {
                 break;
             }
         }
     }
+    
     return 0;
 }
+
+/*
+ * FLUXO DE COMUNICAÇÃO:
+ * 
+ * 1. PAI -> FILHO (fd[1] -> fd[0]):
+ *    - Comandos ('U', 'I', 'M')
+ *    - Controle de operações
+ * 
+ * 2. FILHO -> PAI (syncPipe[1] -> syncPipe[0]):
+ *    - Confirmações de operações concluídas
+ *    - Sincronização de processos
+ * 
+ * COMANDOS PRINCIPAIS:
+ * - 'U': Atualização/gerenciamento de processos
+ * - 'I': Impressão do estado atual
+ * - 'M': Encerramento do programa
+ * 
+ * MODOS DE OPERAÇÃO:
+ * - opcao == 2: Leitura automática de arquivo
+ * - opcao != 2: Modo interativo com entrada manual
+ */
