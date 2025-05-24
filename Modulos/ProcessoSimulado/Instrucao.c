@@ -69,6 +69,7 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma){
     }
 
     *vetorPrograma = vetorInstrucoes; // Define o vetor de instrucoes
+    
 }
 
 // funcao que copia uma instrucao para outra

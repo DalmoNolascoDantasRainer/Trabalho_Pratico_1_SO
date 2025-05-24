@@ -22,8 +22,9 @@ void imprimeEstadoProcesso(Estado estado){
 
 // Funcao que imprime os valores atuais das variaveis do processo
 void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho){
+    
     printf("| Valores atuais das variáveis: ");
-
+    
     // Percorre o array de variaveis e imprime cada valor
     for (int i = 0; i < tamanho; i++){
         printf(" %d ", vetorVariaveis[i]);
@@ -152,12 +153,21 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
                     // Lê o PID do processo desejado
                     printf("\nInforme o PID do processo: ");
                     scanf(" %d%*[^\n]", &PID);
+                    printf("TESTE\n");
                     processo = buscaProcesso(gerenciador->tabelaProcessos, PID);
+                    
                     printf("\n\n");
                     // Imprime informações detalhadas do processo
                     imprimeInfosGeraisProcesso(processo);
+                    if (processo->vetorVariaveis == NULL){
+                        printf("TESTE2  \n");
+                    }
+                    
                     imprimeVariaveisProcesso(processo->vetorVariaveis, numeroVariaveis(*processo->conjuntoInstrucoes));
+                    
+                    printf("\n TESTE3  \n");
                     imprimeVetorPrograma(*processo->conjuntoInstrucoes, *processo->pc);
+                    
                 }
                 break;
 
@@ -167,6 +177,7 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
 
             default:
                 // Opção inválida
+                
                 printf("\nOpção inválida! Por favor, escolha uma opção entre 1 e 8.\n");
                 break;
         }

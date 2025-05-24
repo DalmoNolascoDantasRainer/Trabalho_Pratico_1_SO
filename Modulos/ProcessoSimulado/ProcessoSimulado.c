@@ -16,9 +16,10 @@ ProcessoSimulado* criaProcessoInit(int tempoSistema) {
     processoInit->estadoProcesso = PRONTO; // Estado inicial é PRONTO (pronto para executar)
     processoInit->tempoInicio = tempoSistema; // Tempo de inicio e o tempo atual do sistema
     processoInit->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
-
+    processoInit->conjuntoInstrucoes = NULL;
     processoInit->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
     leInstrucoesArquivo("./data/init", processoInit->conjuntoInstrucoes); 
+    
 
     return processoInit; 
 }

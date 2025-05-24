@@ -13,11 +13,11 @@ typedef struct CPU{
     int pidProcessoAtual;
     Instrucao *programaProcessoAtual;
     int pcProcessoAtual;
-    int *variaveisProcessoAtual;
+    int **variaveisProcessoAtual;
     int fatiaQuantum;       //Quanto do "quantum" de tempo ja foi usada pelo processo em execucao
 } CPU;
 
-void inicializaCPU(CPU* cpu);
+void inicializaCPU(CPU** cpu);
 void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual);
 void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
                           int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado);

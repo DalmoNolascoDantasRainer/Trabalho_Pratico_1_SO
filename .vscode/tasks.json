@@ -1,22 +1,36 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "build",
-            "type": "shell",
-            "command": "make",
-            "args": ["build"],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared"
-            },
-            "problemMatcher": "$gcc"
-        }
+      {
+        "label": "build",
+        "type": "shell",
+        "command": "gcc",
+        "args": [
+          "-g",
+          "-O0",
+          "-Wall",
+          "main.c",
+          "./Modulos/Menu/Menu.c",
+          "./Modulos/ProcessoSimulado/Instrucao.c",
+          "./Modulos/ProcessoSimulado/ProcessoSimulado.c",
+          "./Modulos/GerenciadorProcessos/Cpu.c",
+          "./Modulos/GerenciadorProcessos/GerenciadorProcessos.c",
+          "./Modulos/ProcessoControle/ProcessoControle.c",
+          "./Modulos/Pipe/Pipe.c",
+          "./Modulos/ProcessoImpressao/ProcessoImpressao.c",
+          "./Modulos/EstruturasDeDados/Fila.c",
+          "./Modulos/EstruturasDeDados/Lista.c",
+          "./Modulos/GerenciadorProcessos/TabelaProcessos.c",
+          "-o",
+          "FilaPrioridade.exe"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": ["$gcc"],
+        "detail": "Compilando projeto com gcc"
+      }
     ]
-}
+  }
+  

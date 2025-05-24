@@ -144,7 +144,7 @@ void imprimeFila(Fila *fila){
 // Funcao para imprimir os elementos de um conjunto de filas
 void imprimeFilas(Fila** filas, int numFilas){
     for (int i = 0; i < numFilas; i++){
-        Fila* fila = filas[i];
+        //Fila* fila = filas[i];
 
         printf("\nFila numero: %d:", i);
         imprimeFila(filas[i]); // Chama a funcao de imprimir fila para cada fila do conjunto
