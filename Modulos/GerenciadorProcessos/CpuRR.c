@@ -1,9 +1,9 @@
-#include "Cpu.h"
+#include "CpuRR.h"
 
 // Inicializa a estrutura da CPU, alocando memoria para seus campos.
-void inicializaCPU(CPU** cpu){   
-    *cpu = (CPU*) malloc(sizeof(CPU)); // Aloca memoria para a estrutura CPU
-    
+void inicializaCPURR(CPU_RR** cpu){   
+    *cpu = (CPU_RR*) malloc(sizeof(CPU_RR)); // Aloca memoria para a estrutura CPU_RR
+
     (*cpu)->pidProcessoAtual = NUMEROVAZIO; // Inicializa o PID como vazio
     (*cpu)->pcProcessoAtual = NUMEROVAZIO; // Inicializa o PC como vazio
     (*cpu)->programaProcessoAtual = NULL; // Inicializa o programa como NULL
@@ -11,12 +11,12 @@ void inicializaCPU(CPU** cpu){
     (*cpu)->fatiaQuantum = 0; // Inicializa o quantum como zero
 }
 
-int cpuLivre(CPU* cpu){
+int cpuLivreRR(CPU_RR* cpu){
     return cpu->pidProcessoAtual == NUMEROVAZIO; 
 }
 
 // Reseta a CPU, reinicializando seus campos.
-void zeraCPU(CPU* cpu){
+void zeraCPURR(CPU_RR* cpu){
     cpu->pidProcessoAtual = NUMEROVAZIO;
     cpu->pcProcessoAtual = NUMEROVAZIO;
     cpu->programaProcessoAtual = NULL;
@@ -27,7 +27,7 @@ void zeraCPU(CPU* cpu){
 // Carrega um processo na CPU, copiando os dados do processo atual
 // Esta funcao faz com que a CPU passe a operar sobre o processo fornecido,
 // copiando os valores dos campos do processo
-void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
+void insereProcessoCPURR(CPU_RR* cpu, ProcessoSimulado* processoAtual){
     // Copia o PID do processo atual
     cpu->pidProcessoAtual = processoAtual->pid;
 
@@ -36,68 +36,69 @@ void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
 
     // Aponta para o conjunto de instrucoes do processo atual
     cpu->programaProcessoAtual = *(processoAtual->conjuntoInstrucoes);
-    ///copiaConjuntoInstrucoes(&(cpu->programaProcessoAtual), *(processoAtual->conjuntoInstrucoes));
+
     // Aponta para o vetor de variaveis do processo atual
     cpu->variaveisProcessoAtual = &(processoAtual->vetorVariaveis);
-    //imprimeVariaveis(*processoAtual->conjuntoInstrucoes, numeroVariaveis(*(processoAtual->conjuntoInstrucoes)));
+
     cpu->fatiaQuantum = 0;// Reinicia o quantum da CPU
 }
 
-
 // Executa a proxima instrucao do processo carregado na CPU.
-void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
-                          int* quantidadeProcessosIniciados, Fila** estadoPronto, Fila* estadoBloqueado){   
+void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
+                          int* quantidadeProcessosIniciados, Fila* filaRoundRobin, Fila* estadoBloqueado){
 
-    
     // Recupera os parametros da instrucao atual.
     char tipo = (cpu->programaProcessoAtual[cpu->pcProcessoAtual]).tipoInstrucao;
     int parametroNum1 = (cpu->programaProcessoAtual[cpu->pcProcessoAtual]).parametroNum1;
     int parametroNum2 = (cpu->programaProcessoAtual[cpu->pcProcessoAtual]).parametroNum2;
     char paramTxt[BUFFER];
     strcpy(paramTxt, (cpu->programaProcessoAtual[cpu->pcProcessoAtual]).paramTexto);
-
+    
     // Executa a instrucao de acordo com o tipo.
     switch (tipo){
         case 'N':
-            *cpu->variaveisProcessoAtual = instrucaoTipoN(parametroNum1);
+            *cpu->variaveisProcessoAtual = instrucaoTipoNRR(parametroNum1);
             break;
 
         case 'D':
-            instrucaoTipoD(parametroNum1, *cpu->variaveisProcessoAtual);
+            instrucaoTipoDRR(parametroNum1, *cpu->variaveisProcessoAtual);
             break;
 
         case 'V':
-            instrucaoTipoV(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
+            instrucaoTipoVRR(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
 
         case 'A':
-            instrucaoTipoA(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
+            instrucaoTipoARR(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
 
         case 'S':
-            instrucaoTipoS(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
+            instrucaoTipoSRR(parametroNum1, parametroNum2, *cpu->variaveisProcessoAtual);
             break;
-        
+
         case 'B':
-            instrucaoTipoB(parametroNum1, &(cpu->pidProcessoAtual), tabelaProcessos, estadoBloqueado);
+            instrucaoTipoBRR(parametroNum1, &(cpu->pidProcessoAtual), tabelaProcessos, estadoBloqueado);
             break;
 
         case 'T':
-            instrucaoTipoT(&(cpu->pidProcessoAtual), tabelaProcessos);
+            instrucaoTipoTRR(&(cpu->pidProcessoAtual), tabelaProcessos);
             break;
-        
+
         case 'F':
-            instrucaoTipoF(parametroNum1, &(cpu->pidProcessoAtual), &(cpu->pcProcessoAtual), quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, estadoPronto);
+            printf("\nMelissa achou aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa F\n");
+            instrucaoTipoFRR(parametroNum1, &(cpu->pidProcessoAtual), &(cpu->pcProcessoAtual),
+                          quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, filaRoundRobin);
             break;
 
         case 'R':
-            instrucaoTipoR(paramTxt, &(cpu->programaProcessoAtual), &(cpu->pcProcessoAtual));
+            instrucaoTipoRRR(paramTxt, &(cpu->programaProcessoAtual), &(cpu->pcProcessoAtual));
             break;
 
         default:
             break;
     }
-
+    
+   
     // Avanca o PC e incrementa o quantum.
     cpu->pcProcessoAtual += 1;
     cpu->fatiaQuantum++;
@@ -112,7 +113,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 /* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
 
 // Aloca um vetor de variaveis inteiras para o processo.
-int *instrucaoTipoN(int n){
+int *instrucaoTipoNRR(int n){
     int *vetorVariaveis;
     vetorVariaveis = malloc(n * sizeof(int));
     if (vetorVariaveis == NULL) {
@@ -124,34 +125,34 @@ int *instrucaoTipoN(int n){
 }
 
 // Define o valor da variavel x como 0.
-void instrucaoTipoD(int x, int *vetorVariaveis){
+void instrucaoTipoDRR(int x, int *vetorVariaveis){
     vetorVariaveis[x] = 0;
 }
 
 // Define o valor da variavel x como n.
-void instrucaoTipoV(int x, int n, int *vetorVariaveis){
+void instrucaoTipoVRR(int x, int n, int *vetorVariaveis){
     vetorVariaveis[x] = n;
 }
 
 // Soma n a variavel x.
-void instrucaoTipoA(int x, int n, int *vetorVariaveis){
+void instrucaoTipoARR(int x, int n, int *vetorVariaveis){
     vetorVariaveis[x] += n;
 }
 
 // Subtrai n da variavel x.
-void instrucaoTipoS(int x, int n, int *vetorVariaveis){
+void instrucaoTipoSRR(int x, int n, int *vetorVariaveis){
     vetorVariaveis[x] -= n;
 }
 
 // Bloqueia o processo atual, colocando-o na fila de bloqueados.
-void instrucaoTipoB(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* estadoBloqueado){
+void instrucaoTipoBRR(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* estadoBloqueado){
     enfileirar(*pidProcessoAtual, n, estadoBloqueado);
     ProcessoSimulado* processo = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     processo->estadoProcesso = BLOQUEADO;
 }
 
 // Finaliza o processo atual, liberando memoria e alterando seu estado.
-void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
+void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos){
     ProcessoSimulado* processoEncerrado = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
 
     free(processoEncerrado->conjuntoInstrucoes);
@@ -161,21 +162,30 @@ void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
     processoEncerrado->estadoProcesso = BLOQUEADO;
 }
 
-// Cria um novo processo (fork), insere na tabela e fila de prontos.
-void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, int tempoAtualSistema, Lista* tabelaProcessos, Fila** estadoPronto){
+// Cria um novo processo (fork), insere na tabela e na fila Round Robin.
+void instrucaoTipoFRR(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, 
+                    int tempoAtualSistema, Lista* tabelaProcessos, Fila* filaRoundRobin){
     ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
+    printf("busca passou\n");
+
+    imprimeProcesso(*copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1), 1);
     
-    ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
-
+    /*ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
+    printf("copia passou");
     insereNaTabela(processoFilho, tabelaProcessos);
-    enfileirar(processoFilho->pid, NUMEROVAZIO, estadoPronto[processoFilho->prioridade]);
+    printf("insere passou");
+    // Para Round Robin, todos os processos vão para a mesma fila
+    enfileirar(processoFilho->pid, NUMEROVAZIO, filaRoundRobin);
+    printf("enfileirar passou");
+    
     *quantidadeProcessosIniciados += 1;
-
-    *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE
+    printf("qtd passou");
+    *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE*/
+    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 }
 
 // Le instrucoes de um arquivo e carrega no processo.
-void instrucaoTipoR(char *nomeDoArquivo, Instrucao** arrPrograma, int* pcProcessoAtual){   
+void instrucaoTipoRRR(char *nomeDoArquivo, Instrucao** arrPrograma, int* pcProcessoAtual){   
     char caminhoArquivo[BUFFER] = "./data/";
     strcat(caminhoArquivo, nomeDoArquivo);
     leInstrucoesArquivo(caminhoArquivo, arrPrograma);

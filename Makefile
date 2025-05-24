@@ -1,9 +1,9 @@
 FilaPrioridade:
 	clear
-	gcc -g -O0 -Wall main.c ./Modulos/Menu/Menu.c ./Modulos/ProcessoSimulado/Instrucao.c ./Modulos/ProcessoSimulado/ProcessoSimulado.c ./Modulos/GerenciadorProcessos/Cpu.c ./Modulos/GerenciadorProcessos/GerenciadorProcessos.c ./Modulos/ProcessoControle/ProcessoControle.c ./Modulos/Pipe/Pipe.c ./Modulos/ProcessoImpressao/ProcessoImpressao.c ./Modulos/EstruturasDeDados/Fila.c ./Modulos/EstruturasDeDados/Lista.c ./Modulos/GerenciadorProcessos/TabelaProcessos.c -o FilaPrioridade.exe
+	gcc -g -O0 -Wall main.c ./Modulos/Menu/Menu.c ./Modulos/ProcessoSimulado/Instrucao.c ./Modulos/ProcessoSimulado/ProcessoSimulado.c ./Modulos/GerenciadorProcessos/Cpu.c ./Modulos/GerenciadorProcessos/CpuRR.c ./Modulos/GerenciadorProcessos/GerenciadorProcessosRR.c ./Modulos/GerenciadorProcessos/GerenciadorProcessos.c ./Modulos/ProcessoControle/ProcessoControle.c ./Modulos/Pipe/Pipe.c ./Modulos/ProcessoImpressao/ProcessoImpressao.c ./Modulos/ProcessoImpressao/ProcessoImpressaoRR.c ./Modulos/EstruturasDeDados/Fila.c ./Modulos/EstruturasDeDados/Lista.c ./Modulos/GerenciadorProcessos/TabelaProcessos.c -o FilaPrioridade.exe
 	./FilaPrioridade.exe 1
 
 # Adicione este target para apenas compilar sem executar
-build:
-	clear
-	gcc -g -O0 -Wall main.c ./Modulos/Menu/Menu.c ./Modulos/ProcessoSimulado/Instrucao.c ./Modulos/ProcessoSimulado/ProcessoSimulado.c ./Modulos/GerenciadorProcessos/Cpu.c ./Modulos/GerenciadorProcessos/GerenciadorProcessos.c ./Modulos/ProcessoControle/ProcessoControle.c ./Modulos/Pipe/Pipe.c ./Modulos/ProcessoImpressao/ProcessoImpressao.c ./Modulos/EstruturasDeDados/Fila.c ./Modulos/EstruturasDeDados/Lista.c ./Modulos/GerenciadorProcessos/TabelaProcessos.c -o FilaPrioridade.exe
+	build:
+		clear
+		gcc -g -O0 -Wall main.c ./Modulos/Menu/Menu.c ./Modulos/ProcessoSimulado/Instrucao.c ./Modulos/ProcessoSimulado/ProcessoSimulado.c ./Modulos/GerenciadorProcessos/Cpu.c ./Modulos/GerenciadorProcessos/CpuRR.c ./Modulos/GerenciadorProcessos/GerenciadorProcessosRR.c ./Modulos/GerenciadorProcessos/GerenciadorProcessos.c ./Modulos/ProcessoControle/ProcessoControle.c ./Modulos/Pipe/Pipe.c ./Modulos/ProcessoImpressao/ProcessoImpressao.c ./Modulos/ProcessoImpressao/ProcessoImpressaoRR.c ./Modulos/EstruturasDeDados/Fila.c ./Modulos/EstruturasDeDados/Lista.c ./Modulos/GerenciadorProcessos/TabelaProcessos.c -o FilaPrioridade.exe

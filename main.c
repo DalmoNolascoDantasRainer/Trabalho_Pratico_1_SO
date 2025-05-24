@@ -1,5 +1,7 @@
 #include "./Modulos/ProcessoControle/ProcessoControle.h"
 #include "./Modulos/ProcessoImpressao/ProcessoImpressao.h"
+#include "./Modulos/ProcessoImpressao/ProcessoImpressaoRR.h"
+
 #include "./Modulos/Menu/Menu.h"  // ADICIONADO: Inclui o header do menu
 #include <sys/wait.h>
 
@@ -24,27 +26,24 @@ int main(int argc, char **argv) {
     printf("Numero de CPUs: %d\n", numCPUs);
     
     // Inicializa estrutura de gerenciamento
-    GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
+    //GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
+
+    GerenciadorProcessosRR *gerenciadorRR = inicializaGerenciadorRR(numCPUs);
     printf("Gerenciador de processos inicializado\n");
     
     // Menu inicial retorna opção escolhida pelo usuário
     int opcao = MenuInicial(&arquivoDeEntrada);
     
     // ADICIONADO: Menu para seleção do algoritmo de escalonamento
-    int opcaoEscalonamento = MenuEscalonamento();
+    //int opcaoEscalonamento = MenuEscalonamento();
     
-    // ADICIONADO: Configura o algoritmo de escalonamento baseado na escolha do usuário
-    if (opcaoEscalonamento == 1) {
-        // Filas Múltiplas (comportamento padrão - não precisa alterar nada)
-        defineEscalonamento(gerenciador, ESC_FILAS_MULTIPLAS);
-        printf("\n🔄 Sistema configurado com Filas Múltiplas de Prioridade\n");
-    } else {
-        // Round Robin
-        defineEscalonamento(gerenciador, ESC_ROBIN);
-        printf("\n🔄 Sistema configurado com Round Robin (Quantum = 3)\n");
-    }
+   
+    // Round Robin
+    ///defineEscalonamento(gerenciador, ESC_ROBIN);
+    printf("\n🔄 Sistema configurado com Round Robin (Quantum = 3)\n");
 
-    // Criação dos pipes de comunicação
+
+            // Criação dos pipes de comunicação
     if (pipe(fd) == -1 || pipe(syncPipe) == -1){
         perror("Erro ao criar os pipes");
         return 1;
@@ -81,9 +80,9 @@ int main(int argc, char **argv) {
                     read(syncPipe[0], &confirmacao, sizeof(char));
                     
                     /* 
-                     * Quando recebe o 'D', o PAI sabe que:
-                     * "A impressão terminou, posso continuar!"
-                     */
+                    * Quando recebe o 'D', o PAI sabe que:
+                    * "A impressão terminou, posso continuar!"
+                    */
                     printf("Impressão concluída!\n");
                 }
             }
@@ -104,11 +103,9 @@ int main(int argc, char **argv) {
         close(syncPipe[0]); // Fecha leitura do pipe de sincronização
         
         // ADICIONADO: Exibe informações sobre o algoritmo em uso
-        if (opcaoEscalonamento == 2) {
-            printf("🔄 Executando com Round Robin - Quantum: 3 unidades\n");
-        } else {
-            printf("🔄 Executando com Filas Múltiplas de Prioridade\n");
-        }
+    
+        printf("🔄 Executando com Round Robin - Quantum: 3 unidades\n");
+        
         
         while (1) {
             // Recebe comando do processo pai
@@ -116,21 +113,21 @@ int main(int argc, char **argv) {
             
             if (comando == 'U') {
                 // Comando de atualização/gerenciamento
-                gerenciadorProcessos(gerenciador, comando);
-                
+
+                printf("TESTE1\n");
+                gerenciadorProcessosRR(gerenciadorRR, comando);
+                printf("TESTE2\n");
                 // ADICIONADO: Feedback visual do algoritmo em execução (opcional)
-                if (opcaoEscalonamento == 2) {
-                    printf("⏰ [RR] Tempo: %d\n", gerenciador->tempo);
-                } else {
-                    printf("⏰ [FM] Tempo: %d\n", gerenciador->tempo);
-                }
+                
+                printf("⏰ [RR] Tempo: %d\n", gerenciadorRR->tempo);
+                
             }
             else if (comando == 'I') {
                 // Comando de impressão
                 if (opcao == 2) {
                     // Modo arquivo: impressão simples
                     printf("\n📋 Gerando relatório do sistema...\n");
-                    impressaoArquivo(gerenciador);
+                    impressaoArquivoRR(gerenciadorRR);
                 }
                 else {
                     // Modo interativo: cria processo específico para impressão
@@ -142,7 +139,7 @@ int main(int argc, char **argv) {
                     else if (pidImpressao == 0) {
                         // Processo neto: executa impressão
                         printf("\n📋 Gerando relatório do sistema...\n");
-                        ImprimeGerenciadorProcessos(gerenciador);
+                        ImprimeGerenciadorProcessosRR(gerenciadorRR);
                         exit(0);
                     }
                     else {
@@ -154,9 +151,9 @@ int main(int argc, char **argv) {
                         write(syncPipe[1], &confirmacao, sizeof(char));
                         
                         /* 
-                         * O 'D' é enviado pelo FILHO para o PAI dizendo:
-                         * "Oi pai, a impressão que você pediu JÁ TERMINOU!"
-                         */
+                        * O 'D' é enviado pelo FILHO para o PAI dizendo:
+                        * "Oi pai, a impressão que você pediu JÁ TERMINOU!"
+                        */
                     }
                 }
             }
@@ -170,6 +167,9 @@ int main(int argc, char **argv) {
     }
     
     printf("\n✅ Sistema finalizado com sucesso!\n");
+
+
+
     return 0;
 }
 
