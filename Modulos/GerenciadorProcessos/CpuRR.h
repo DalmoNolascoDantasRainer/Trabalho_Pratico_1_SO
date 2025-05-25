@@ -23,7 +23,6 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
 int cpuLivreRR(CPU_RR* cpu);
 void zeraCPURR(CPU_RR* cpu);
 
-/* -------------- Instrucoes de programa que sao processadas na CPU_RR -------------- */
 
 int* instrucaoTipoNRR(int n);
 void instrucaoTipoDRR(int x, int *vetorVariaveis);

@@ -104,7 +104,6 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     }
 }
 
-/* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
 
 // Aloca um vetor de variaveis inteiras para o processo
 int *instrucaoTipoN(int n){

@@ -111,8 +111,6 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
 }
 
 
-/* Instrucoes processadas na CPU */
-
 // Aloca um vetor de variaveis para o processo
 int *instrucaoTipoNRR(int n){
     int *vetorVariaveis;
