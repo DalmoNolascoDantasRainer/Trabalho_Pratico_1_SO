@@ -22,8 +22,6 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
                           int* quantidadeProcessosIniciados, Fila* filaRoundRobin, Fila* estadoBloqueado);
 int cpuLivreRR(CPU_RR* cpu);
 void zeraCPURR(CPU_RR* cpu);
-
-
 int* instrucaoTipoNRR(int n);
 void instrucaoTipoDRR(int x, int *vetorVariaveis);
 void instrucaoTipoVRR(int x, int n, int *vetorVariaveis);

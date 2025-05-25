@@ -119,7 +119,7 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
                 }
                 else{
                     // Percorre a fila de bloqueados e imprime informações de cada processo
-                    CelulaPidTempo *celula = gerenciador->estadoBloqueado->Frente;
+                    ElementoPidTempo *celula = gerenciador->estadoBloqueado->Frente;
                     while (celula != NULL)
                     {
                         processo = buscaProcesso(gerenciador->tabelaProcessos, celula->pidTempo.pid);
@@ -145,7 +145,7 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
                     }
                     else{
                         // Percorre a fila e imprime informações de cada processo 
-                        CelulaPidTempo *celula = fila->Frente;
+                        ElementoPidTempo *celula = fila->Frente;
                             printf("╔════════╦══════════╦══════╦════════════╦════════════════╦════════════════╗\n");
                             printf("║  PID   ║ PID PAI  ║  PC  ║  Estado    ║Tempo de Início ║ Tempo de CPU   ║\n");
                             printf("╠════════╬══════════╬══════╬════════════╬════════════════╬════════════════╣\n");

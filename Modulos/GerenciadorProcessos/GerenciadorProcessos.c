@@ -131,7 +131,7 @@ void iniciaProcessoInit(GerenciadorProcessos *gerenciador) {
 }
 
 // Incrementa o tempo do sistema
-void encerraUnidadeTempo(GerenciadorProcessos *gerenciador){
+void finalizaUnidadeTempo(GerenciadorProcessos *gerenciador){
     gerenciador->tempo += 1;
 }
 
@@ -143,7 +143,6 @@ void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fil
         *estadoExecucao = pidProcesso; // Atualiza o estado de execucao da CPU
 
         ProcessoSimulado *proximoProceso = buscaProcesso(tabelaProcessos, pidProcesso); // Busca o processo na tabela
-
         proximoProceso->estadoProcesso = EXECUCAO; // Define o estado do processo como em execucao
 
         insereProcessoCPU(cpu, proximoProceso);
@@ -153,7 +152,6 @@ void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fil
 // Escalona processos para as CPUs disponiveis
 void escalonaProcessosCPUs(GerenciadorProcessos *gerenciador){
     verificaBloqueados(gerenciador); // Verifica e desbloqueia processos, se necessario
-
     for (int i = 0; i < gerenciador->numCPUs; i++){
         if (cpuLivre(gerenciador->cpus[i]) == 1){ // Verifica se a CPU esta livre
             if (filasVazias(gerenciador->estadoPronto, CLASSESPRIORIDADES) == 0){ // Verifica se ha processos prontos
@@ -173,7 +171,7 @@ void executaCPUs(GerenciadorProcessos *gerenciador){
 }
 
 // Realiza a troca de contexto nas CPUs
-void trocaDeContexto(GerenciadorProcessos *gerenciador){
+void realizaTrocaDeContexto(GerenciadorProcessos *gerenciador){
     for (int i = 0; i < gerenciador->numCPUs; i++){
         if (!(cpuLivre(gerenciador->cpus[i]))){ // Verifica se a CPU esta ocupada e remove o processo (troca de contexto)
             removeProcessoCPU(gerenciador->cpus[i], gerenciador->tabelaProcessos, gerenciador->estadoPronto, gerenciador);
@@ -185,18 +183,18 @@ void trocaDeContexto(GerenciadorProcessos *gerenciador){
 // Funcao principal que gerencia os processos com base no comando recebido
 void gerenciadorProcessos(GerenciadorProcessos *gerenciador, char comando){
     if (comando == 'U'){ // Comando para avancar uma unidade de tempo
-        encerraUnidadeTempo(gerenciador); // Incrementa o tempo do sistema
+        finalizaUnidadeTempo(gerenciador); // Incrementa o tempo do sistema
 
         if (gerenciador->tempo == 1){ // Na primeira unidade de tempo
             iniciaProcessoInit(gerenciador); // Inicia o processo inicial
             escalonaProcessosCPUs(gerenciador); // Escalona os processos para as CPUs
             executaCPUs(gerenciador); // Executa os processos nas CPUs
-            trocaDeContexto(gerenciador); // Realiza troca de contexto, se necessario
+            realizaTrocaDeContexto(gerenciador); // Realiza troca de contexto, se necessario
         }
         else{
             escalonaProcessosCPUs(gerenciador);
             executaCPUs(gerenciador);
-            trocaDeContexto(gerenciador);
+            realizaTrocaDeContexto(gerenciador);
         }
     }
 }
@@ -206,8 +204,8 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto, Ge
     ProcessoSimulado *processoNaCPU = buscaProcesso(tabelaProcessos, (cpu->pidProcessoAtual)); // Busca o processo na CPU
 
     if (processoNaCPU != NULL){
-        if (cpu->fatiaQuantum >= calcularPotencia(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido
-            
+        if (cpu->fatiaQuantum >= calculaQuantumTotal(2, processoNaCPU->prioridade)){ // Verifica se o quantum foi excedido
+
             *(processoNaCPU->pc) = cpu->pcProcessoAtual; // Atualiza o PC do processo
 
             processoNaCPU->estadoProcesso = PRONTO; // Define o estado como pronto
@@ -237,7 +235,7 @@ void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto, Ge
 // Verifica e desbloqueia processos bloqueados, se necessario
 void verificaBloqueados(GerenciadorProcessos *gerenciador) {
     for (int i = 0; i < gerenciador->estadoBloqueado->Tamanho; i++) {
-        PidTempo *pidTempo = desenfileirar(gerenciador->estadoBloqueado); // Obtem o proximo processo bloqueado
+        PidStatus *pidTempo = desenfileirar(gerenciador->estadoBloqueado); // Obtem o proximo processo bloqueado
 
         pidTempo->tempoExecutado--; 
 
@@ -257,12 +255,12 @@ void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProces
 }
 
 // Calcula a potencia de um numero (as prioridades sao potencia de 2)
-double calcularPotencia(double base, int expoente){
-    double resultado = 1.0;
+double calculaQuantumTotal(double base, int expoente){
+    double valor = 1.0;
 
     for (int i = 0; i < expoente; i++){
-        resultado = resultado * base;
+        valor = valor * base;
     }
 
-    return resultado;
+    return valor;
 }

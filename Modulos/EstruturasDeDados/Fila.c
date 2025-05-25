@@ -4,7 +4,7 @@
 Fila* criaFila(){
     Fila* fila = (Fila*) malloc(sizeof(Fila)); 
     
-    fila->Frente = (Apontador) malloc(sizeof(CelulaPidTempo));
+    fila->Frente = (Apontador) malloc(sizeof(ElementoPidTempo));
     fila->Tras = fila->Frente; // No inicio frente e tras estao na mesma celula (para evitar erros de memoria depois)
     fila->Frente->Prox = NULL;
     fila->Tamanho = 0;
@@ -31,13 +31,13 @@ int filasVazias(Fila** filas, int numFilas) {
 // Funcao que adiciona um elemento em uma fila vazia
 void enfileirar(int pid, int tempoExecutado, Fila *Fila) {
     if(Fila->Tamanho == 0) {
-        Fila->Frente = (Apontador) malloc(sizeof(CelulaPidTempo)); 
+        Fila->Frente = (Apontador) malloc(sizeof(ElementoPidTempo)); 
         Fila->Tras = Fila->Frente;  // Define que frente e tras apontam para o mesmo elemento (unico elemento)
         Fila->Tras->Prox = NULL;
         Fila->Frente->pidTempo = criaCelulaPidTempo(pid, tempoExecutado);
     }
     else{
-        Fila->Tras->Prox = (Apontador) malloc(sizeof(CelulaPidTempo)); // Liga a celula na fila
+        Fila->Tras->Prox = (Apontador) malloc(sizeof(ElementoPidTempo)); // Liga a celula na fila
         Fila->Tras = Fila->Tras->Prox; // Nova "ultima" celula
         Fila->Tras->Prox = NULL;
         Fila->Tras->pidTempo = criaCelulaPidTempo(pid, tempoExecutado);
@@ -46,17 +46,17 @@ void enfileirar(int pid, int tempoExecutado, Fila *Fila) {
 }
 
 // Funcao que remove um elemento em uma fila 
-PidTempo* desenfileirar(Fila* fila) {
+PidStatus* desenfileirar(Fila* fila) {
     if (filaEhVazia(fila)) {
         return NULL;
     }
 
     // Guarda o elemento que sera removido da fila
-    PidTempo* pidTempoRemovido = (PidTempo*) malloc(sizeof(PidTempo));
+    PidStatus* pidTempoRemovido = (PidStatus*) malloc(sizeof(PidStatus));
     
     pidTempoRemovido->pid = fila->Frente->pidTempo.pid;
     pidTempoRemovido->tempoExecutado = fila->Frente->pidTempo.tempoExecutado;
-    CelulaPidTempo* celulaRemovida = fila->Frente;
+    ElementoPidTempo* celulaRemovida = fila->Frente;
 
     fila->Frente = fila->Frente->Prox;
     free(celulaRemovida);
@@ -78,7 +78,7 @@ int desenfileirarPID(Fila* fila) {
     }
 
     int PidRemovido = fila->Frente->pidTempo.pid;
-    CelulaPidTempo* celulaRemovida = fila->Frente;
+    ElementoPidTempo* celulaRemovida = fila->Frente;
 
     fila->Frente = fila->Frente->Prox;
     free(celulaRemovida);
@@ -111,8 +111,8 @@ int desenfileirarFilas(Fila** filas, int numFilas) {
 }
 
 // Funcao que criar uma celula pid tempo
-PidTempo criaCelulaPidTempo(int PID, int tempoExecutado){
-    PidTempo celula;
+PidStatus criaCelulaPidTempo(int PID, int tempoExecutado){
+    PidStatus celula;
     celula.pid = PID;
     celula.tempoExecutado = tempoExecutado;
     return celula;
@@ -124,7 +124,7 @@ void imprimeFila(Fila *fila) {
         printf("   Fila Vazia!\n");
 
     } else{
-        CelulaPidTempo *celula = fila->Frente;
+        ElementoPidTempo *celula = fila->Frente;
         while (celula != NULL) {
             if (celula->pidTempo.tempoExecutado == -1){
                 printf("\n   Pid: %d", celula->pidTempo.pid);

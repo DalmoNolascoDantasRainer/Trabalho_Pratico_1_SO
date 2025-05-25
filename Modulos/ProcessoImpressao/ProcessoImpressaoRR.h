@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #include "../GerenciadorProcessos/GerenciadorProcessosRR.h"
 
-
 void impressaoArquivoRR(GerenciadorProcessosRR *gerenciador);
 void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador);
 void imprimeCPUsRR(GerenciadorProcessosRR *gerenciador);

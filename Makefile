@@ -61,17 +61,17 @@ build-threads: $(THREAD_TARGET)
 
 # Run targets
 run-priority: $(TARGET)
-	./$(TARGET) 2
+	./$(TARGET) 1
 
 run-threads: $(THREAD_TARGET)
-	./$(THREAD_TARGET) 2
+	./$(THREAD_TARGET) 1
 
 # Debug targets
 debug-priority: $(TARGET)
-	gdb --args ./$(TARGET) 2
+	gdb --args ./$(TARGET) 1
 
 debug-threads: $(THREAD_TARGET)
-	gdb --args ./$(THREAD_TARGET) 2
+	gdb --args ./$(THREAD_TARGET) 1
 
 # Clean target
 clean:

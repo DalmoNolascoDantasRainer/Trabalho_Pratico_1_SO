@@ -114,14 +114,14 @@ void iniciaProcessoInitRR(GerenciadorProcessosRR *gerenciador){
 }
 
 // Incrementa o tempo do sistema
-void encerraUnidadeTempoRR(GerenciadorProcessosRR *gerenciador) {
+void finalizaUnidadeTempoRR(GerenciadorProcessosRR *gerenciador) {
     gerenciador->tempo += 1;
 }
 
 // Escalona um processo da fila Round Robin para uma CPU
 void escalonaProcessoRR(Lista *tabelaProcessos, CPU_RR *cpu, int *estadoExecucao, Fila *filaRR){
 
-    PidTempo *pidTempo = desenfileirar(filaRR); // Obtem o proximo processo da fila Round Robin
+    PidStatus *pidTempo = desenfileirar(filaRR); // Obtem o proximo processo da fila Round Robin
     
     if (pidTempo != NULL){
         int pidProcesso = pidTempo->pid;
@@ -164,7 +164,7 @@ void executaCPUsRR(GerenciadorProcessosRR *gerenciador) {
 }
 
 // Realiza a troca de contexto nas CPUs (Round Robin)
-void trocaDeContextoRR(GerenciadorProcessosRR *gerenciador){
+void realizaTrocaDeContextoRR(GerenciadorProcessosRR *gerenciador){
     for (int i = 0; i < gerenciador->numCPUs; i++){
         // Verifica se a CPU esta ocupada e remove, se necessario
         if (!(cpuLivreRR(gerenciador->cpus[i]))){
@@ -215,7 +215,7 @@ void verificaBloqueadosRR(GerenciadorProcessosRR *gerenciador){
 
     // Processa todos os elementos que estavam na fila no inicio 
     for (int i = 0; i < tamanhoOriginal; i++){
-        PidTempo *pidTempo = desenfileirar(gerenciador->estadoBloqueado);
+        PidStatus *pidTempo = desenfileirar(gerenciador->estadoBloqueado);
 
         if (pidTempo != NULL){
             pidTempo->tempoExecutado--; 
@@ -241,14 +241,14 @@ void verificaBloqueadosRR(GerenciadorProcessosRR *gerenciador){
 // Funcao principal que gerencia os processos com base no comando recebido
 void gerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador, char comando) {
     if (comando == 'U'){
-        encerraUnidadeTempoRR(gerenciador); 
+        finalizaUnidadeTempoRR(gerenciador); 
 
         if (gerenciador->tempo == 1) {
             iniciaProcessoInitRR(gerenciador);
         }
 
         executaCPUsRR(gerenciador);           // Executa quem ja esta na CPU
-        trocaDeContextoRR(gerenciador);       // Verifica se precisa trocar (Round Robin)
+        realizaTrocaDeContextoRR(gerenciador);       // Verifica se precisa trocar (Round Robin)
         escalonaProcessosCPUsRR(gerenciador); // Envia novos processos para CPUs livres
     }
 }

@@ -104,7 +104,6 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
     }
 }
 
-
 // Aloca um vetor de variaveis inteiras para o processo
 int *instrucaoTipoN(int n){
     int *vetorVariaveis;
@@ -147,7 +146,6 @@ void instrucaoTipoB(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* 
 // Finaliza o processo atual, liberando memoria e alterando seu estado
 void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
     ProcessoSimulado* processoEncerrado = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
-
     free(processoEncerrado->conjuntoInstrucoes);
     free(processoEncerrado->vetorVariaveis);
 
@@ -159,12 +157,11 @@ void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
 void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, int tempoAtualSistema, Lista* tabelaProcessos, Fila** estadoPronto){
     ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     
-    ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
+    ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, encontraMaiorPIDTabela(tabelaProcessos)+1);
 
     insereNaTabela(processoFilho, tabelaProcessos);
     enfileirar(processoFilho->pid, NUMEROVAZIO, estadoPronto[processoFilho->prioridade]);
     *quantidadeProcessosIniciados += 1;
-
     *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE
 }
 
@@ -173,6 +170,5 @@ void instrucaoTipoR(char *nomeDoArquivo, Instrucao** vetorPrograma, int* pcProce
     char caminhoArquivo[BUFFER] = "./arquivos/";
     strcat(caminhoArquivo, nomeDoArquivo);
     leInstrucoesArquivo(caminhoArquivo, vetorPrograma);
-
     *pcProcessoAtual = -1;
 }

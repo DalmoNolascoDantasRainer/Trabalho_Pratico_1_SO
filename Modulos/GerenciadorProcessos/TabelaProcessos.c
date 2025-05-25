@@ -61,7 +61,7 @@ void removeDaTabela(Lista* lista, int PID) {
 }
 
 // Funcao para encontrar o maior PID na lista
-int maiorPIDTabela(Lista* lista) {
+int encontraMaiorPIDTabela(Lista* lista) {
   CelulaPtr atual = lista->Primeiro->Prox;
   int maiorPID = 0;
 

@@ -17,17 +17,14 @@ typedef struct GerenciadorProcessosRR {
     int numCPUs;
 } GerenciadorProcessosRR;
 
-
 GerenciadorProcessosRR* inicializaGerenciadorRR(int numCPUs);
 void iniciaProcessoInitRR(GerenciadorProcessosRR *gerenciador);
 void gerenciadorProcessosRR(GerenciadorProcessosRR* gerenciador, char comando);
-void encerraUnidadeTempoRR(GerenciadorProcessosRR *gerenciador);
-
-// Escalonamento e execuçao
+void finalizaUnidadeTempoRR(GerenciadorProcessosRR *gerenciador);
 void escalonaProcessosCPUsRR(GerenciadorProcessosRR* gerenciador);
 void escalonaProcessoRR(Lista* tabelaProcessos, CPU_RR* cpu, int* estadoExecucao, Fila* filaRR);
 void executaCPUsRR(GerenciadorProcessosRR* gerenciador);
-void trocaDeContextoRR(GerenciadorProcessosRR* gerenciador);
+void realizaTrocaDeContextoRR(GerenciadorProcessosRR* gerenciador);
 void removeProcessoCPURR(CPU_RR* cpu, Lista* tabelaProcessos, Fila* filaRR);
 void verificaBloqueadosRR(GerenciadorProcessosRR* gerenciador);
 

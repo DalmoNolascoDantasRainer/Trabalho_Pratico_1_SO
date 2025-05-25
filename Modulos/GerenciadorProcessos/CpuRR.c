@@ -110,7 +110,6 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
     }
 }
 
-
 // Aloca um vetor de variaveis para o processo
 int *instrucaoTipoNRR(int n){
     int *vetorVariaveis;
@@ -119,7 +118,6 @@ int *instrucaoTipoNRR(int n){
         printf("Erro ao alocar memoria");
         exit(1);
     }
-
     return vetorVariaveis;
 }
 
@@ -156,17 +154,15 @@ void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos){
 
     free(processoEncerrado->conjuntoInstrucoes);
     free(processoEncerrado->vetorVariaveis);
-
     *processoEncerrado->pc = NUMEROVAZIO-1;
     processoEncerrado->estadoProcesso = BLOQUEADO;
 }
 // Cria um novo processo (fork), insere na tabela e na fila Round Robin
 void instrucaoTipoFRR(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, 
                     int tempoAtualSistema, Lista* tabelaProcessos, Fila* filaRoundRobin){
-
     ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     
-    ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
+    ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, encontraMaiorPIDTabela(tabelaProcessos)+1);
 
     insereNaTabela(processoFilho, tabelaProcessos);
     enfileirar(processoFilho->pid, NUMEROVAZIO, filaRoundRobin);

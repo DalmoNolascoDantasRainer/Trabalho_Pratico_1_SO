@@ -22,18 +22,15 @@ typedef struct GerenciadorProcessos {
 GerenciadorProcessos* inicializaGerenciador(int numCPUs);
 void iniciaProcessoInit(GerenciadorProcessos *gerenciador);
 void gerenciadorProcessos(GerenciadorProcessos* gerenciador, char comando);
-void encerraUnidadeTempo(GerenciadorProcessos *gerenciador);
-
-
-/*------------------------------- Funçoes que operam processos -------------------------------*/
+void finalizaUnidadeTempo(GerenciadorProcessos *gerenciador);
 void escalonaProcessosCPUs(GerenciadorProcessos* gerenciador);
 void escalonaProcesso(Lista* tabelaProcessos, CPU* cpu, int* estadoExecucao, Fila** estadoPronto);
 void executaCPUs(GerenciadorProcessos* gerenciador);
-void trocaDeContexto(GerenciadorProcessos* gerenciador);
+void realizaTrocaDeContexto(GerenciadorProcessos* gerenciador);
 void removeProcessoCPU(CPU *cpu, Lista *tabelaProcessos, Fila **estadoPronto, GerenciadorProcessos *gerenciador);
 void verificaBloqueados(GerenciadorProcessos* gerenciador);
 void iniciaProcessoInit(GerenciadorProcessos *gerenciador);
-double calcularPotencia(double base, int expoente);
+double calculaQuantumTotal(double base, int expoente);
 void removeProcessoTabela(ProcessoSimulado *processoEscolhido, GerenciadorProcessos *gerenciador);
 
 #endif 
