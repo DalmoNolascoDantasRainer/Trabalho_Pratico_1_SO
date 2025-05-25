@@ -1,26 +1,9 @@
 #include "./Threads/Threads.h"
-
-//include "./Modulos/Menu/Menu.h"
-#include <sys/wait.h>
-
-FILE *LerArquivo(char *nomeArquivo) {
-    FILE *ponteiro_arquivo = NULL;
-
-    while (ponteiro_arquivo == NULL) {
-        ponteiro_arquivo = fopen(nomeArquivo, "r");
-
-        if (ponteiro_arquivo == NULL) {
-            printf("\n\x1b[31m ERRO: \x1b[0m Arquivo não encontrado! :( \nPor favor, insira um arquivo válido!\n");
-            printf("Digite o nome do arquivo novamente: ");
-            scanf("%s", nomeArquivo);
-        }
-    }
-    return ponteiro_arquivo;
-}
+#include <sys/wait.h> 
 
 int SelecaoEntrada(FILE **arquivoDeEntrada){
     int opcao = 0 ;
-    while (opcao == 0){
+    while (opcao == 0){ 
         printf("╔══════════════════════════════╗\n");
         printf("║      OPÇÕES DE ENTRADA:      ║\n");
         printf("╠══════════════════════════════╣\n");
@@ -28,11 +11,24 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
         printf("║ 2) Entrada por arquivo       ║\n");
         printf("║ 3) Sair                      ║\n");
         printf("╚══════════════════════════════╝\n");
-        //printf("\n1) Entrada padrão");
-        //printf("\n2) Entrada por arquivo");
-        //printf("\n>> Escolha a opção: ");
-        printf("\x1b[32m >> \x1b[0m Escolha a opção de entrada: ");
-        scanf("%d", &opcao);
+        printf("\x1b[32m >> \x1b[0m Escolha a opção de entrada: "); 
+        if (scanf("%d", &opcao) != 1) {
+            // Falhou (ex: letra)
+            opcao = 0;
+            printf("\nEntrada inválida :( Digite um número!\n");
+
+            // Limpa o buffer
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+
+            sleep(2);
+            system("clear");
+            continue;
+        } else {
+            // Limpa o buffer mesmo se a leitura foi bem-sucedida
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+        }
         printf("\n");
         if (opcao == 1){
             printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
@@ -43,22 +39,27 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
             printf("║ M) Imprimir o tempo médio de resposta e finalizar o sistema                        ║\n");
             printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
         }
-        else if (opcao == 2){
-            *arquivoDeEntrada = LerArquivo("./arquivos/comandos");
+        else if (opcao == 2){ 
+            *arquivoDeEntrada = LerArquivo("./arquivos/comandos"); // Abre o arquivo padrão de comandos
+        }
+        else if (opcao == 3){
+            printf("\nEncerrando o programa...\n");
+            sleep(1);
+            exit(0); 
         }
         else{
             printf("\n Opção inválida :( \n");
             printf(" Tente novamente!! \n");
             opcao = 0;
-            sleep(2);
+            sleep(2); 
             system("clear");
         }
     }
 
-    return opcao;
+    return opcao; 
 }
 
-// Nova função para seleção do algoritmo de escalonamento
+
 int SelecaoEscalonamento() {
     int opcaoEscalonamento = 0 ;
 
@@ -66,7 +67,7 @@ int SelecaoEscalonamento() {
     printf("║                                \x1b[32m  🖥️​⚙️​  BEM-VINDO ;) \x1b[0m                                 ║\n");
     printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
 
-    while (opcaoEscalonamento == 0){
+    while (opcaoEscalonamento == 0){ 
         printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
         printf("║                        ALGORITMO DE ESCALONAMENTO                                  ║\n");
         printf("╠════════════════════════════════════════════════════════════════════════════════════╣\n");
@@ -77,7 +78,7 @@ int SelecaoEscalonamento() {
         scanf("%d", &opcaoEscalonamento);
         printf("\n");
         
-        if (opcaoEscalonamento != 1 && opcaoEscalonamento != 2 ) {
+        if (opcaoEscalonamento != 1 && opcaoEscalonamento != 2 ) { 
             printf("\n Opção inválida :( \n");
             printf(" Tente novamente!! \n");
             opcaoEscalonamento = 0;
@@ -86,17 +87,17 @@ int SelecaoEscalonamento() {
         }
     };
 
-    return opcaoEscalonamento;
+    return opcaoEscalonamento; 
 }
 
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
+    if (argc < 2) { 
         printf("Uso: %s <numero_CPUs>\n", argv[0]);
         return 1;
     }
     
-    int numCPUs = atoi(argv[1]);
+    int numCPUs = atoi(argv[1]); 
     FILE *arquivoDeEntrada;
     
     printf("=== SIMULADOR COM THREADS ===\n");
@@ -105,63 +106,62 @@ int main(int argc, char **argv) {
     printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
     printf("Numero de CPUs: %d\n", numCPUs);
     
-    GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
+    GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs); 
     printf("Gerenciador de processos inicializado\n");
     
-    int opcao = SelecaoEntrada(&arquivoDeEntrada);
+    int opcao = SelecaoEntrada(&arquivoDeEntrada); 
     
-    // Configuração dos dados globais
+
     DadosGlobais dados;
-    dados.gerenciador = gerenciador;
-    dados.arquivo = arquivoDeEntrada;
-    dados.opcao = opcao;
-    dados.numCPUs = numCPUs;
-    dados.sistema_ativo = 1;
+    dados.gerenciador = gerenciador; // Associa o gerenciador de processos
+    dados.arquivo = arquivoDeEntrada; // Associa o arquivo de entrada (se houver)
+    dados.opcao = opcao; 
+    dados.numCPUs = numCPUs; 
+    dados.sistema_ativo = 1; // Marca o sistema como ativo
     
-    // Inicialização do buffer
+    // Inicializacao do buffer de comandos
     BufferComando buffer;
-    buffer.comando_disponivel = 0;
-    buffer.comando_processado = 0;
-    pthread_mutex_init(&buffer.mutex, NULL);
-    pthread_cond_init(&buffer.cond_comando, NULL);
+    buffer.comando_disponivel = 0; 
+    buffer.comando_processado = 0; 
+    pthread_mutex_init(&buffer.mutex, NULL); 
+    pthread_cond_init(&buffer.cond_comando, NULL); 
     pthread_cond_init(&buffer.cond_processado, NULL);
-    dados.buffer = &buffer;
+    dados.buffer = &buffer; // Associa o buffer aos dados globais
     
-    // Inicialização da sincronização
-    pthread_mutex_init(&dados.mutex_gerenciador, NULL);
-    sem_init(&dados.sem_impressao, 0, 1);
+    // Inicialização da sincronizacao
+    pthread_mutex_init(&dados.mutex_gerenciador, NULL); 
+    sem_init(&dados.sem_impressao, 0, 1); // Inicializa semaforo para impressao
     
     // Criação das threads
     pthread_t tid_controle, tid_gerenciador;
     
-    if (pthread_create(&tid_controle, NULL, thread_controle, &dados) != 0) {
+    if (pthread_create(&tid_controle, NULL, thread_controle, &dados) != 0) { // Cria thread de controle
         printf("ERRO: Falha ao criar thread controle :(\n");
         return 1;
     }
     
-    if (pthread_create(&tid_gerenciador, NULL, thread_gerenciador, &dados) != 0) {
+    if (pthread_create(&tid_gerenciador, NULL, thread_gerenciador, &dados) != 0) { // Cria thread do gerenciador
         printf("ERRO: Falha ao criar thread gerenciador :(\n");
         return 1;
     }
     
     printf("Sistema em execução!\n\n");
     
-    // Aguarda finalização das threads
-    pthread_join(tid_controle, NULL);
-    pthread_join(tid_gerenciador, NULL);
+    // Aguarda finalizacao das threads
+    pthread_join(tid_controle, NULL); // Espera a thread de controle terminar
+    pthread_join(tid_gerenciador, NULL); // Espera a thread do gerenciador terminar
     
-    // Limpeza
-    pthread_mutex_destroy(&buffer.mutex);
-    pthread_cond_destroy(&buffer.cond_comando);
-    pthread_cond_destroy(&buffer.cond_processado);
-    pthread_mutex_destroy(&dados.mutex_gerenciador);
-    sem_destroy(&dados.sem_impressao);
+    // Limpeza dos recursos
+    pthread_mutex_destroy(&buffer.mutex); // Destroi mutex do buffer
+    pthread_cond_destroy(&buffer.cond_comando); // Destroi condicao de comando
+    pthread_cond_destroy(&buffer.cond_processado); // Destroi condicao de processado
+    pthread_mutex_destroy(&dados.mutex_gerenciador); // Destroi mutex do gerenciador
+    sem_destroy(&dados.sem_impressao); // Destroi semaforo de impressao
     
-    if (opcao == 2 && arquivoDeEntrada) {
+    if (opcao == 2 && arquivoDeEntrada) { // Se usou arquivo, fecha o arquivo
         fclose(arquivoDeEntrada);
     }
-    
+    imprimeTempoMedioResposta(gerenciador);
     printf("Sistema finalizado!\n");
-    return 0;
+    return 0; 
 }
-

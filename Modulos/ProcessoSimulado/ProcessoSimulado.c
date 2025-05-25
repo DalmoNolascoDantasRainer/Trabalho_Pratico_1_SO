@@ -1,7 +1,7 @@
 #include "ProcessoSimulado.h"
 #define BUFFER 100
 
-// Cria o processo inicial (init)
+// Funcao que cria o processo inicial (init)
 ProcessoSimulado* criaProcessoInit(int tempoSistema) {
 
     ProcessoSimulado* processoInit = (ProcessoSimulado*) malloc(sizeof(ProcessoSimulado));
@@ -13,15 +13,27 @@ ProcessoSimulado* criaProcessoInit(int tempoSistema) {
     *(processoInit->pc) = 0; 
 
     processoInit->prioridade = 0; // Prioridade inicial e 0
-    processoInit->estadoProcesso = PRONTO; // Estado inicial é PRONTO (pronto para executar)
+    processoInit->estadoProcesso = PRONTO; // Estado inicial e PRONTO (pronto para executar)
     processoInit->tempoInicio = tempoSistema; // Tempo de inicio e o tempo atual do sistema
     processoInit->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
     processoInit->conjuntoInstrucoes = NULL;
+    
     processoInit->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
+
     leInstrucoesArquivo("./arquivos/init", processoInit->conjuntoInstrucoes); 
     
 
     return processoInit; 
+}
+
+// Funcao que retora o estado como string
+const char* estadoParaString(Estado estado) {
+    switch (estado) {
+        case PRONTO: return "PRONTO";
+        case EXECUCAO: return "EXECUCAO";
+        case BLOQUEADO: return "BLOQUEADO";
+        default: return "DESCONHECIDO";
+    }
 }
 
 // Funcao que copia variaveis de um vetor para outro
@@ -37,7 +49,7 @@ void copiaConjuntoInstrucoes(Instrucao** vetorNovo, Instrucao* vetorBase) {
     int i = 0;
 
     // Copia instrucoes ate encontrar a instrucao de termino (T)
-    while (vetorBase[i-1].tipoInstrucao != 'T'  && i < MAXINSTRUCOES) {  //ALTEREI AQ caiouuuuu
+    while (vetorBase[i-1].tipoInstrucao != 'T'  && i < MAXINSTRUCOES) { 
         copiaInstrucao(&conjuntoInstrucoes[i], &vetorBase[i]);
         i++;
     }
@@ -68,7 +80,7 @@ ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
 
     filho->prioridade = processoPai.prioridade;
     
-    filho->estadoProcesso = PRONTO; // Estado inicial é PRONTO
+    filho->estadoProcesso = PRONTO; // Estado inicial e PRONTO
     filho->tempoInicio = tempoAtualSistema; // Tempo de inicio e o tempo atual do sistema
     filho->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
 
@@ -82,17 +94,14 @@ ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
 
 // Funcao que retorna o numero de variaveis no conjunto de instrucoes
 int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
-    return conjuntoInstrucoes[0].parametroNum1; // O numero de variaveis esta no primeiro parametro
+    return conjuntoInstrucoes[0].parametroNum1; // Colocamos o numero de variaveis esta no primeiro parametro
 }
 
 
 // Funcao que imprime as informacoes de um processo
 void imprimeProcesso(ProcessoSimulado processo, int opcao) {
 
-    
-
-    // Estado do processo (vamos imprimir na mesma linha)
-        
+    // Estado do processo 
     printf("║  %4d  ║   %4d   ║ %4d ║     %2d     ║  %-12s  ║      %4d      ║      %4d     ║\n",
         processo.pid,
         processo.pid_pai,
@@ -103,7 +112,7 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
         processo.tempoCPU
     );
 
-    // Imprime informacoes adicionais com base na opcao
+    // Imprime informacoes adicionais com base na opcao (debug)
     switch (opcao) {
         case 1:
             break; // Nao imprime nada adicional
@@ -121,20 +130,62 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
             break;
     }
     printf("╚════════╩══════════╩══════╩════════════╩════════════════╩════════════════╩═══════════════╝\n");
-    //putchar('\n'); 
 }
 
+void imprimeProcessoRR(ProcessoSimulado processo, int opcao) {
 
+    // Estado do processo 
+    
+        printf("║  %4d  ║   %4d   ║ %4d ║  %-10s║      %4d      ║      %4d     ║\n",
+        processo.pid,
+        processo.pid_pai,
+        *(processo.pc),
+        estadoParaString(processo.estadoProcesso),
+        processo.tempoInicio,
+        processo.tempoCPU
+    );
+
+    // Imprime informacoes adicionais com base na opcao (debug)
+    switch (opcao) {
+        case 1:
+            break; // Nao imprime nada adicional
+        case 2:
+            imprimeVariaveis(processo.vetorVariaveis, numeroVariaveis(*processo.conjuntoInstrucoes));
+            break; // Imprime as variaveis
+        case 3:
+            imprimeVetorPrograma(*(processo.conjuntoInstrucoes), *processo.pc);
+            break; // Imprime o conjunto de instrucoes
+        case 4:
+            imprimeVariaveis(processo.vetorVariaveis, numeroVariaveis(*processo.conjuntoInstrucoes));
+            imprimeVetorPrograma(*(processo.conjuntoInstrucoes), *processo.pc);
+            break; // Imprime variaveis e conjunto de instrues
+        default:
+            break;
+    }
+    printf("╚════════╩══════════╩══════╩════════════╩════════════════╩═══════════════╝\n");
+    
+}
+
+void imprimePID(ProcessoSimulado processo) {
+    printf("║            %d            ║ \n", processo.pid);
+    
+}
 // Funcao que imprime as variaveis de um processo
 void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
-    printf("  |Variáveis: ");
+    // Borda superior
+    printf("                                                                                                                                \n");
+
+    // Título + variáveis na mesma linha
+    printf("       Variáveis: ");
     for (int i = 0; i < tamanho; i++) {
-        printf("%d ", vetorVariaveis[i]); // Imprime cada variável
+        printf("│ %d ", vetorVariaveis[i]);
     }
-    putchar('\n'); 
+
+    
 }
 
 
+//////// TIRAR DEPOIS /////////////////////
 // Funcao que imprime o estado de um processo
 void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
     switch (estadoProcesso) {
@@ -149,29 +200,5 @@ void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
             break;
         default:
             break;
-    }
-}
-
-FILE *LerArquivo(char *nomeArquivo) {
-    FILE *ponteiro_arquivo = NULL;
-
-    while (ponteiro_arquivo == NULL) {
-        ponteiro_arquivo = fopen(nomeArquivo, "r");
-
-        if (ponteiro_arquivo == NULL) {
-            printf("\n\x1b[31m ERRO: \x1b[0m Arquivo não encontrado! :( \nPor favor, insira um arquivo válido!\n");
-            printf("Digite o nome do arquivo novamente: ");
-            scanf("%s", nomeArquivo);
-        }
-    }
-    return ponteiro_arquivo;
-}
-
-const char* estadoParaString(Estado estado) {
-    switch (estado) {
-        case PRONTO: return "PRONTO";
-        case EXECUCAO: return "EXECUCAO";
-        case BLOQUEADO: return "BLOQUEADO";
-        default: return "DESCONHECIDO";
     }
 }

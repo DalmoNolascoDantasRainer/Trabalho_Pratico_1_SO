@@ -1,8 +1,8 @@
 #include "Cpu.h"
 
-// Inicializa a estrutura da CPU, alocando memoria para seus campos.
+// Inicializa a estrutura da CPU
 void inicializaCPU(CPU** cpu){   
-    *cpu = (CPU*) malloc(sizeof(CPU)); // Aloca memoria para a estrutura CPU
+    *cpu = (CPU*) malloc(sizeof(CPU)); 
     
     (*cpu)->pidProcessoAtual = NUMEROVAZIO; // Inicializa o PID como vazio
     (*cpu)->pcProcessoAtual = NUMEROVAZIO; // Inicializa o PC como vazio
@@ -15,7 +15,7 @@ int cpuLivre(CPU* cpu){
     return cpu->pidProcessoAtual == NUMEROVAZIO; 
 }
 
-// Reseta a CPU, reinicializando seus campos.
+// Reseta a CPU, reinicializando seus campos
 void zeraCPU(CPU* cpu){
     cpu->pidProcessoAtual = NUMEROVAZIO;
     cpu->pcProcessoAtual = NUMEROVAZIO;
@@ -25,18 +25,13 @@ void zeraCPU(CPU* cpu){
 }
 
 // Carrega um processo na CPU, copiando os dados do processo atual
-// Esta funcao faz com que a CPU passe a operar sobre o processo fornecido,
-// copiando os valores dos campos do processo
 void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
-    // Copia o PID do processo atual
     cpu->pidProcessoAtual = processoAtual->pid;
-
-    // Copia o PC do processo atual
     cpu->pcProcessoAtual = *(processoAtual->pc);
 
     // Aponta para o conjunto de instrucoes do processo atual
     cpu->programaProcessoAtual = *(processoAtual->conjuntoInstrucoes);
-    ///copiaConjuntoInstrucoes(&(cpu->programaProcessoAtual), *(processoAtual->conjuntoInstrucoes));
+    
     // Aponta para o vetor de variaveis do processo atual
     cpu->variaveisProcessoAtual = &(processoAtual->vetorVariaveis);
     
@@ -98,7 +93,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
             break;
     }
 
-    // Avanca o PC e incrementa o quantum.
+    // Avanca o PC e incrementa o quantum
     cpu->pcProcessoAtual += 1;
     cpu->fatiaQuantum++;
     
@@ -111,7 +106,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 
 /* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
 
-// Aloca um vetor de variaveis inteiras para o processo.
+// Aloca um vetor de variaveis inteiras para o processo
 int *instrucaoTipoN(int n){
     int *vetorVariaveis;
     vetorVariaveis = malloc(n * sizeof(int));
@@ -123,34 +118,34 @@ int *instrucaoTipoN(int n){
     return vetorVariaveis;
 }
 
-// Define o valor da variavel x como 0.
+// Define o valor da variavel x como 0
 void instrucaoTipoD(int x, int *vetorVariaveis){
     vetorVariaveis[x] = 0;
 }
 
-// Define o valor da variavel x como n.
+// Define o valor da variavel x como n
 void instrucaoTipoV(int x, int n, int *vetorVariaveis){
     vetorVariaveis[x] = n;
 }
 
-// Soma n a variavel x.
+// Soma n a variavel x
 void instrucaoTipoA(int x, int n, int *vetorVariaveis){
     vetorVariaveis[x] += n;
 }
 
-// Subtrai n da variavel x.
+// Subtrai n da variavel x
 void instrucaoTipoS(int x, int n, int *vetorVariaveis){
     vetorVariaveis[x] -= n;
 }
 
-// Bloqueia o processo atual, colocando-o na fila de bloqueados.
+// Bloqueia o processo atual, colocando ele na fila de bloqueados
 void instrucaoTipoB(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* estadoBloqueado){
     enfileirar(*pidProcessoAtual, n, estadoBloqueado);
     ProcessoSimulado* processo = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     processo->estadoProcesso = BLOQUEADO;
 }
 
-// Finaliza o processo atual, liberando memoria e alterando seu estado.
+// Finaliza o processo atual, liberando memoria e alterando seu estado
 void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
     ProcessoSimulado* processoEncerrado = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
 
@@ -161,7 +156,7 @@ void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
     processoEncerrado->estadoProcesso = BLOQUEADO;
 }
 
-// Cria um novo processo (fork), insere na tabela e fila de prontos.
+// Cria um novo processo (fork), insere na tabela e fila de prontos
 void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, int tempoAtualSistema, Lista* tabelaProcessos, Fila** estadoPronto){
     ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     
@@ -174,7 +169,7 @@ void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* qua
     *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE
 }
 
-// Le instrucoes de um arquivo e carrega no processo.
+// Le instrucoes de um arquivo e carrega no processo
 void instrucaoTipoR(char *nomeDoArquivo, Instrucao** vetorPrograma, int* pcProcessoAtual){   
     char caminhoArquivo[BUFFER] = "./arquivos/";
     strcat(caminhoArquivo, nomeDoArquivo);

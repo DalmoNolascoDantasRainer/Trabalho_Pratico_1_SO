@@ -50,6 +50,11 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
         else if (opcao == 2){
             *arquivoDeEntrada = LerArquivo("./arquivos/comandos");
         }
+        else if (opcao == 3){
+            printf("\nEncerrando o programa...\n");
+            sleep(1);
+            exit(0);
+        }
         else{
             printf("\n Opção inválida :( \n");
             printf(" Tente novamente!! \n");
@@ -67,11 +72,7 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
 int SelecaoEscalonamento() {
     int opcaoEscalonamento = 0 ;
     while (opcaoEscalonamento == 0){
-        printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
-        printf("║                                \x1b[32m  🖥️​⚙️​  BEM-VINDO ;) \x1b[0m                                 ║\n");
-        printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
 
-    
         printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
         printf("║                        ALGORITMO DE ESCALONAMENTO                                  ║\n");
         printf("╠════════════════════════════════════════════════════════════════════════════════════╣\n");
@@ -110,16 +111,6 @@ int SelecaoEscalonamento() {
     return opcaoEscalonamento;
 }
 
-/*
- * ANALISE DO SISTEMA DE GERENCIAMENTO DE PROCESSOS
- * 
- * comunicaçao entre processos usando:
- * - fork() para criar processo pai e filho
- * - pipes para comunicaçao bidirecional
- * - Sincronizaçao entre processos
- * - Seleçao de algoritmos de escalonamento
- */
-
 int main(int argc, char **argv) {
     (void)argc;
     // ========== INICIALIZAÇÃO ==========
@@ -129,15 +120,23 @@ int main(int argc, char **argv) {
     FILE *arquivoDeEntrada;
     int numCPUs = atoi(argv[1]);
 
-    printf("Numero de CPUs: %d\n", numCPUs);
+    
     
     // Inicializa estrutura de gerenciamento
     GerenciadorProcessos *gerenciador = inicializaGerenciador(numCPUs);
 
     GerenciadorProcessosRR *gerenciadorRR = inicializaGerenciadorRR(numCPUs);
+    printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║                                \x1b[32m  🖥️​⚙️​  BEM-VINDO ;) \x1b[0m                                 ║\n");
+    printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
+    printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
+    printf("║                        Número de CPUs Utilizadas: %d                                ║\n", numCPUs);
+    printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
 
+    
     // ADICIONADO: Menu para seleção do algoritmo de escalonamento
     int opcaoEscalonamento = SelecaoEscalonamento();
+    
     
     // Menu inicial retorna opção escolhida pelo usuário
     int opcao = SelecaoEntrada(&arquivoDeEntrada);
@@ -242,13 +241,14 @@ int main(int argc, char **argv) {
                 
                 // Comando de saída
                 if (comando == 'M') {
+                    imprimeTempoMedioResposta(gerenciador);
                     printf("🏁 Encerrando processo de escalonamento\n");
                     break;
                 }
             }
         }
         
-        printf("\n✅ Sistema finalizado com sucesso!\n");
+        
 
 
     } else {
@@ -288,11 +288,6 @@ int main(int argc, char **argv) {
                         char confirmacao;
                         // ← PAI FICA BLOQUEADO AQUI esperando o 'D'
                         read(syncPipe[0], &confirmacao, sizeof(char));
-                        
-                        /* 
-                        * Quando recebe o 'D', o PAI sabe que:
-                        * "A impressão terminou, posso continuar!"
-                        */
                         printf("Impressão concluída!\n");
                     }
                 }
@@ -310,11 +305,6 @@ int main(int argc, char **argv) {
         // ========== PROCESSO FILHO ==========
         else {
             close(syncPipe[0]); // Fecha leitura do pipe de sincronização
-            
-            // ADICIONADO: Exibe informações sobre o algoritmo em uso
-        
-            printf("🔄 Executando com Round Robin - Quantum: 3 unidades\n");
-           
             
             while (1) {
                 // Recebe comando do processo pai
@@ -359,40 +349,15 @@ int main(int argc, char **argv) {
                 
                 // Comando de saída
                 if (comando == 'M') {
+                    imprimeTempoMedioRespostaRR(gerenciadorRR);
                     printf("🏁 Encerrando processo de escalonamento\n");
                     break;
                 }
             }
         }
         
-        printf("\n✅ Sistema finalizado com sucesso!\n");
     }
 
 
     return 0;
 }
-
-/*
- * FLUXO DE COMUNICAÇÃO:
- * 
- * 1. PAI -> FILHO (fd[1] -> fd[0]):
- *    - Comandos ('U', 'I', 'M')
- *    - Controle de operações
- * 
- * 2. FILHO -> PAI (syncPipe[1] -> syncPipe[0]):
- *    - Confirmações de operações concluídas
- *    - Sincronização de processos
- * 
- * COMANDOS PRINCIPAIS:
- * - 'U': Atualização/gerenciamento de processos
- * - 'I': Impressão do estado atual
- * - 'M': Encerramento do programa
- * 
- * MODOS DE OPERAÇÃO:
- * - opcao == 2: Leitura automática de arquivo
- * - opcao != 2: Modo interativo com entrada manual
- * 
- * ALGORITMOS DE ESCALONAMENTO:
- * - opcaoEscalonamento == 1: Filas Múltiplas de Prioridade
- * - opcaoEscalonamento == 2: Round Robin (Quantum = 3)
- */

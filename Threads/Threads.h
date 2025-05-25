@@ -11,13 +11,14 @@
 
 
 typedef struct {
-    char comando;
-    int comando_disponivel;
-    int comando_processado;
-    pthread_mutex_t mutex;
-    pthread_cond_t cond_comando;
-    pthread_cond_t cond_processado;
+    char comando;                    // Comando a ser processado
+    int comando_disponivel;          // Flag indicando se tem comando disponivel (0 = nao, 1 = sim)
+    int comando_processado;          // Flag indicando se comando foi processado (0 = nao, 1 = sim)
+    pthread_mutex_t mutex;           // Mutex para controle de acesso exclusivo ao buffer
+    pthread_cond_t cond_comando;     // Variavel de condicao para sinalizar comando disponivel
+    pthread_cond_t cond_processado;  // Variavel de condicao para sinalizar comando processado
 } BufferComando;
+
 
 typedef struct {
     GerenciadorProcessos *gerenciador;

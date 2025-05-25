@@ -9,7 +9,7 @@ typedef struct GerenciadorProcessosRR {
     int tempo;
     CPU_RR** cpus;
     Lista *tabelaProcessos;
-    Fila* filaRoundRobin;        // Fila única de prontos (Round Robin)
+    Fila* filaRoundRobin;        // Fila unica de prontos (Round Robin)
     Fila* estadoBloqueado;
     int* estadoExecucao;
     int quantidadeProcessosIniciados;
@@ -17,15 +17,13 @@ typedef struct GerenciadorProcessosRR {
     int numCPUs;
 } GerenciadorProcessosRR;
 
-// Inicialização
-GerenciadorProcessosRR* inicializaGerenciadorRR(int numCPUs);
 
-// Gerência de processos
+GerenciadorProcessosRR* inicializaGerenciadorRR(int numCPUs);
 void iniciaProcessoInitRR(GerenciadorProcessosRR *gerenciador);
 void gerenciadorProcessosRR(GerenciadorProcessosRR* gerenciador, char comando);
 void encerraUnidadeTempoRR(GerenciadorProcessosRR *gerenciador);
 
-// Escalonamento e execução
+// Escalonamento e execuçao
 void escalonaProcessosCPUsRR(GerenciadorProcessosRR* gerenciador);
 void escalonaProcessoRR(Lista* tabelaProcessos, CPU_RR* cpu, int* estadoExecucao, Fila* filaRR);
 void executaCPUsRR(GerenciadorProcessosRR* gerenciador);
