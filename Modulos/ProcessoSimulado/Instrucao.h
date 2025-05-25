@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../Menu/Menu.h"
 
 #define TEXTOVAZIO "VAZIO" // Define um texto vazio para inicialização
 #define BUFFER 100 // Tam maximo do buffer
@@ -26,5 +25,6 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** programa);
 void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase);
 void imprimeInstrucao(Instrucao Instrucao, int apontadorInst);
 void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc); // Imprime todas as instrucoes do programa a partir do pc (contador)
+FILE *LerArquivo(char *nomeArquivo);
 
 #endif

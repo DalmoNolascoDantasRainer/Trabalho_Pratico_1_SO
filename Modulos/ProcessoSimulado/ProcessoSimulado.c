@@ -88,15 +88,21 @@ int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
 
 // Funcao que imprime as informacoes de um processo
 void imprimeProcesso(ProcessoSimulado processo, int opcao) {
-    // Imprime os atributos basicos do processo
-    printf("-> Processo - PID %2d | ", processo.pid);
-    printf("pid_pai %2d | ", processo.pid_pai);
-    printf("PC %2d | ", *(processo.pc));
-    printf("Prioridade %d | ", processo.prioridade);
-    imprimeEstadoProcessoSimulado(processo.estadoProcesso);
-    printf("Tempo de inicio %2d | ", processo.tempoInicio);
-    printf("Tempo de CPU %2d\n", processo.tempoCPU);
+
     
+
+    // Estado do processo (vamos imprimir na mesma linha)
+        
+    printf("║  %4d  ║   %4d   ║ %4d ║     %2d     ║  %-12s  ║      %4d      ║      %4d     ║\n",
+        processo.pid,
+        processo.pid_pai,
+        *(processo.pc),
+        processo.prioridade,
+        estadoParaString(processo.estadoProcesso),
+        processo.tempoInicio,
+        processo.tempoCPU
+    );
+
     // Imprime informacoes adicionais com base na opcao
     switch (opcao) {
         case 1:
@@ -114,7 +120,8 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
         default:
             break;
     }
-    putchar('\n'); 
+    printf("╚════════╩══════════╩══════╩════════════╩════════════════╩════════════════╩═══════════════╝\n");
+    //putchar('\n'); 
 }
 
 
@@ -142,5 +149,29 @@ void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
             break;
         default:
             break;
+    }
+}
+
+FILE *LerArquivo(char *nomeArquivo) {
+    FILE *ponteiro_arquivo = NULL;
+
+    while (ponteiro_arquivo == NULL) {
+        ponteiro_arquivo = fopen(nomeArquivo, "r");
+
+        if (ponteiro_arquivo == NULL) {
+            printf("\n\x1b[31m ERRO: \x1b[0m Arquivo não encontrado! :( \nPor favor, insira um arquivo válido!\n");
+            printf("Digite o nome do arquivo novamente: ");
+            scanf("%s", nomeArquivo);
+        }
+    }
+    return ponteiro_arquivo;
+}
+
+const char* estadoParaString(Estado estado) {
+    switch (estado) {
+        case PRONTO: return "PRONTO";
+        case EXECUCAO: return "EXECUCAO";
+        case BLOQUEADO: return "BLOQUEADO";
+        default: return "DESCONHECIDO";
     }
 }

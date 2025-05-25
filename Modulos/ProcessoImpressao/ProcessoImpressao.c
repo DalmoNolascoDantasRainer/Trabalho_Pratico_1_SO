@@ -207,6 +207,11 @@ void imprimeTabelaProcessos(GerenciadorProcessos *gerenciador) {
     // Ponteiro auxiliar para percorrer a lista de processos
     CelulaPtr aux;
     aux = gerenciador->tabelaProcessos->Primeiro->Prox;
+
+    printf("╔════════╦══════════╦══════╦════════════╦════════════════╦════════════════╦═══════════════╗\n");
+    printf("║  PID   ║ PID PAI  ║  PC  ║ Prioridade ║    Estado      ║ Tempo de Início║ Tempo de CPU  ║\n");
+    printf("╠════════╬══════════╬══════╬════════════╬════════════════╬════════════════╬═══════════════╣\n");
+
     while (aux != NULL) {
         // Chama a funcao para imprimir o processo
         imprimeProcesso(*(aux->processo), 1);

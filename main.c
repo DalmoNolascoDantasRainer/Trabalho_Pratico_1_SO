@@ -4,20 +4,7 @@
 #include <unistd.h> 
 #include <sys/wait.h>
 
-FILE *LerArquivo(char *nomeArquivo) {
-    FILE *ponteiro_arquivo = NULL;
 
-    while (ponteiro_arquivo == NULL) {
-        ponteiro_arquivo = fopen(nomeArquivo, "r");
-
-        if (ponteiro_arquivo == NULL) {
-            printf("\n\x1b[31m ERRO: \x1b[0m Arquivo não encontrado! :( \nPor favor, insira um arquivo válido!\n");
-            printf("Digite o nome do arquivo novamente: ");
-            scanf("%s", nomeArquivo);
-        }
-    }
-    return ponteiro_arquivo;
-}
 
 int SelecaoEntrada(FILE **arquivoDeEntrada){
     int opcao = 0 ;
@@ -33,8 +20,24 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
         //printf("\n2) Entrada por arquivo");
         //printf("\n>> Escolha a opção: ");
         printf("\x1b[32m >> \x1b[0m Escolha a opção de entrada: ");
-        scanf("%d", &opcao);
-        printf("\n");
+        //scanf("%d", &opcao);
+        if (scanf("%d", &opcao) != 1) {
+            // Falhou (ex: letra)
+            opcao = 0;
+            printf("\nEntrada inválida :( Digite um número!\n");
+
+            // Limpa o buffer
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+
+            sleep(2);
+            system("clear");
+            continue;
+        } else {
+            // Limpa o buffer mesmo se a leitura foi bem-sucedida
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+        }
         if (opcao == 1){
             printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
             printf("║                  ENTRE COM UM DOS COMANDOS A SEGUIR:                               ║\n");
@@ -50,6 +53,7 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
         else{
             printf("\n Opção inválida :( \n");
             printf(" Tente novamente!! \n");
+            printf("\x1b[32m >> \x1b[0m Escolha a opção de entrada: ");
             opcao = 0;
             sleep(2);
             system("clear");
@@ -62,12 +66,12 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
 // Nova função para seleção do algoritmo de escalonamento
 int SelecaoEscalonamento() {
     int opcaoEscalonamento = 0 ;
-
-    printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
-    printf("║                                \x1b[32m  🖥️​⚙️​  BEM-VINDO ;) \x1b[0m                                 ║\n");
-    printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
-
     while (opcaoEscalonamento == 0){
+        printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
+        printf("║                                \x1b[32m  🖥️​⚙️​  BEM-VINDO ;) \x1b[0m                                 ║\n");
+        printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
+
+    
         printf("╔════════════════════════════════════════════════════════════════════════════════════╗\n");
         printf("║                        ALGORITMO DE ESCALONAMENTO                                  ║\n");
         printf("╠════════════════════════════════════════════════════════════════════════════════════╣\n");
@@ -75,8 +79,24 @@ int SelecaoEscalonamento() {
         printf("║ 2) Round Robin - Quantum fixo (3U)                                                 ║\n");
         printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
         printf("\x1b[32m >> \x1b[0m Escolha o algoritmo de escalonamento: ");
-        scanf("%d", &opcaoEscalonamento);
-        printf("\n");
+        //scanf("%d", &opcaoEscalonamento);
+        if (scanf("%d", &opcaoEscalonamento) != 1) {
+            // Falhou (ex: letra)
+            opcaoEscalonamento = 0;
+            printf("\nEntrada inválida :( Digite um número!\n");
+
+            // Limpa o buffer
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+
+            sleep(2);
+            system("clear");
+            continue;
+        } else {
+            // Limpa o buffer mesmo se a leitura foi bem-sucedida
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+        }
         
         if (opcaoEscalonamento != 1 && opcaoEscalonamento != 2 ) {
             printf("\n Opção inválida :( \n");

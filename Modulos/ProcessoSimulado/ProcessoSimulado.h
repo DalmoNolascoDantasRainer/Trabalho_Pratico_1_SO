@@ -31,6 +31,7 @@ int numeroVariaveis(Instrucao* conjuntoInstrucoes); // Conta quantas variaveis s
 void imprimeProcesso(ProcessoSimulado processo, int opcao);
 void imprimeEstadoProcessoSimulado(Estado estadoProcesso);
 void imprimeVariaveis(int* vetorVariaveis, int tamanho);
+const char* estadoParaString(Estado estado);
 
 
 #endif 
