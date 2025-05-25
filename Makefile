@@ -2,7 +2,7 @@
 
 # Compiler and flags
 CC = gcc
-CFLAGS = -g -O0 -Wall -Wextra -std=c99
+CFLAGS = -g -O0 -Wall -Wextra -std=c99 -pthread
 TARGET = FilaPrioridade.exe
 THREAD_TARGET = FilaPrioridadeThreads.exe
 
@@ -43,14 +43,14 @@ $(TARGET): $(OBJS)
 
 # Build threads version
 $(THREAD_TARGET): $(THREAD_OBJS)
-	$(CC) $(CFLAGS) $(THREAD_OBJS) -o $(THREAD_TARGET)
+	$(CC) $(CFLAGS) $(THREAD_OBJS) -o $(THREAD_TARGET) -lpthread
 
 # Compile source files to object files
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Original targets for compatibility
-FilaPrioridade: clean $(TARGET) run-priority
+# Main execution targets
+Simulador: clean $(TARGET) run-priority
 
 Threads: clean $(THREAD_TARGET) run-threads
 
@@ -81,7 +81,11 @@ clean:
 
 # Help target
 help:
-	echo "Available targets:"
+	echo "Main execution targets:"
+	echo "  Simulador        - Clean, build and run priority queue version"
+	echo "  Threads          - Clean, build and run threads version"
+	echo ""
+	echo "Other available targets:"
 	echo "  all              - Build priority queue version (default)"
 	echo "  build            - Build priority queue version without running"
 	echo "  build-threads    - Build threads version without running"
@@ -91,7 +95,3 @@ help:
 	echo "  debug-threads    - Run threads version with GDB"
 	echo "  clean            - Remove all compiled files"
 	echo "  help             - Show this help message"
-	echo ""
-	echo "Legacy targets (for compatibility):"
-	echo "  FilaPrioridade   - Clean, build and run priority queue version"
-	echo "  Threads          - Clean, build and run threads version"

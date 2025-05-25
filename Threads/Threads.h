@@ -1,5 +1,6 @@
 #ifndef THREADS_H
 #define THREADS_H
+
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +9,7 @@
 #include <semaphore.h>
 #include "../Modulos/ProcessoControle/ProcessoControle.h"
 #include "../Modulos/ProcessoImpressao/ProcessoImpressao.h"
-
+#include "../Modulos/ProcessoImpressao/ProcessoImpressaoRR.h"  // ADICIONADO: Include para Round Robin
 
 typedef struct {
     char comando;                    // Comando a ser processado
@@ -19,12 +20,13 @@ typedef struct {
     pthread_cond_t cond_processado;  // Variavel de condicao para sinalizar comando processado
 } BufferComando;
 
-
 typedef struct {
-    GerenciadorProcessos *gerenciador;
+    GerenciadorProcessos *gerenciador;        // Gerenciador para Filas Múltiplas
+    GerenciadorProcessosRR *gerenciadorRR;    // ADICIONADO: Gerenciador para Round Robin
     BufferComando *buffer;
     FILE *arquivo;
     int opcao;
+    int opcaoEscalonamento;                   // ADICIONADO: Tipo de algoritmo (1=FM, 2=RR)
     int numCPUs;
     int sistema_ativo;
     sem_t sem_impressao;
