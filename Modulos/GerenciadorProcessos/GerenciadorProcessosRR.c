@@ -203,7 +203,7 @@ void executaCPUsRR(GerenciadorProcessosRR *gerenciador)
         {
             printf("Executando instrucao na CPU %d no tempo %d\n", i, gerenciador->tempo);
             executaProxInstrucaoCPURR(gerenciador->cpus[i], gerenciador->tempo, gerenciador->tabelaProcessos,
-                                &gerenciador->quantidadeProcessosIniciados, NULL, gerenciador->estadoBloqueado);
+                                &gerenciador->quantidadeProcessosIniciados, gerenciador->filaRoundRobin, gerenciador->estadoBloqueado);
         }
     }
 }

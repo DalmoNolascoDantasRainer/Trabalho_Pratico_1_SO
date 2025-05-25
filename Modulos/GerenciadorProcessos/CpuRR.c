@@ -46,7 +46,10 @@ void insereProcessoCPURR(CPU_RR* cpu, ProcessoSimulado* processoAtual){
 // Executa a proxima instrucao do processo carregado na CPU.
 void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabelaProcessos,
                           int* quantidadeProcessosIniciados, Fila* filaRoundRobin, Fila* estadoBloqueado){
-
+    if (!filaRoundRobin) {
+        printf("Erro: filaRoundRobin é NULL\n");
+        return;
+    }                     
     // Recupera os parametros da instrucao atual.
     char tipo = (cpu->programaProcessoAtual[cpu->pcProcessoAtual]).tipoInstrucao;
     int parametroNum1 = (cpu->programaProcessoAtual[cpu->pcProcessoAtual]).parametroNum1;
@@ -85,7 +88,7 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
             break;
 
         case 'F':
-            printf("\nMelissa achou aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa F\n");
+            //printf("\nMelissa achou aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa F\n");
             instrucaoTipoFRR(parametroNum1, &(cpu->pidProcessoAtual), &(cpu->pcProcessoAtual),
                           quantidadeProcessosIniciados, tempoAtualSistema, tabelaProcessos, filaRoundRobin);
             break;
@@ -161,28 +164,56 @@ void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos){
     *processoEncerrado->pc = NUMEROVAZIO-1;
     processoEncerrado->estadoProcesso = BLOQUEADO;
 }
-
 // Cria um novo processo (fork), insere na tabela e na fila Round Robin.
 void instrucaoTipoFRR(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, 
                     int tempoAtualSistema, Lista* tabelaProcessos, Fila* filaRoundRobin){
-    ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
-    printf("busca passou\n");
+    printf("\n\nFork\n");
+    // Validação de parâmetros
 
-    imprimeProcesso(*copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1), 1);
+     // Validação detalhada de parâmetros para debug
+    if (!pidProcessoAtual) {
+        printf("Erro: pidProcessoAtual é NULL\n");
+        return;
+    }
+    if (!pcProcessoAtual) {
+        printf("Erro: pcProcessoAtual é NULL\n");
+        return;
+    }
+    if (!quantidadeProcessosIniciados) {
+        printf("Erro: quantidadeProcessosIniciados é NULL\n");
+        return;
+    }
+    if (!tabelaProcessos) {
+        printf("Erro: tabelaProcessos é NULL\n");
+        return;
+    }
+    if (!filaRoundRobin) {
+        printf("Erro: filaRoundRobin é NULL\n");
+        return;
+    }
+    if (!pidProcessoAtual || !pcProcessoAtual || !quantidadeProcessosIniciados || 
+        !tabelaProcessos || !filaRoundRobin) {
+        printf("Erro: Parâmetros inválidos na função instrucaoTipoFRR\n");
+        return;
+    }
+     ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     
-    /*ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
-    printf("copia passou");
+    ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
+
     insereNaTabela(processoFilho, tabelaProcessos);
-    printf("insere passou");
-    // Para Round Robin, todos os processos vão para a mesma fila
     enfileirar(processoFilho->pid, NUMEROVAZIO, filaRoundRobin);
-    printf("enfileirar passou");
-    
     *quantidadeProcessosIniciados += 1;
-    printf("qtd passou");
-    *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE*/
-    printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+    *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE
+    printf("\n\nFork executado: Processo %d criou processo %d\n", 
+           processoPai->pid, processoFilho->pid);
 }
+
+
+
+
+
+
 
 // Le instrucoes de um arquivo e carrega no processo.
 void instrucaoTipoRRR(char *nomeDoArquivo, Instrucao** arrPrograma, int* pcProcessoAtual){   
