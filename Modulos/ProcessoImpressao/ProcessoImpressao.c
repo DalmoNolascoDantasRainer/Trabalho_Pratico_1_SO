@@ -1,48 +1,5 @@
 #include "ProcessoImpressao.h" 
 
-// Função que imprime o estado do processo em formato textual
-void imprimeEstadoProcesso(Estado estado){
-    switch (estado){
-        case BLOQUEADO:
-            printf("Estado: BLOQUEADO | ");
-            break;
-
-        case EXECUCAO:
-            printf("Estado: EXECUCAO  | ");
-            break;
-
-        case PRONTO:
-            printf("Estado: PRONTO    | ");
-            break;
-
-        default:
-            break;
-    }
-}
-
-// Funcao que imprime os valores atuais das variaveis do processo
-void imprimeVariaveisProcesso(int *vetorVariaveis, int tamanho){
-    
-    printf("| Valores atuais das variáveis: ");
-    
-    // Percorre o array de variaveis e imprime cada valor
-    for (int i = 0; i < tamanho; i++){
-        printf(" %d ", vetorVariaveis[i]);
-    }
-    printf("\n");
-}
-
-
-// Funcao que imprime o estado atual do sistema
-void ImprimeEstadoAtualSistema(GerenciadorProcessos *gerenciador) {
-    // Imprime o cabeçalho do estado do sistema
-    printf("\n\n╒══════════════════════════════════════════════════════╡ ESTADO DO SISTEMA ╞════════════════════════════════════════════════════════╕\n\n"); 
-    // Imprime o tempo de uso do sistema
-    printf("\n\nTempo de uso do sistema no momento atual: %d unidades de tempo\n", gerenciador->tempo);
-    // Imprime informações das CPUs
-    imprimeCPUs(gerenciador);
-}
-
 
 // Função que exibe o menu de impressão e executa as opções escolhidas
 void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
@@ -72,7 +29,12 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
         switch (opcao) {
             case 1:
                 // Imprime o estado atual do sistema
-                ImprimeEstadoAtualSistema(gerenciador);
+                // Imprime o cabeçalho do estado do sistema
+                printf("\n\n╒══════════════════════════════════════════════════════╡ ESTADO DO SISTEMA ╞════════════════════════════════════════════════════════╕\n\n"); 
+                // Imprime o tempo de uso do sistema
+                printf("\n\nTempo de uso do sistema no momento atual: %d unidades de tempo\n", gerenciador->tempo);
+                // Imprime informações das CPUs
+                imprimeCPUs(gerenciador);
                 break;
 
             case 2:
@@ -95,7 +57,7 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
                     {
                         processo = buscaProcesso(gerenciador->tabelaProcessos, celula->pidTempo.pid);
                         printf("\n");
-                        imprimeInfosGeraisProcesso(processo);
+                        imprimeProcesso(*processo, 1);
                         celula = celula->Prox;
                     }
                     putchar('\n');
@@ -122,7 +84,7 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
                         while (celula != NULL){
                             processo = buscaProcesso(gerenciador->tabelaProcessos, celula->pidTempo.pid);
                             printf("\n");
-                            imprimeInfosGeraisProcesso(processo);
+                            imprimeProcesso(*processo,1);
 
                             celula = celula->Prox;
                         }
@@ -158,12 +120,12 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
                     
                     printf("\n\n");
                     // Imprime informações detalhadas do processo
-                    imprimeInfosGeraisProcesso(processo);
+                    imprimeProcesso(*processo, 1);
                     if (processo->vetorVariaveis == NULL){
                         printf("TESTE2  \n");
                     }
                     
-                    imprimeVariaveisProcesso(processo->vetorVariaveis, numeroVariaveis(*processo->conjuntoInstrucoes));
+                    imprimeVariaveis(processo->vetorVariaveis, numeroVariaveis(*processo->conjuntoInstrucoes));
                     
                     printf("\n TESTE3  \n");
                     imprimeVetorPrograma(*processo->conjuntoInstrucoes, *processo->pc);
@@ -183,23 +145,7 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
         }
     }
 }
-// Função que imprime informações gerais de um processo
-void imprimeInfosGeraisProcesso(ProcessoSimulado *processo) {
-    printf("-> Processo - PID %2d | ", processo->pid); // Imprime o PID
-    printf("PPID %2d | ", processo->pid); // Imprime o PPID
-    printf("PC %2d | ", *(processo->pc)); // Imprime o PC
-    printf("Prioridade %2d | ", processo->prioridade); // Imprime a prioridade
-    imprimeEstadoProcesso(processo->estadoProcesso); // Imprime o estado do processo
-    printf("Tempo de inicio %2d | ", processo->tempoInicio); // Imprime o tempo de início
-    printf("Tempo de CPU %2d\n", processo->tempoCPU); // Imprime o tempo de CPU
-}
 
-
-
-// Função que retorna o número de variáveis do processo
-int numeroVariaveisProcesso(Instrucao *vetorPrograma){
-    return vetorPrograma[0].parametroNum1; // Retorna o valor do primeiro parâmetro numérico
-}
 
 // Função que imprime o estado do sistema em formato de arquivo
 void impressaoArquivo(GerenciadorProcessos *gerenciador) {
@@ -249,7 +195,7 @@ void imprimeCPU(CPU *cpu){
     printf("\n->> Processo em execução - PID %d | ", cpu->pidProcessoAtual); // Imprime o PID do processo atual
     printf("PC %d |", cpu->pcProcessoAtual); // Imprime o PC do processo atual
     printf(" Fatia do quantum já executado: %d ", cpu->fatiaQuantum); // Imprime a fatia do quantum executada
-    imprimeVariaveisProcesso(*(cpu->variaveisProcessoAtual), numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
+    imprimeVariaveis(*(cpu->variaveisProcessoAtual), numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
     printf("\n");
 }
 
@@ -263,7 +209,7 @@ void imprimeTabelaProcessos(GerenciadorProcessos *gerenciador) {
     aux = gerenciador->tabelaProcessos->Primeiro->Prox;
     while (aux != NULL) {
         // Chama a funcao para imprimir o processo
-        imprimeInfosGeraisProcesso((aux->processo));
+        imprimeProcesso(*(aux->processo), 1);
         aux = aux->Prox; // Avanca para a proxima celula
     }
 } 

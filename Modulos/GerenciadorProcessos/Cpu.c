@@ -39,7 +39,7 @@ void insereProcessoCPU(CPU* cpu, ProcessoSimulado* processoAtual){
     ///copiaConjuntoInstrucoes(&(cpu->programaProcessoAtual), *(processoAtual->conjuntoInstrucoes));
     // Aponta para o vetor de variaveis do processo atual
     cpu->variaveisProcessoAtual = &(processoAtual->vetorVariaveis);
-    //imprimeVariaveis(*processoAtual->conjuntoInstrucoes, numeroVariaveis(*(processoAtual->conjuntoInstrucoes)));
+    
     cpu->fatiaQuantum = 0;// Reinicia o quantum da CPU
 }
 
@@ -175,10 +175,10 @@ void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* qua
 }
 
 // Le instrucoes de um arquivo e carrega no processo.
-void instrucaoTipoR(char *nomeDoArquivo, Instrucao** arrPrograma, int* pcProcessoAtual){   
-    char caminhoArquivo[BUFFER] = "./data/";
+void instrucaoTipoR(char *nomeDoArquivo, Instrucao** vetorPrograma, int* pcProcessoAtual){   
+    char caminhoArquivo[BUFFER] = "./arquivos/";
     strcat(caminhoArquivo, nomeDoArquivo);
-    leInstrucoesArquivo(caminhoArquivo, arrPrograma);
+    leInstrucoesArquivo(caminhoArquivo, vetorPrograma);
 
     *pcProcessoAtual = -1;
 }

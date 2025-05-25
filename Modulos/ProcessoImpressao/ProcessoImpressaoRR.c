@@ -1,48 +1,5 @@
 #include "ProcessoImpressaoRR.h" 
 
-// Função que imprime o estado do processo em formato textual
-void imprimeEstadoProcessoRR(Estado estado){
-    switch (estado){
-        case BLOQUEADO:
-            printf("Estado: BLOQUEADO | ");
-            break;
-
-        case EXECUCAO:
-            printf("Estado: EXECUCAO  | ");
-            break;
-
-        case PRONTO:
-            printf("Estado: PRONTO    | ");
-            break;
-
-        default:
-            break;
-    }
-}
-
-// Funcao que imprime os valores atuais das variaveis do processo
-void imprimeVariaveisProcessoRR(int *vetorVariaveis, int tamanho){
-    
-    printf("| Valores atuais das variáveis: ");
-    
-    // Percorre o array de variaveis e imprime cada valor
-    for (int i = 0; i < tamanho; i++){
-        printf(" %d ", vetorVariaveis[i]);
-    }
-    printf("\n");
-}
-
-
-// Funcao que imprime o estado atual do sistema
-void ImprimeEstadoAtualSistemaRR(GerenciadorProcessosRR *gerenciador) {
-    // Imprime o cabeçalho do estado do sistema
-    printf("\n\n╒══════════════════════════════════════════════════════╡ ESTADO DO SISTEMA ╞════════════════════════════════════════════════════════╕\n\n"); 
-    // Imprime o tempo de uso do sistema
-    printf("\n\nTempo de uso do sistema no momento atual: %d unidades de tempo\n", gerenciador->tempo);
-    // Imprime informações das CPUs
-    imprimeCPUsRR(gerenciador);
-}
-
 
 // Função que exibe o menu de impressão e executa as opções escolhidas
 void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
@@ -72,7 +29,12 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
         switch (opcao) {
             case 1:
                 // Imprime o estado atual do sistema
-                ImprimeEstadoAtualSistemaRR(gerenciador);
+                 // Imprime o cabeçalho do estado do sistema
+                printf("\n\n╒══════════════════════════════════════════════════════╡ ESTADO DO SISTEMA ╞════════════════════════════════════════════════════════╕\n\n"); 
+                // Imprime o tempo de uso do sistema
+                printf("\n\nTempo de uso do sistema no momento atual: %d unidades de tempo\n", gerenciador->tempo);
+                // Imprime informações das CPUs
+                imprimeCPUsRR(gerenciador);
                 break;
 
             case 2:
@@ -95,12 +57,13 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
                     {
                         processo = buscaProcesso(gerenciador->tabelaProcessos, celula->pidTempo.pid);
                         printf("\n");
-                        imprimeInfosGeraisProcessoRR(processo);
+                        imprimeProcesso(*processo, 1);
                         celula = celula->Prox;
                     }
                     putchar('\n');
                 }
                 break;
+
 
             case 4:
                 // Imprime os processos em estado pronto
@@ -118,7 +81,7 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
                     while (celula != NULL){
                         processo = buscaProcesso(gerenciador->tabelaProcessos, celula->pidTempo.pid);
                         printf("\n");
-                        imprimeInfosGeraisProcessoRR(processo);
+                        imprimeProcesso(*processo, 1);
 
                         celula = celula->Prox;
                     }
@@ -154,14 +117,12 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
                     
                     printf("\n\n");
                     // Imprime informações detalhadas do processo
-                    imprimeInfosGeraisProcessoRR(processo);
+                    imprimeProcesso(*processo, 1);
                     if (processo->vetorVariaveis == NULL){
-                        printf("TESTE2  \n");
                     }
                     
-                    imprimeVariaveisProcessoRR(processo->vetorVariaveis, numeroVariaveis(*processo->conjuntoInstrucoes));
-                    
-                    printf("\n TESTE3  \n");
+                    imprimeVariaveis(processo->vetorVariaveis, numeroVariaveis(*processo->conjuntoInstrucoes));
+
                     imprimeVetorPrograma(*processo->conjuntoInstrucoes, *processo->pc);
                     
                 }
@@ -179,22 +140,7 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
         }
     }
 }
-// Função que imprime informações gerais de um processo
-void imprimeInfosGeraisProcessoRR(ProcessoSimulado *processo) {
-    printf("-> Processo - PID %2d | ", processo->pid); // Imprime o PID
-    printf("PPID %2d | ", processo->pid); // Imprime o PPID
-    printf("PC %2d | ", *(processo->pc)); // Imprime o PC
-    imprimeEstadoProcessoRR(processo->estadoProcesso); // Imprime o estado do processo
-    printf("Tempo de inicio %2d | ", processo->tempoInicio); // Imprime o tempo de início
-    printf("Tempo de CPU %2d\n", processo->tempoCPU); // Imprime o tempo de CPU
-}
 
-
-
-// Função que retorna o número de variáveis do processo
-int numeroVariaveisProcessoRR(Instrucao *vetorPrograma){
-    return vetorPrograma[0].parametroNum1; // Retorna o valor do primeiro parâmetro numérico
-}
 
 // Função que imprime o estado do sistema em formato de arquivo
 void impressaoArquivoRR(GerenciadorProcessosRR *gerenciador) {
@@ -244,7 +190,7 @@ void imprimeCPURR(CPU_RR *cpu){
     printf("\n->> Processo em execução - PID %d | ", cpu->pidProcessoAtual); // Imprime o PID do processo atual
     printf("PC %d |", cpu->pcProcessoAtual); // Imprime o PC do processo atual
     printf(" Fatia do quantum já executado: %d ", cpu->fatiaQuantum); // Imprime a fatia do quantum executada
-    imprimeVariaveisProcessoRR(*(cpu->variaveisProcessoAtual), numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
+    imprimeVariaveis(*(cpu->variaveisProcessoAtual), numeroVariaveis(cpu->programaProcessoAtual)); // Imprime as variáveis do processo
     printf("\n");
 }
 
@@ -258,7 +204,7 @@ void imprimeTabelaProcessosRR(GerenciadorProcessosRR *gerenciador) {
     aux = gerenciador->tabelaProcessos->Primeiro->Prox;
     while (aux != NULL) {
         // Chama a funcao para imprimir o processo
-        imprimeInfosGeraisProcessoRR((aux->processo));
+        imprimeProcesso(*(aux->processo), 1);
         aux = aux->Prox; // Avanca para a proxima celula
     }
 } 

@@ -6,7 +6,7 @@
 #include <string.h>
 #include "../Menu/Menu.h"
 
-#define TEXTOVAZIO "#######" // Define um texto vazio para inicialização
+#define TEXTOVAZIO "VAZIO" // Define um texto vazio para inicialização
 #define BUFFER 100 // Tam maximo do buffer
 #define MAXINSTRUCOES 100 // Número máximo de instrucoes
 #define NUMEROVAZIO -1 // Define um valor vazio para parâmetros numéricos

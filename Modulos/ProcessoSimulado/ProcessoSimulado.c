@@ -18,7 +18,7 @@ ProcessoSimulado* criaProcessoInit(int tempoSistema) {
     processoInit->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
     processoInit->conjuntoInstrucoes = NULL;
     processoInit->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
-    leInstrucoesArquivo("./data/init", processoInit->conjuntoInstrucoes); 
+    leInstrucoesArquivo("./arquivos/init", processoInit->conjuntoInstrucoes); 
     
 
     return processoInit; 
@@ -69,21 +69,13 @@ ProcessoSimulado* copiaProcesso(ProcessoSimulado processoPai, int tempoAtualSist
     filho->prioridade = processoPai.prioridade;
     
     filho->estadoProcesso = PRONTO; // Estado inicial é PRONTO
-    printf("Não é o estado\n");
     filho->tempoInicio = tempoAtualSistema; // Tempo de inicio e o tempo atual do sistema
-    printf("Não é o tempo inicio\n");
     filho->tempoCPU = 0; // Tempo de CPU inicial e 0 (ainda nao uso a CPU)
-    printf("Não é o tempo CPU\n");
 
     // Copia o conjunto de instrucoes do processo pai
     filho->conjuntoInstrucoes = (Instrucao**) malloc(sizeof(Instrucao));
-    printf("Não é o malloc\n");
     copiaConjuntoInstrucoes(filho->conjuntoInstrucoes, *(processoPai.conjuntoInstrucoes));
-    printf("Não é o copia instruções\n");
-    printf("Filho:");
-    imprimeProcesso(*filho, 1);
-    printf("\npai:");
-    imprimeProcesso(processoPai, 1);
+    
     return filho;
 }
 
@@ -94,9 +86,6 @@ int numeroVariaveis(Instrucao* conjuntoInstrucoes) {
 }
 
 
-
-/////////////////////////////////////////////////////////////
-//// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime as informacoes de um processo
 void imprimeProcesso(ProcessoSimulado processo, int opcao) {
     // Imprime os atributos basicos do processo
@@ -129,7 +118,6 @@ void imprimeProcesso(ProcessoSimulado processo, int opcao) {
 }
 
 
-//// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime as variaveis de um processo
 void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
     printf("  |Variáveis: ");
@@ -140,7 +128,6 @@ void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
 }
 
 
-///// REMOVER ISSO E DEIXAR NO PROCESSO DE IMPRESSAO /////
 // Funcao que imprime o estado de um processo
 void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
     switch (estadoProcesso) {

@@ -14,15 +14,15 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
     gerenciador->tempoTotalExecucao = 0;
     gerenciador->numCPUs = numCPUs;
     
-    // Aloca memoria para o array de ponteiros das CPUs
+    // Aloca memoria para o vetor de ponteiros das CPUs
     gerenciador->cpus = (CPU **)malloc(numCPUs * sizeof(CPU *));
     if (gerenciador->cpus == NULL) {
-        printf("Erro: Falha na alocacao de memoria para array de CPUs\n");
+        printf("Erro: Falha na alocacao de memoria para vetor de CPUs\n");
         free(gerenciador);
         exit(1);
     }
     
-    // Aloca memoria para o array de estados de execucao
+    // Aloca memoria para o vetor de estados de execucao
     gerenciador->estadoExecucao = (int *)malloc(numCPUs * sizeof(int));
     if (gerenciador->estadoExecucao == NULL) {
         printf("Erro: Falha na alocacao de memoria para estados de execucao\n");
@@ -31,7 +31,6 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
         exit(1);
     }
 
-    // CORREÇÃO: Aloca cada CPU individualmente e depois inicializa
     for (int i = 0; i < numCPUs; i++){
         // Primeiro aloca memoria para a CPU individual
         gerenciador->cpus[i] = (CPU *)malloc(sizeof(CPU));
@@ -91,12 +90,6 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
         if (gerenciador->estadoPronto[i] == NULL) {
             printf("Erro: Falha na criacao da fila de pronto %d\n", i);
             
-            // Libera filas já criadas
-            for (int j = 0; j < i; j++) {
-                // Assumindo que existe uma função para liberar fila
-                // liberaFila(gerenciador->estadoPronto[j]);
-            }
-            
             // Libera outros recursos
             for (int j = 0; j < numCPUs; j++) {
                 free(gerenciador->cpus[j]);
@@ -113,11 +106,6 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
     gerenciador->estadoBloqueado = criaFila();
     if (gerenciador->estadoBloqueado == NULL) {
         printf("Erro: Falha na criacao da fila de bloqueados\n");
-        
-        // Libera recursos já alocados
-        for (int i = 0; i < CLASSESPRIORIDADES; i++) {
-            // liberaFila(gerenciador->estadoPronto[i]);
-        }
         for (int i = 0; i < numCPUs; i++) {
             free(gerenciador->cpus[i]);
         }
@@ -128,7 +116,6 @@ GerenciadorProcessos *inicializaGerenciador(int numCPUs) {
         exit(1);
     }
 
-    printf("Gerenciador inicializado com sucesso: %d CPUs\n", numCPUs);
     return gerenciador;
 }
 
@@ -166,7 +153,6 @@ void escalonaProcesso(Lista *tabelaProcessos, CPU *cpu, int *estadoExecucao, Fil
         insereProcessoCPU(cpu, proximoProceso); // Carrega o processo na CPU
     }
 }
-
 
 // Escalona processos para as CPUs disponiveis
 void escalonaProcessosCPUs(GerenciadorProcessos *gerenciador){

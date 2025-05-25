@@ -16,16 +16,16 @@ GerenciadorProcessosRR *inicializaGerenciadorRR(int numCPUs){
     gerenciador->tempoTotalExecucao = 0;
     gerenciador->numCPUs = numCPUs;
 
-    // Aloca memoria para o array de ponteiros das CPUs
+    // Aloca memoria para o vetor de ponteiros das CPUs
     gerenciador->cpus = (CPU_RR **)malloc(numCPUs * sizeof(CPU_RR *));
     if (gerenciador->cpus == NULL)
     {
-        printf("Erro: Falha na alocacao de memoria para array de CPUs\n");
+        printf("Erro: Falha na alocacao de memoria para vetor de CPUs\n");
         free(gerenciador);
         exit(1);
     }
 
-    // Aloca memoria para o array de estados de execucao
+    // Aloca memoria para o vetor de estados de execucao
     gerenciador->estadoExecucao = (int *)malloc(numCPUs * sizeof(int));
     if (gerenciador->estadoExecucao == NULL)
     {
@@ -113,7 +113,6 @@ GerenciadorProcessosRR *inicializaGerenciadorRR(int numCPUs){
         exit(1);
     }
 
-    printf("Gerenciador Round Robin inicializado com sucesso: %d CPUs\n", numCPUs);
     return gerenciador;
 }
 
@@ -124,17 +123,13 @@ void iniciaProcessoInitRR(GerenciadorProcessosRR *gerenciador)
     ProcessoSimulado *processoInit = criaProcessoInit(gerenciador->tempo);
 
     // Enfileira na fila Round Robin
-    printf("Iniciando processo init e enfileirando na fila Round Robin\n");
     enfileirar(processoInit->pid, NUMEROVAZIO, gerenciador->filaRoundRobin);
-    printf("Processo init enfileirado na fila Round Robin\n");
 
     // Insere o processo inicial na tabela de processos
     insereNaTabela(processoInit, gerenciador->tabelaProcessos);
-    printf("Processo init inserido na tabela de processos\n");
 
     // Incrementa o contador de processos iniciados
     gerenciador->quantidadeProcessosIniciados += 1;
-    printf("Quantidade de processos iniciados: %d\n", gerenciador->quantidadeProcessosIniciados);
 }
 
 // Incrementa o tempo do sistema
@@ -164,10 +159,8 @@ void escalonaProcessoRR(Lista *tabelaProcessos, CPU_RR *cpu, int *estadoExecucao
         if (proximoProcesso != NULL)
         {
             proximoProcesso->estadoProcesso = EXECUCAO; // Define o estado do processo como em execucao
-            printf("Processo PID %d entrou em execucao\n", pidProcesso);
 
             insereProcessoCPURR(cpu, proximoProcesso); // Carrega o processo na CPU
-            printf("Processo PID %d inserido na CPU\n", pidProcesso);
         }
 
         // Libera a memoria do PidTempo

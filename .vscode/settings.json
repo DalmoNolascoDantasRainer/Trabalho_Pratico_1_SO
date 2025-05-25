@@ -59,6 +59,7 @@
     "cstdlib": "cpp",
     "gerenciadorprocessos.h": "c",
     "processoimpressao.h": "c",
-    "processocontrole.h": "c"
+    "processocontrole.h": "c",
+    "unistd.h": "c"
   }
 }

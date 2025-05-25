@@ -101,7 +101,6 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
             break;
     }
     
-   
     // Avanca o PC e incrementa o quantum.
     cpu->pcProcessoAtual += 1;
     cpu->fatiaQuantum++;
@@ -113,7 +112,7 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
     }
 }
 
-/* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
+/* Instrucoes processadas na CPU -------------- */
 
 // Aloca um vetor de variaveis inteiras para o processo.
 int *instrucaoTipoNRR(int n){
@@ -171,31 +170,6 @@ void instrucaoTipoFRR(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* q
     // Validação de parâmetros
 
      // Validação detalhada de parâmetros para debug
-    if (!pidProcessoAtual) {
-        printf("Erro: pidProcessoAtual é NULL\n");
-        return;
-    }
-    if (!pcProcessoAtual) {
-        printf("Erro: pcProcessoAtual é NULL\n");
-        return;
-    }
-    if (!quantidadeProcessosIniciados) {
-        printf("Erro: quantidadeProcessosIniciados é NULL\n");
-        return;
-    }
-    if (!tabelaProcessos) {
-        printf("Erro: tabelaProcessos é NULL\n");
-        return;
-    }
-    if (!filaRoundRobin) {
-        printf("Erro: filaRoundRobin é NULL\n");
-        return;
-    }
-    if (!pidProcessoAtual || !pcProcessoAtual || !quantidadeProcessosIniciados || 
-        !tabelaProcessos || !filaRoundRobin) {
-        printf("Erro: Parâmetros inválidos na função instrucaoTipoFRR\n");
-        return;
-    }
      ProcessoSimulado* processoPai = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     
     ProcessoSimulado* processoFilho = copiaProcesso(*processoPai, tempoAtualSistema, maiorPIDTabela(tabelaProcessos)+1);
@@ -205,21 +179,14 @@ void instrucaoTipoFRR(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* q
     *quantidadeProcessosIniciados += 1;
 
     *pcProcessoAtual += n; // PULA INSTRUCOES QUE NAO SAO DESTINADAS A ELE
-    printf("\n\nFork executado: Processo %d criou processo %d\n", 
-           processoPai->pid, processoFilho->pid);
+    
 }
 
-
-
-
-
-
-
 // Le instrucoes de um arquivo e carrega no processo.
-void instrucaoTipoRRR(char *nomeDoArquivo, Instrucao** arrPrograma, int* pcProcessoAtual){   
-    char caminhoArquivo[BUFFER] = "./data/";
+void instrucaoTipoRRR(char *nomeDoArquivo, Instrucao** vetorPrograma, int* pcProcessoAtual){   
+    char caminhoArquivo[BUFFER] = "./arquivos/";
     strcat(caminhoArquivo, nomeDoArquivo);
-    leInstrucoesArquivo(caminhoArquivo, arrPrograma);
+    leInstrucoesArquivo(caminhoArquivo, vetorPrograma);
 
     *pcProcessoAtual = -1;
 }

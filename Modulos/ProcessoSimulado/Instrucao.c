@@ -60,7 +60,7 @@ void leInstrucoesArquivo(char* caminhoArq, Instrucao** vetorPrograma){
     char* linha = malloc(BUFFER * sizeof(char));
 
     // Abre o arquivo para leitura
-    FILE* arquivoDeEntrada = abreArquivoRead(caminhoArq);
+    FILE* arquivoDeEntrada = LerArquivo(caminhoArq);
 
     // Le cada linha do arquivo e inicializa as instrucoes
     while (fgets(linha, BUFFER, arquivoDeEntrada) != NULL){   
@@ -82,7 +82,7 @@ void copiaInstrucao(Instrucao* novaInstrucao, Instrucao* instrucaoBase){
     strcpy(novaInstrucao->paramTexto, instrucaoBase->paramTexto); // Copia o texto
 }
 
-//  OLHAR DE PASSAR ISSO PARA PROCESSO IMPRESSAO
+
 // funcao que imprime uma instrucao
 void imprimeInstrucao(Instrucao instrucao, int apontadorInst){
     if (apontadorInst == 1){ // Verifica se a instrucao é a atual (indicada pelo apontador)

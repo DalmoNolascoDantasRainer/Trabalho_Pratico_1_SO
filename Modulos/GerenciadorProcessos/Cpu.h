@@ -5,7 +5,6 @@
 #include <stdlib.h>
 
 #include "../EstruturasDeDados/Fila.h"
-// #include "../EstruturasDeDados/Lista.h"
 #include "TabelaProcessos.h"
 #include "../ProcessoSimulado/ProcessoSimulado.h"
 
@@ -25,7 +24,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
 int cpuLivre(CPU* cpu);
 void zeraCPU(CPU* cpu);
 
-/* -------------- Instrucoes de programa que sao processadas na CPU -------------- */
+/* -------------- Instrucoes processadas na CPU -------------- */
 
 int* instrucaoTipoN(int n);
 void instrucaoTipoD(int x, int *vetorVariaveis);
