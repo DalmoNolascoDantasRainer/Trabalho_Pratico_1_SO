@@ -9,7 +9,7 @@
 #include <semaphore.h>
 #include "../Modulos/ProcessoControle/ProcessoControle.h"
 #include "../Modulos/ProcessoImpressao/ProcessoImpressao.h"
-#include "../Modulos/ProcessoImpressao/ProcessoImpressaoRR.h"  // ADICIONADO: Include para Round Robin
+#include "../Modulos/ProcessoImpressao/ProcessoImpressaoRR.h"  
 
 typedef struct {
     char comando;                    // Comando a ser processado
@@ -22,11 +22,11 @@ typedef struct {
 
 typedef struct {
     GerenciadorProcessos *gerenciador;        // Gerenciador para Filas Múltiplas
-    GerenciadorProcessosRR *gerenciadorRR;    // ADICIONADO: Gerenciador para Round Robin
+    GerenciadorProcessosRR *gerenciadorRR;    // Gerenciador para Round Robin
     BufferComando *buffer;
     FILE *arquivo;
     int opcao;
-    int opcaoEscalonamento;                   // ADICIONADO: Tipo de algoritmo (1=FM, 2=RR)
+    int opcaoEscalonamento;                   
     int numCPUs;
     int sistema_ativo;
     sem_t sem_impressao;

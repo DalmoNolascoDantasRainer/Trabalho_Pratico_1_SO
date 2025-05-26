@@ -118,7 +118,6 @@ int main(int argc, char **argv) {
     printf("║                            Número de CPUs Utilizadas: %d                            ║\n", numCPUs);
     printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
     
-    // ADICIONADO: Seleção do algoritmo de escalonamento
     int opcaoEscalonamento = SelecaoEscalonamento();
     
     // Inicialização dos gerenciadores
@@ -138,10 +137,10 @@ int main(int argc, char **argv) {
     // Configuração dos dados globais
     DadosGlobais dados;
     dados.gerenciador = gerenciador;
-    dados.gerenciadorRR = gerenciadorRR;                // ADICIONADO
+    dados.gerenciadorRR = gerenciadorRR;                
     dados.arquivo = arquivoDeEntrada;
     dados.opcao = opcao; 
-    dados.opcaoEscalonamento = opcaoEscalonamento;      // ADICIONADO
+    dados.opcaoEscalonamento = opcaoEscalonamento;      
     dados.numCPUs = numCPUs; 
     dados.sistema_ativo = 1;
     
