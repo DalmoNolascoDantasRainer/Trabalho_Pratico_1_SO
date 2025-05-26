@@ -170,6 +170,7 @@ void imprimePID(ProcessoSimulado processo) {
     printf("║            %d            ║ \n", processo.pid);
     
 }
+
 // Funcao que imprime as variaveis de um processo
 void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
     // Borda superior
@@ -182,23 +183,4 @@ void imprimeVariaveis(int* vetorVariaveis, int tamanho) {
     }
 
     
-}
-
-
-//////// TIRAR DEPOIS /////////////////////
-// Funcao que imprime o estado de um processo
-void imprimeEstadoProcessoSimulado(Estado estadoProcesso) {
-    switch (estadoProcesso) {
-        case BLOQUEADO:
-            printf("Estado: BLOQUEADO | ");
-            break;
-        case EXECUCAO:
-            printf("Estado: EXECUCAO  | ");
-            break;
-        case PRONTO:
-            printf("Estado: PRONTO    | ");
-            break;
-        default:
-            break;
-    }
 }

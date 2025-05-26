@@ -16,13 +16,11 @@ int SelecaoEntrada(FILE **arquivoDeEntrada){
         printf("║ 2) Entrada por arquivo       ║\n");
         printf("║ 3) Sair                      ║\n");
         printf("╚══════════════════════════════╝\n");
-        //printf("\n1) Entrada padrão");
-        //printf("\n2) Entrada por arquivo");
-        //printf("\n>> Escolha a opção: ");
+       
         printf("\x1b[32m >> \x1b[0m Escolha a opção de entrada: ");
-        //scanf("%d", &opcao);
+    
         if (scanf("%d", &opcao) != 1) {
-            // Falhou (ex: letra)
+            
             opcao = 0;
             printf("\nEntrada inválida :( Digite um número!\n");
 
@@ -80,7 +78,7 @@ int SelecaoEscalonamento() {
         printf("║ 2) Round Robin - Quantum fixo (3U)                                                 ║\n");
         printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
         printf("\x1b[32m >> \x1b[0m Escolha o algoritmo de escalonamento: ");
-        //scanf("%d", &opcaoEscalonamento);
+        
         if (scanf("%d", &opcaoEscalonamento) != 1) {
             // Falhou (ex: letra)
             opcaoEscalonamento = 0;
@@ -134,7 +132,7 @@ int main(int argc, char **argv) {
     printf("╚════════════════════════════════════════════════════════════════════════════════════╝\n");
 
     
-    // ADICIONADO: Menu para seleção do algoritmo de escalonamento
+    
     int opcaoEscalonamento = SelecaoEscalonamento();
     
     
@@ -144,8 +142,8 @@ int main(int argc, char **argv) {
     
     // algoritmo de escalonamento baseado na escolha do usuário
     if (opcaoEscalonamento == 1) {
-        // Filas Múltiplas (comportamento padrão - não precisa alterar nada)
-        //defineEscalonamento(gerenciador, ESC_FILAS_MULTIPLAS);
+        
+
 
             // Criação dos pipes de comunicação
         if (pipe(fd) == -1 || pipe(syncPipe) == -1){
@@ -203,6 +201,7 @@ int main(int argc, char **argv) {
                 if (comando == 'U') {
                     // Comando de atualização/gerenciamento
                     gerenciadorProcessos(gerenciador, comando);
+                    
                     
 
                     printf("⏰ [FM] Tempo: %d\n", gerenciador->tempo);
@@ -312,7 +311,7 @@ int main(int argc, char **argv) {
                 if (comando == 'U') {
                     // Comando de atualização/gerenciamento
                     gerenciadorProcessosRR(gerenciadorRR, comando);
-                    // ADICIONADO: Feedback visual do algoritmo em execução (opcional)
+                    
                     
                     printf("⏰ [RR] Tempo: %d\n", gerenciadorRR->tempo);
                    

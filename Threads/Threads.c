@@ -92,7 +92,7 @@ void* thread_gerenciador(void* arg) {
         else if (comando == 'M') {
             sem_wait(&dados->sem_impressao);
             
-            // Imprime tempo médio baseado no algoritmo
+            // Imprime tempo medio baseado no algoritmo
             pthread_mutex_lock(&dados->mutex_gerenciador);
             if (dados->opcaoEscalonamento == 1) {
                 imprimeTempoMedioResposta(dados->gerenciador);
@@ -127,7 +127,7 @@ void* thread_impressao(void* arg) {
     printf("\n📋 Gerando relatório do sistema...\n");
     
     if (dados->opcaoEscalonamento == 1) {
-        // Filas Múltiplas
+        // Filas Multiplas
         if (dados->opcao == 2) { 
             impressaoArquivo(dados->gerenciador);
         } else { 
