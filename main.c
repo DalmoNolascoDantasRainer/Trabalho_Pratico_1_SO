@@ -204,7 +204,6 @@ int main(int argc, char **argv) {
                     // Comando de atualização/gerenciamento
                     gerenciadorProcessos(gerenciador, comando);
                     
-                    // ADICIONADO: Feedback visual do algoritmo em execução (opcional)
 
                     printf("⏰ [FM] Tempo: %d\n", gerenciador->tempo);
                 }

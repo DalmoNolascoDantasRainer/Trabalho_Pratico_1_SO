@@ -30,7 +30,7 @@ void instrucaoTipoV(int x, int n, int *vetorVariaveis);
 void instrucaoTipoA(int x, int n, int *vetorVariaveis);
 void instrucaoTipoS(int x, int n, int *vetorVariaveis);
 void instrucaoTipoB(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* estadoBloqueado);
-void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos);
+void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos, CPU* cpu);
 void instrucaoTipoF(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, int tempoAtualSistema, Lista* tabelaProcessos, Fila** filaPronto);
 void instrucaoTipoR(char *nomeDoArquivo, Instrucao** vetorPrograma, int* pcProcessoAtual);
 

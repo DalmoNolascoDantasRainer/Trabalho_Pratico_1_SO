@@ -78,7 +78,7 @@ void executaProxInstrucao(CPU* cpu, int tempoAtualSistema, Lista* tabelaProcesso
             break;
 
         case 'T':
-            instrucaoTipoT(&(cpu->pidProcessoAtual), tabelaProcessos);
+            instrucaoTipoT(&(cpu->pidProcessoAtual), tabelaProcessos, cpu);
             break;
         
         case 'F':
@@ -144,12 +144,14 @@ void instrucaoTipoB(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* 
 }
 
 // Finaliza o processo atual, liberando memoria e alterando seu estado
-void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos){
+void instrucaoTipoT(int* pidProcessoAtual, Lista* tabelaProcessos, CPU* cpu){
     ProcessoSimulado* processoEncerrado = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
     free(processoEncerrado->conjuntoInstrucoes);
     free(processoEncerrado->vetorVariaveis);
 
-    *processoEncerrado->pc = NUMEROVAZIO-1;
+    
+    cpu->pcProcessoAtual = NUMEROVAZIO - 1; 
+    
     processoEncerrado->estadoProcesso = BLOQUEADO;
 }
 

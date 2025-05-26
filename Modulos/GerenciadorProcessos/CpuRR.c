@@ -83,7 +83,7 @@ void executaProxInstrucaoCPURR(CPU_RR* cpu, int tempoAtualSistema, Lista* tabela
             break;
 
         case 'T':
-            instrucaoTipoTRR(&(cpu->pidProcessoAtual), tabelaProcessos);
+            instrucaoTipoTRR(&(cpu->pidProcessoAtual), tabelaProcessos, cpu);
             break;
 
         case 'F':
@@ -149,12 +149,14 @@ void instrucaoTipoBRR(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila
 }
 
 // Finaliza o processo atual, liberando memoria e alterando seu estado
-void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos){
+void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos, CPU_RR* cpu){
     ProcessoSimulado* processoEncerrado = buscaProcesso(tabelaProcessos, *pidProcessoAtual);
-
     free(processoEncerrado->conjuntoInstrucoes);
     free(processoEncerrado->vetorVariaveis);
-    *processoEncerrado->pc = NUMEROVAZIO-1;
+
+    
+    cpu->pcProcessoAtual = NUMEROVAZIO - 1; 
+    
     processoEncerrado->estadoProcesso = BLOQUEADO;
 }
 // Cria um novo processo (fork), insere na tabela e na fila Round Robin

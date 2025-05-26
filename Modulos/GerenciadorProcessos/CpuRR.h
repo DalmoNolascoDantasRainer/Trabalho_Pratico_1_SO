@@ -28,7 +28,7 @@ void instrucaoTipoVRR(int x, int n, int *vetorVariaveis);
 void instrucaoTipoARR(int x, int n, int *vetorVariaveis);
 void instrucaoTipoSRR(int x, int n, int *vetorVariaveis);
 void instrucaoTipoBRR(int n, int* pidProcessoAtual, Lista* tabelaProcessos, Fila* estadoBloqueado);
-void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos);
+void instrucaoTipoTRR(int* pidProcessoAtual, Lista* tabelaProcessos, CPU_RR* cpu);
 void instrucaoTipoFRR(int n, int* pidProcessoAtual, int* pcProcessoAtual, int* quantidadeProcessosIniciados, 
                     int tempoAtualSistema, Lista* tabelaProcessos, Fila* filaRoundRobin);
 void instrucaoTipoRRR(char *nomeDoArquivo, Instrucao** vetorPrograma, int* pcProcessoAtual);
