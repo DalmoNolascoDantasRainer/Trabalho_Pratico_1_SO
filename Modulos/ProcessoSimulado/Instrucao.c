@@ -123,7 +123,7 @@ void imprimeVetorPrograma(Instrucao* vetorPrograma, int pc){
     printf("║                                                                  ║\n");
     printf("╠════════╦════════════════════╦═══════════════════╦════════════════╠\n");
     printf("║  TIPO  ║    Parametro 1     ║    Parametro 2    ║  Parametro txt ║\n");
-    printf("╠══════╬════════════════════╬═══════════════════╬════════════════╣\n");
+    printf("╠════════╬════════════════════╬═══════════════════╬════════════════╣\n");
 
     int i = 0;
     while (vetorPrograma[i-1].tipoInstrucao != 'T'){ // Percorre o vetor de instrucoes ate encontrar a instrucao de termino ('T')   

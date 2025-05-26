@@ -146,9 +146,9 @@ void ImprimeGerenciadorProcessosRR(GerenciadorProcessosRR *gerenciador) {
                     else{
                         // Percorre a fila e imprime informações de cada processo 
                         ElementoPidTempo *celula = fila->Frente;
-                            printf("╔════════╦══════════╦══════╦════════════╦════════════════╦════════════════╗\n");
-                            printf("║  PID   ║ PID PAI  ║  PC  ║  Estado    ║Tempo de Início ║ Tempo de CPU   ║\n");
-                            printf("╠════════╬══════════╬══════╬════════════╬════════════════╬════════════════╣\n");
+                            printf("╔════════╦══════════╦══════╦════════════╦════════════════╦═══════════════╗\n");
+                            printf("║  PID   ║ PID PAI  ║  PC  ║  Estado    ║Tempo de Início ║ Tempo de CPU  ║\n");
+                            printf("╠════════╬══════════╬══════╬════════════╬════════════════╬═══════════════╣\n");
                         while (celula != NULL){
                             processo = buscaProcesso(gerenciador->tabelaProcessos, celula->pidTempo.pid);
                             imprimeProcessoRR(*processo,1);

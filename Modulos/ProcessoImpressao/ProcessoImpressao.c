@@ -97,6 +97,7 @@ void ImprimeGerenciadorProcessos(GerenciadorProcessos *gerenciador) {
                     printf("╠════════╬══════════╬══════╬════════════╬════════════════╬════════════════╬═══════════════╣\n");
                     imprimeProcesso(*processo, 1);
                     if (processo->vetorVariaveis == NULL){
+                        
                     }
                     printf("╔══════════════════════════════════════════════════════════════════╗\n");
                     imprimeVariaveis(processo->vetorVariaveis, numeroVariaveis(*processo->conjuntoInstrucoes));
